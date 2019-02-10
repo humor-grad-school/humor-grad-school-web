@@ -3,7 +3,6 @@ import logoSvg from './logo.svg';
 import './App.css';
 
 export default function App(): JSX.Element {
-  var a = 1;
   return (
     <div className="App">
       <header className="App-header">

@@ -21,8 +21,14 @@
     }
   },
   "env": {
-    "browser": true
+    "browser": true,
+    "jest": true
   },
+  "overrides": [
+    {
+      "files": ["src/**/*.ts", "src/**/*.tsx"]
+    }
+  ],
   "rules": {
     "react/jsx-filename-extension": ["tsx"],
     "@typescript-eslint/indent": ["error", 2]
