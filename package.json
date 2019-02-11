@@ -63,7 +63,9 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "lint": "eslint src/**/*.ts src/**/*.tsx"
+    "lint": "eslint src/**/*.ts src/**/*.tsx",
+    "generate": "node type-generator/generateAll src/generated",
+    "watch-generate": "node type-generator/watch src/generated"
   },
   "browserslist": [
     ">0.2%",

@@ -1,0 +1,3 @@
+[submodule "type-generator"]
+	path = type-generator
+	url = https://github.com/humor-grad-school/hgs-type-generator.git
