@@ -31,6 +31,9 @@
   ],
   "rules": {
     "react/jsx-filename-extension": ["tsx"],
-    "@typescript-eslint/indent": ["error", 2]
+    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/no-namespace": 0,
+    "@typescript-eslint/interface-over-type-literal": 0,
+    "@typescript-eslint/prefer-interface": 0
   }
 }
