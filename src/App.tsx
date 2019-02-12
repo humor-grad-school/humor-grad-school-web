@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
-import MainPage from './pages/MainPage';
+import MainPage from './components/MainPage';
 
 export default function App(): JSX.Element {
   return (
