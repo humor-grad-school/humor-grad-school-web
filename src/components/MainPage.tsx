@@ -1,10 +1,10 @@
 import React from 'react';
 import Feeds from './Feeds';
-import './MainPage.css';
+import './MainPage.scss';
 
 export default function MainPage(): JSX.Element {
   return (
-    <div className="flex-container">
+    <div className="main-page flex-container">
       <Feeds />
       <Feeds />
     </div>
