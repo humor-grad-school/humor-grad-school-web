@@ -1,5 +1,5 @@
 import React from 'react';
-import './Feeds.css';
+import './Feeds.scss';
 import thumbnailExample from './thumbnailExample.jpg';
 
 function generatorRandomString(minLength: number, maxLength: number): string {
@@ -41,7 +41,7 @@ export default function Feeds(): JSX.Element {
   }
 
   return (
-    <div className="feed-container">
+    <div className="feed container">
       <div className="header">
         Best Posts
       </div>
