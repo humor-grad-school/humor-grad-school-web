@@ -1,3 +1,6 @@
 [submodule "type-generator"]
 	path = type-generator
 	url = https://github.com/humor-grad-school/hgs-type-generator.git
+[submodule "graphql-schema"]
+	path = graphql-schema
+	url = https://github.com/humor-grad-school/graphql-schema.git
