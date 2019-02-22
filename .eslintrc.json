@@ -6,13 +6,10 @@
     },
     "useJSXTextNode": true,
     "project": "./tsconfig.json",
-    "extraFileExtensions": [".vue"]
+    "extraFileExtensions": [".vue", "ts", "tsx"]
   },
   "plugins": ["@typescript-eslint"],
-  "extends": [
-    "airbnb",
-    "plugin:@typescript-eslint/recommended"
-  ],
+  "extends": ["airbnb", "plugin:@typescript-eslint/recommended"],
   "settings": {
     "import/resolver": {
       "node": {
