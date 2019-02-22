@@ -30,6 +30,7 @@
     "file-loader": "2.0.0",
     "fork-ts-checker-webpack-plugin-alt": "0.4.14",
     "fs-extra": "7.0.0",
+    "graphql-ts-gen": "^1.0.7",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "identity-obj-proxy": "3.0.0",
     "jest": "23.6.0",
@@ -66,8 +67,9 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "lint": "eslint src/**/*.ts src/**/*.tsx",
-    "generate": "node type-generator/generateAll src/generated",
-    "watch-generate": "node type-generator/watch src/generated"
+    "generate-type": "node type-generator/generateAll src/generated",
+    "watch-generate-type": "node type-generator/watch src/generated",
+    "generate-graphql": "npx graphql-ts-gen ./graphql-schema/schema.graphql src/generated/graphqlQuery.ts"
   },
   "browserslist": [
     ">0.2%",
