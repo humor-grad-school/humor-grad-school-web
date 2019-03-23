@@ -13,7 +13,8 @@ async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
 
     const { data } = await query.fetch();
 
-    const response = await fetch(data.post.contentS3Key);
+    const response = await fetch(`http://localhost:9000/content-s3-bucket/${data.post.contentS3Key}`);
+
     // TODO: Check error
     const json = await response.json();
 

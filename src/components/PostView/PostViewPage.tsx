@@ -9,7 +9,7 @@ import PostActions from '../../GlobalState/ActionAndStates/PostActions';
 type PostViewPageProps = RouteComponentProps<PostViewPageParams>
 
 interface PostViewPageParams {
-  postIdInString: string;
+  postId: string;
 }
 
 export default class PostViewPage extends Component<PostViewPageProps, {}> {
@@ -20,11 +20,7 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
       match,
     } = this.props;
 
-    const {
-      postIdInString,
-    } = match.params;
-
-    const postId = parseInt(postIdInString, 10);
+    const postId = parseInt(match.params.postId, 10);
 
     const postData = this.globalState.postState.posts[postId];
     if (!postData) {
@@ -32,11 +28,11 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
       return false;
     }
 
-    const { contentData } = postData;
+    const { content } = postData;
     return (
       <div className="post-view-page container">
         <div className="header">i am header. put title here</div>
-        <div className="body">{renderPostViewContent(contentData)}</div>
+        <div className="body">{renderPostViewContent(content)}</div>
       </div>
     );
   }

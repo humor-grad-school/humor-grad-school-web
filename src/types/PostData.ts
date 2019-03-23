@@ -1,7 +1,7 @@
 export type ContentData = ContentElementData[];
 
 export type PostData = {
-  contentData: ContentData;
+  content: ContentData;
 };
 
 export enum ContentElementDataType {
