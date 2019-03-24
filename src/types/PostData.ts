@@ -1,5 +1,9 @@
 export type ContentData = ContentElementData[];
 
+export type PostInfo = {
+  contentS3Key: string;
+}
+
 export type PostData = {
   content: ContentData;
 };
