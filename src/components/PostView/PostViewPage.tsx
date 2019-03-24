@@ -6,6 +6,7 @@ import { GlobalState } from '../../GlobalState/globalState';
 import { getGlobalStateForReactComponent } from '../../GlobalState/getGlobalState';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
 import PostHeaderComponent from './PostHeaderComponent';
+import PostFooterComponent from './PostFooterComponent';
 
 type PostViewPageProps = RouteComponentProps<PostViewPageParams>
 
@@ -30,6 +31,7 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
     }
 
     const {
+      id,
       board,
       content,
     } = postData;
@@ -43,6 +45,7 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
         </div>
         <PostHeaderComponent postData={postData} />
         <div className="body">{renderPostViewContent(content)}</div>
+        <PostFooterComponent postId={id} />
       </div>
     );
   }
