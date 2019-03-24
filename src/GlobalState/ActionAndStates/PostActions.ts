@@ -1,6 +1,11 @@
 import DataLoader from 'dataloader';
 import { getGlobalState } from '../getGlobalState';
-import { Query, Post } from '../../generated/graphqlQuery';
+import {
+  Query,
+  Post,
+  User,
+  Board,
+} from '../../generated/graphqlQuery';
 import convertPost from '../../converter/convertPost';
 import { PostData } from '../../types/PostData';
 
@@ -9,7 +14,20 @@ async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
     const query = Query
       .addPost(postId,
         Post
-          .addContentS3Key());
+          .addId()
+          .addTitle()
+          .addContentS3Key()
+          .addWriter(
+            User
+              .addUsername()
+              .addAvatarUrl(),
+          )
+          .addBoard(
+            Board
+              .addId()
+              .addName(),
+          )
+          .addCreatedAt());
 
     const { data } = await query.fetch();
 

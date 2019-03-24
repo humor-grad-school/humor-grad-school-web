@@ -1,10 +1,11 @@
 import React, { Component, ReactNode } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 import './PostViewPage.scss';
 import renderPostViewContent from './renderPostViewContent';
 import { GlobalState } from '../../GlobalState/globalState';
 import { getGlobalStateForReactComponent } from '../../GlobalState/getGlobalState';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
+import PostHeaderComponent from './PostHeaderComponent';
 
 type PostViewPageProps = RouteComponentProps<PostViewPageParams>
 
@@ -28,10 +29,19 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
       return false;
     }
 
-    const { content } = postData;
+    const {
+      board,
+      content,
+    } = postData;
+    // TODO: Findout why {...postData} not work
     return (
       <div className="post-view-page container">
-        <div className="header">i am header. put title here</div>
+        <div className="board">
+          <Link to={`/board/${board.id}`}>
+            { board.name }
+          </Link>
+        </div>
+        <PostHeaderComponent postData={postData} />
         <div className="body">{renderPostViewContent(content)}</div>
       </div>
     );

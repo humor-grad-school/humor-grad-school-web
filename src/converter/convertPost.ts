@@ -16,9 +16,10 @@ function convertPostContentData(dataInYml: string): ContentData {
   return content || [];
 }
 
-export default function convertPost(post: PostInfo, dataInYml: string): PostData {
+export default function convertPost(postInfo: PostInfo, dataInYml: string): PostData {
   const postData: PostData = {
-    ...post,
+    ...postInfo,
+    createdAtInMillis: postInfo.createdAt.getTime(),
     content: convertPostContentData(dataInYml),
   };
   return postData;

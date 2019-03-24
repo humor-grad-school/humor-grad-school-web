@@ -2,13 +2,25 @@
   &.container {
     margin: 0 3em;
     max-width: 100%;
+    padding: 2em 1em;
     justify-content: center;
-    background-color: yellowgreen;
+    background-color: #EEE;
   }
 
-  .header {
-    width: 100%;
-    height: 100px;
+  .board {
+    margin-bottom: 1em;
+    font-weight: bold;
+    font-size: 1.75em;
+
+    a {
+      text-decoration: none;
+      color: #333;
+      transition: color 0.25s;
+    }
+
+    a:hover {
+      color: #777;
+    }
   }
 
   .body {
