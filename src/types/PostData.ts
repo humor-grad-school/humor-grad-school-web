@@ -19,7 +19,7 @@ export type PostData = {
   board: Board;
   likes: number;
   isLiked: boolean;
-  createdAtInMillis: number;
+  createdAt: Date;
 };
 
 export enum ContentElementDataType {
