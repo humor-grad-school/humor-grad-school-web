@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import MainPage from './components/MainPage';
 import PostViewPage from './components/PostView/PostViewPage';
 import PostWritePage from './components/PostWrite/PostWritePage';
+import BoardViewPage from './components/BoardView/BoardViewPage';
 
 export default function App(): JSX.Element {
   return (
@@ -11,6 +12,7 @@ export default function App(): JSX.Element {
         <Route exact path="/" component={MainPage} />
         <Route path="/post/:postId" component={PostViewPage} />
         <Route path="/writePost/:boardName" component={PostWritePage} />
+        <Route path="/boardView/:boardName" component={BoardViewPage} />
       </Switch>
     </Router>
   );

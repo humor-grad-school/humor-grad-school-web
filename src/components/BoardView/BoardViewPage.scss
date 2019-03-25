@@ -1,0 +1,31 @@
+.board-view-page {
+  &.container {
+    margin: 0 3em;
+    max-width: 100%;
+    padding: 2em 1em;
+    justify-content: center;
+    background-color: #EEE;
+  }
+
+  .board {
+    margin-bottom: 1em;
+    font-weight: bold;
+    font-size: 1.75em;
+
+    a {
+      text-decoration: none;
+      color: #333;
+      transition: color 0.25s;
+    }
+
+    a:hover {
+      color: #777;
+    }
+  }
+
+  .post-list {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+  }
+}
