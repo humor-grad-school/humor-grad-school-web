@@ -8,7 +8,7 @@ export default function App(): JSX.Element {
     <Router>
       <Switch>
         <Route exact path="/" component={MainPage} />
-        <Route path="/postView/:postId" component={PostViewPage} />
+        <Route path="/post/:postId" component={PostViewPage} />
       </Switch>
     </Router>
   );

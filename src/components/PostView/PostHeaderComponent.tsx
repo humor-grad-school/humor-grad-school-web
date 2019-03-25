@@ -34,7 +34,7 @@ export default function PostHeaderComponent({ postData }: PostHeaderComponentPro
   return (
     <div className="post-header container">
       <div className="title">
-        <Link to={`/postView/${id}`}>
+        <Link to={`/post/${id}`}>
           {title}
         </Link>
       </div>
