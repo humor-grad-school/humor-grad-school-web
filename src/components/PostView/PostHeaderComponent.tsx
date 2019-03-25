@@ -9,16 +9,14 @@ type PostHeaderComponentProps = {
 
 function getPassedTimeInString(createdAtInMillis: number): string {
   const passedMillis = Date.now() - createdAtInMillis;
+  const createdAt = new Date(createdAtInMillis);
 
   const second = Math.floor(passedMillis / 1000);
   const minute = Math.floor(second / 60);
   const hour = Math.floor(minute / 60);
   const day = Math.floor(hour / 24);
-  const month = Math.floor(day / 30);
-  const year = Math.floor(month / 12);
 
-  if (year !== 0) return `${year} 년 전`;
-  if (month !== 0) return `${month} 달 전`;
+  if (day >= 30) return `${createdAt.getFullYear()}.${createdAt.getMonth()}.${createdAt.getDay()}`;
   if (day !== 0) return `${day} 일 전`;
   if (hour !== 0) return `${hour} 시간 전`;
   if (minute !== 0) return `${minute} 분 전`;
