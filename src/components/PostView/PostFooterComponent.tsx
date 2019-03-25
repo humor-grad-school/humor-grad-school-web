@@ -1,38 +1,28 @@
 import React from 'react';
 import './PostFooterComponent.scss';
-import { HgsRestApi } from '../../generated/client/ClientApis';
+import { PostData } from '../../types/PostData';
+import PostActions from '../../GlobalState/ActionAndStates/PostActions';
 
 type PostFooterComponentProps = {
-  postId: number;
+  postData: PostData;
 }
 
-async function likePost(postId: number): Promise<void> {
-  try {
-    // TODO: Update global post state
-    const data = await HgsRestApi.likePost({ postId });
-    console.log(data);
-  } catch (error) {
-    // TODO
-    switch (error.message) {
-      case '401':
-        alert('로그인 되지 않았습니다');
-        break;
-
-      default:
-        alert('알 수 없는 오류가 발생했습니다');
-    }
-  }
-}
 // TODO: Display likes
-export default function PostFooterComponent({ postId }: PostFooterComponentProps): JSX.Element {
+export default function PostFooterComponent({ postData }: PostFooterComponentProps): JSX.Element {
+  const {
+    id,
+    likes,
+    isLiked,
+  } = postData;
   return (
     <div className="post-footer container">
       <button
-        className="like-button"
-        onClick={() => likePost(postId)}
+        className={`like-button ${isLiked ? '' : 'active'}`}
+        onClick={() => { if (!isLiked) PostActions.likePost(id); }}
         type="button"
       >
-        오호홓 좋아요!
+        {isLiked ? '좋아했습니다?' : '좋아요!'}
+        <span className="likes">{likes}</span>
       </button>
     </div>
   );

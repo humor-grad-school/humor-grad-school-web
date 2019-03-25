@@ -31,7 +31,6 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
     }
 
     const {
-      id,
       board,
       content,
     } = postData;
@@ -45,7 +44,7 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
         </div>
         <PostHeaderComponent postData={postData} />
         <div className="body">{renderPostViewContent(content)}</div>
-        <PostFooterComponent postId={id} />
+        <PostFooterComponent postData={postData} />
       </div>
     );
   }

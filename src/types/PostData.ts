@@ -4,14 +4,10 @@ export type PostInfo = {
   id: number;
   title: string;
   contentS3Key: string;
-  writer: {
-    username: string;
-    avatarUrl: string;
-  };
-  board: {
-    id: number;
-    name: string;
-  };
+  writer: Writer;
+  board: Board;
+  likes: number;
+  isLiked: boolean;
   createdAt: Date;
 }
 
@@ -21,6 +17,8 @@ export type PostData = {
   content: ContentData;
   writer: Writer;
   board: Board;
+  likes: number;
+  isLiked: boolean;
   createdAtInMillis: number;
 };
 
