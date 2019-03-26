@@ -5,6 +5,7 @@ import { GlobalState } from '../../GlobalState/globalState';
 import { getGlobalStateForReactComponent } from '../../GlobalState/getGlobalState';
 import BoardActions from '../../GlobalState/ActionAndStates/BoardActions';
 import renderPostViewContent from './renderBoardViewContent';
+import BoardPostListHeaderComponent from './BoardPostListHeaderComponent';
 
 type PostViewPageProps = RouteComponentProps<PostViewPageParams>
 
@@ -39,6 +40,7 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
             { name }
           </Link>
         </div>
+        <BoardPostListHeaderComponent />
         <ol className="post-list">
           {renderPostViewContent(posts)}
         </ol>
