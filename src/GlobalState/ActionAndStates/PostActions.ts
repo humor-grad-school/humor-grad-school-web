@@ -1,4 +1,5 @@
 import DataLoader from 'dataloader';
+import { DeltaStatic } from 'quill';
 import { getGlobalState } from '../getGlobalState';
 import {
   Query,
@@ -6,7 +7,7 @@ import {
   User,
   Board,
 } from '../../generated/graphqlQuery';
-import convertPost from '../../converter/convertPost';
+import convertPost, { convertPostToYml } from '../../converter/convertPost';
 import { PostData } from '../../types/PostData';
 import { HgsRestApi } from '../../generated/client/ClientApis';
 
@@ -74,6 +75,12 @@ const PostActions = {
     } catch (error) {
       alertError(error.message);
     }
+  },
+
+  async writePost(deltaStatic: DeltaStatic): Promise<void> {
+    const postContentsInYml = convertPostToYml(deltaStatic);
+    // TODO: send it to s3
+    console.log(postContentsInYml);
   },
 };
 

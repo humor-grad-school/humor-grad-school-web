@@ -1,4 +1,5 @@
 import yaml from 'js-yaml';
+import { DeltaStatic } from 'quill';
 import { ContentData, PostData, PostInfo } from '../types/PostData';
 
 // ---
@@ -64,4 +65,9 @@ export default function convertPost(postInfo: PostInfo, dataInYml: string): Post
     content: convertPostContentData(dataInYml),
   };
   return postData;
+}
+
+export function convertPostToYml(deltaStatic: DeltaStatic): string {
+  // TODO
+  return yaml.dump(deltaStatic);
 }
