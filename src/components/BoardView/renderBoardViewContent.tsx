@@ -7,7 +7,7 @@ export default function renderPostViewContent(
 ): (JSX.Element | undefined)[] {
   const contentElements = posts.map(post => (
     <BoardPostListItemComponent
-      key={post.title}
+      key={`post-list-item-${post.title}-${post.createdAt}`}
       post={post}
     />
   ));
