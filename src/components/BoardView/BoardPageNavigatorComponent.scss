@@ -1,0 +1,32 @@
+.board-page-navigator {
+  &.container {
+    border-radius: 2em;
+    background-color: #DDD;
+  }
+
+  a {
+    text-decoration: none;
+    color: #000;
+  }
+
+  .page-button {
+    width: 1em;
+    height: 1em;
+    padding: 1em;
+    line-height: 1em;
+    text-align: center;
+    border-radius: 2em;
+    display: inline-block;
+    transition: background-color 0.25s,
+                color 0.25s;
+
+    &:hover {
+      background-color: #CCC;
+    }
+
+    &.current {
+      color: #FFF;
+      background-color: #AAA;
+    }
+  }
+}

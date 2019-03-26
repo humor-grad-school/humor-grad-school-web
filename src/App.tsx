@@ -12,7 +12,7 @@ export default function App(): JSX.Element {
         <Route exact path="/" component={MainPage} />
         <Route path="/post/:postId" component={PostViewPage} />
         <Route path="/writePost/:boardName" component={PostWritePage} />
-        <Route path="/board/:boardName" component={BoardViewPage} />
+        <Route path="/board/:boardName/:pageNum?" component={BoardViewPage} />
       </Switch>
     </Router>
   );

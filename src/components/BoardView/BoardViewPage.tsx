@@ -6,11 +6,13 @@ import { getGlobalStateForReactComponent } from '../../GlobalState/getGlobalStat
 import BoardActions from '../../GlobalState/ActionAndStates/BoardActions';
 import renderPostViewContent from './renderBoardViewContent';
 import BoardPostListHeaderComponent from './BoardPostListHeaderComponent';
+import BoardPostListFooterComponent from './BoardPostListFooterComponent';
 
 type PostViewPageProps = RouteComponentProps<PostViewPageParams>
 
 interface PostViewPageParams {
   boardName: string;
+  pageNum: string;
 }
 
 export default class PostViewPage extends Component<PostViewPageProps, {}> {
@@ -22,10 +24,11 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
     } = this.props;
 
     const { boardName } = match.params;
+    const pageNumber = parseInt(match.params.pageNum, 10) || 1;
 
     const boardData = this.globalState.boardState.boards[boardName];
     if (!boardData) {
-      BoardActions.loadBoard(boardName);
+      BoardActions.loadBoard(boardName, pageNumber);
       return false;
     }
 
@@ -44,6 +47,7 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
         <ol className="post-list">
           {renderPostViewContent(posts)}
         </ol>
+        <BoardPostListFooterComponent {...{ boardName, pageNumber }} />
       </div>
     );
   }

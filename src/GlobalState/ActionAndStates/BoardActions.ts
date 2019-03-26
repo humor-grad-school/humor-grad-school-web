@@ -9,13 +9,19 @@ import {
 import convertBoard from '../../converter/convertBoard';
 import { BoardData } from '../../types/BoardData';
 
-async function loadBoardBatch(boardNames: string[]): Promise<BoardData[]> {
-  return Promise.all(boardNames.map(async (boardName) => {
+async function loadBoardBatch(boardInfos: {
+  boardName: string;
+  pageNumber: number;
+}[]): Promise<BoardData[]> {
+  return Promise.all(boardInfos.map(async ({
+    boardName,
+    pageNumber,
+  }) => {
     const query = Query
       .addBoard(boardName,
         Board
           .addName()
-          .addPosts(1, 5,
+          .addPosts(pageNumber, 25,
             Post
               .addId()
               .addTitle()
@@ -33,13 +39,16 @@ async function loadBoardBatch(boardNames: string[]): Promise<BoardData[]> {
   }));
 }
 
-const boardLoader = new DataLoader<string, BoardData>(boardNames => loadBoardBatch(boardNames));
+const boardLoader = new DataLoader<{
+  boardName: string;
+  pageNumber: number;
+}, BoardData>(boardInfos => loadBoardBatch(boardInfos));
 
 const globalState = getGlobalState();
 
 const BoardActions = {
-  async loadBoard(boardName: string): Promise<void> {
-    const boardData = await boardLoader.load(boardName);
+  async loadBoard(boardName: string, pageNumber: number): Promise<void> {
+    const boardData = await boardLoader.load({ boardName, pageNumber });
     globalState.boardState.boards[boardName] = boardData;
   },
 };
