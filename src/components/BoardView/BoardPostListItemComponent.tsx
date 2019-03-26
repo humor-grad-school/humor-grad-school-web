@@ -1,5 +1,6 @@
 import React from 'react';
 import './BoardPostListItemComponent.scss';
+import { Link } from 'react-router-dom';
 import { Post } from '../../types/BoardData';
 
 // TODO: Fix observer-proxy
@@ -38,10 +39,12 @@ export default function BoardPostElementComponent({
         {id}
       </div>
       <div className="title item">
-        {title}
-        <span className="comment-count item">
-          {commentCount}
-        </span>
+        <Link to={`/post/${id}`}>
+          {title}
+          <span className="comment-count item">
+            {commentCount}
+          </span>
+        </Link>
       </div>
       <div className="writer item">
         {writer.username}
