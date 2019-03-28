@@ -1,22 +1,22 @@
 import React, { Component, ReactNode } from 'react';
 import './PostWritePage.scss';
-import { DeltaStatic, Delta } from 'quill';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
 import PostEditorComponent from './PostEditorComponent';
+import { PuffBlot } from '../../types/PuffBlots';
 
 export default class PostWritePage extends Component<{}, {}> {
   private postEditorComponent: React.RefObject<PostEditorComponent>
   = React.createRef<PostEditorComponent>();
 
-  private getContent(): DeltaStatic {
-    if (!this.postEditorComponent || !this.postEditorComponent.current) return new Delta();
+  private getContent(): PuffBlot[] {
+    if (!this.postEditorComponent || !this.postEditorComponent.current) return [];
     const postEditorComponent = this.postEditorComponent.current;
     return postEditorComponent.getContent();
   }
 
   private postContent(): void {
-    const deltaStatic = this.getContent();
-    PostActions.writePost(deltaStatic);
+    const content = this.getContent();
+    PostActions.writePost(content);
   }
 
   public render(): ReactNode {

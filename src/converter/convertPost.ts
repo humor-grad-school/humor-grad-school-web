@@ -1,6 +1,7 @@
 import yaml from 'js-yaml';
-import { DeltaStatic } from 'quill';
 import { ContentData, PostData, PostInfo } from '../types/PostData';
+import convertBlotToContent from './convertBlotToContent';
+import { PuffBlot } from '../types/PuffBlots';
 
 // ---
 // content:
@@ -67,7 +68,14 @@ export default function convertPost(postInfo: PostInfo, dataInYml: string): Post
   return postData;
 }
 
-export function convertPostToYml(deltaStatic: DeltaStatic): string {
-  // TODO
-  return yaml.dump(deltaStatic);
+export function convertContentData(dataInObject: ContentData): string {
+  return yaml.dump({ content: dataInObject });
+}
+
+export function convertBlotsToContentData(blots: PuffBlot[]): ContentData {
+  const contentData: ContentData = [];
+  blots.forEach((blot) => {
+    contentData.push(convertBlotToContent(blot));
+  });
+  return contentData;
 }

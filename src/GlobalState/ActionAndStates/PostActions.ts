@@ -1,5 +1,4 @@
 import DataLoader from 'dataloader';
-import { DeltaStatic } from 'quill';
 import { getGlobalState } from '../getGlobalState';
 import {
   Query,
@@ -7,8 +6,9 @@ import {
   User,
   Board,
 } from '../../generated/graphqlQuery';
-import convertPost, { convertPostToYml } from '../../converter/convertPost';
+import convertPost, { convertBlotsToContentData, convertContentData } from '../../converter/convertPost';
 import { PostData } from '../../types/PostData';
+import { PuffBlot } from '../../types/PuffBlots';
 import { HgsRestApi } from '../../generated/client/ClientApis';
 
 async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
@@ -77,10 +77,12 @@ const PostActions = {
     }
   },
 
-  async writePost(deltaStatic: DeltaStatic): Promise<void> {
-    const postContentsInYml = convertPostToYml(deltaStatic);
+  async writePost(contentInBlots: PuffBlot[]): Promise<void> {
+    const postContentData = convertBlotsToContentData(contentInBlots);
+    // TODO: Convert Image source to S3 key
+    const postContentDataInYml = convertContentData(postContentData);
     // TODO: send it to s3
-    console.log(postContentsInYml);
+    console.log(postContentDataInYml);
   },
 };
 

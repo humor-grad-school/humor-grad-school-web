@@ -2,15 +2,22 @@ import React, { Component } from 'react';
 import '../../../node_modules/react-quill/dist/quill.snow.css';
 import './PostEditorComponent.scss';
 import ReactQuill from 'react-quill';
-import { Delta, DeltaStatic } from 'quill';
+import { PuffBlot } from '../../types/PuffBlots';
 
 export default class PostEditorComponent extends Component<{}, {}> {
   private quill: React.RefObject<ReactQuill> = React.createRef<ReactQuill>();
 
-  public getContent(): DeltaStatic {
-    if (!this.quill || !this.quill.current) return new Delta();
+  private modules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],
+      ['image'],
+    ],
+  }
+
+  public getContent(): PuffBlot[] {
+    if (!this.quill || !this.quill.current) return [];
     const quill = this.quill.current.getEditor();
-    return quill.getContents();
+    return quill.getLines();
   }
 
   public render(): JSX.Element {
@@ -19,6 +26,7 @@ export default class PostEditorComponent extends Component<{}, {}> {
         <ReactQuill
           className="editor"
           ref={this.quill}
+          modules={this.modules}
           theme="snow"
         />
       </div>
