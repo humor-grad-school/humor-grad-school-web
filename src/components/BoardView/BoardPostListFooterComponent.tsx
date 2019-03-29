@@ -1,14 +1,20 @@
 import React from 'react';
-import './BoardPostListFooterComponent.scss';
+import styled from 'styled-components';
 import BoardPageNavigatorComponent from './BoardPageNavigatorComponent';
+
+const Container = styled.div`
+  margin: 4em auto;
+  display: flex;
+  justify-content: center;
+`;
 
 export default function BoardPostListFooterComponent(info: {
   boardName: string;
   pageNumber: number;
 }): JSX.Element {
   return (
-    <div className="board-post-list-footer container">
+    <Container>
       <BoardPageNavigatorComponent {...info} />
-    </div>
+    </Container>
   );
 }

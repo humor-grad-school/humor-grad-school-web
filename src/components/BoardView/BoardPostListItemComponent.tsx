@@ -1,7 +1,95 @@
 import React from 'react';
-import './BoardPostListItemComponent.scss';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Post } from '../../types/BoardData';
+
+const Container = styled.li`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #CCC;
+  background-color: #EEE;
+  transition: background-color 0.25s;
+
+  :hover {
+    background-color: #DDD;
+  }
+`;
+
+const Tinny = css`
+  font-size: 11px;
+  text-align: center;
+`;
+
+const Item = css`
+  padding: 4px;
+  margin: auto 0px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+const Id = styled.div`
+  ${Tinny}
+  ${Item}
+  width: 5%;
+  max-width: 4em;
+  font-size: 8px;
+`;
+
+const Title = styled.div`
+  ${Item}
+  font-size: 14px;
+  cursor: pointer;
+
+  a {
+    :link {
+      color: #000;
+      text-decoration: none;
+    }
+
+    :visited {
+      color: #AAA;
+      text-decoration: none;
+    }
+
+    :hover {
+      color: #777;
+      text-decoration: underline;
+    }
+
+    :active {
+      text-decoration: underline;
+    }
+  }
+`;
+
+const CommentCount = styled.span`
+  ${Item}
+  margin-left: 0.5em;
+  font-size: 12px;
+`;
+
+const Writer = styled.div`
+  ${Item}
+  margin-left: auto;
+  width: 20%;
+  max-width: 6em;
+  font-size: 14px;
+`;
+
+const CreatedAt = styled.div`
+  ${Tinny}
+  ${Item}
+  width: 10%;
+  max-width: 4em;
+`;
+
+const Likes = styled.div`
+  ${Tinny}
+  ${Item}
+  width: 5%;
+  max-width: 4em;
+`;
 
 // TODO: Fix observer-proxy
 function getPassedTimeInString(createdAt: Date): string {
@@ -34,27 +122,17 @@ export default function BoardPostElementComponent({
     createdAt,
   } = post;
   return (
-    <li className="board-post-list-item container">
-      <div className="id tinny item">
-        {id}
-      </div>
-      <div className="title item">
+    <Container>
+      <Id>{id}</Id>
+      <Title>
         <Link to={`/post/${id}`}>
           {title}
-          <span className="comment-count item">
-            {commentCount}
-          </span>
+          <CommentCount>{commentCount}</CommentCount>
         </Link>
-      </div>
-      <div className="writer item">
-        {writer.username}
-      </div>
-      <div className="created-at tinny item">
-        {getPassedTimeInString(createdAt)}
-      </div>
-      <div className="likes tinny item">
-        {likes}
-      </div>
-    </li>
+      </Title>
+      <Writer>{writer.username}</Writer>
+      <CreatedAt>{getPassedTimeInString(createdAt)}</CreatedAt>
+      <Likes>{likes}</Likes>
+    </Container>
   );
 }

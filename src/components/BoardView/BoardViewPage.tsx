@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
-import './BoardViewPage.scss';
+import styled from 'styled-components';
 import { GlobalState } from '../../GlobalState/globalState';
 import { getGlobalStateForReactComponent } from '../../GlobalState/getGlobalState';
 import BoardActions from '../../GlobalState/ActionAndStates/BoardActions';
@@ -14,6 +14,36 @@ interface PostViewPageParams {
   boardName: string;
   pageNum: string;
 }
+
+const Container = styled.div`
+  margin: 0 3em;
+  max-width: 100%;
+  padding: 2em 1em;
+  justify-content: center;
+  background-color: #EEE;
+`;
+
+const Board = styled.div`
+  margin-bottom: 1em;
+  font-weight: bold;
+  font-size: 1.75em;
+
+  a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.25s;
+  }
+
+  a:hover {
+    color: #777;
+  }
+`;
+
+const PostList = styled.ol`
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+`;
 
 export default class PostViewPage extends Component<PostViewPageProps, {}> {
   private globalState: GlobalState = getGlobalStateForReactComponent(this);
@@ -37,18 +67,12 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
       posts,
     } = boardData;
     return (
-      <div className="board-view-page container">
-        <div className="board">
-          <Link to={`/board/${name}`}>
-            { name }
-          </Link>
-        </div>
+      <Container>
+        <Board><Link to={`/board/${name}`}>{ name }</Link></Board>
         <BoardPostListHeaderComponent />
-        <ol className="post-list">
-          {renderPostViewContent(posts)}
-        </ol>
+        <PostList>{renderPostViewContent(posts)}</PostList>
         <BoardPostListFooterComponent {...{ boardName, pageNumber }} />
-      </div>
+      </Container>
     );
   }
 }

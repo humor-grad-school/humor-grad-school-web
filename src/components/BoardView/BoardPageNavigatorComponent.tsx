@@ -1,6 +1,37 @@
 import React from 'react';
-import './BoardPageNavigatorComponent.scss';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+type PageButtonProps = {
+  iscurrentpage: 'true' | 'false';
+}
+
+const Container = styled.div`
+  border-radius: 2em;
+  background-color: #DDD;
+
+  a {
+    text-decoration: none;
+    color: #000;
+  }
+`;
+
+const PageButton = styled(Link)`
+  width: 1em;
+  height: 1em;
+  padding: 1em;
+  line-height: 1em;
+  text-align: center;
+  border-radius: 2em;
+  display: inline-block;
+  color: ${(props: PageButtonProps) => (props.iscurrentpage === 'true' ? '#FFF' : '#000')}
+  ${(props: PageButtonProps) => (props.iscurrentpage === 'true' ? 'background-color: #AAA' : '')}
+  transition: background-color 0.25s, color 0.25s;
+
+  :hover {
+    background-color: #CCC;
+  }
+`;
 
 export default function BoardPageNavigatorComponent({
   boardName,
@@ -18,19 +49,19 @@ export default function BoardPageNavigatorComponent({
 
   for (let i = start; i <= end; i += 1) {
     pageButtonElements.push(
-      <Link
-        className={`page-button ${(i === pageNumber) ? 'current' : ''}`}
+      <PageButton
+        iscurrentpage={i === pageNumber ? 'true' : 'false'}
         key={`board-page-navigator-page-button-${i}`}
         to={`/board/${boardName}/${i}`}
       >
         {i}
-      </Link>,
+      </PageButton>,
     );
   }
 
   return (
-    <div className="board-page-navigator container">
+    <Container>
       {pageButtonElements}
-    </div>
+    </Container>
   );
 }
