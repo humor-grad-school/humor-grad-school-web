@@ -1,7 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
-import './PostWritePage.scss';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
 import PostEditorComponent from './PostEditorComponent';
 import { PuffBlot } from '../../types/PuffBlots';
