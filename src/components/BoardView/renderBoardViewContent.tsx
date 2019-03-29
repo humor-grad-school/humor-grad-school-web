@@ -12,5 +12,5 @@ export default function renderPostViewContent(
     />
   ));
 
-  return contentElements;
+  return contentElements.reverse();
 }
