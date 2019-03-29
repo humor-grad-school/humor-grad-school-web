@@ -14,6 +14,8 @@ import { ContentData, PostData, PostInfo } from '../types/PostData';
 //   -
 //     type: underline
 //   -
+//     type: break
+//   -
 //     type: text
 //     content: you can put text content here.
 //   -

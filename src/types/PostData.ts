@@ -28,6 +28,7 @@ export enum ContentElementDataType {
   Bold = 'bold',
   Italic = 'italic',
   Underline = 'underline',
+  Break = 'break',
   Text = 'text',
   Image = 'image',
 }
@@ -55,6 +56,10 @@ export interface ItalicElementData extends ContentElementData {
 
 export interface UnderlineElementData extends ContentElementData {
   type: ContentElementDataType.Underline;
+}
+
+export interface BreakElementData extends ContentElementData {
+  type: ContentElementDataType.Break;
 }
 
 export interface TextElementData extends ContentElementData {

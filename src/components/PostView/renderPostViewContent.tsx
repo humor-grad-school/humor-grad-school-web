@@ -15,6 +15,7 @@ import PostBlockElementComponent from './PostElement/PostBlockElementComponent';
 import PostBoldElementComponent from './PostElement/PostBoldElementComponent';
 import PostItalicElementComponent from './PostElement/PostItalicElementComponent';
 import PostUnderlineElementComponent from './PostElement/PostUnderlineElementComponent';
+import PostBreakElementComponent from './PostElement/PostBreakElementComponent';
 
 export default function renderPostViewContent(
   contentData: ContentData,
@@ -59,6 +60,12 @@ export default function renderPostViewContent(
             key={key}
             underlineElementData={underlineElementData}
           />
+        );
+      }
+      case ContentElementDataType.Break: {
+        const key = `post-text-element-${Math.random()}`;
+        return (
+          <PostBreakElementComponent key={key} />
         );
       }
       case ContentElementDataType.Text: {
