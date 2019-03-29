@@ -78,8 +78,7 @@ const PostActions = {
   },
 
   async writePost(contentInBlots: PuffBlot[]): Promise<void> {
-    const postContentData = convertBlotsToContentData(contentInBlots);
-    // TODO: Convert Image source to S3 key
+    const postContentData = await convertBlotsToContentData(contentInBlots);
     const postContentDataInYml = convertContentData(postContentData);
     // TODO: send it to s3
     console.log(postContentDataInYml);

@@ -1,5 +1,10 @@
 import yaml from 'js-yaml';
-import { ContentData, PostData, PostInfo } from '../types/PostData';
+import {
+  PostInfo,
+  PostData,
+  ContentData,
+  ContentElementData,
+} from '../types/PostData';
 import convertBlotToContent from './convertBlotToContent';
 import { PuffBlot } from '../types/PuffBlots';
 
@@ -72,10 +77,13 @@ export function convertContentData(dataInObject: ContentData): string {
   return yaml.dump({ content: dataInObject });
 }
 
-export function convertBlotsToContentData(blots: PuffBlot[]): ContentData {
-  const contentData: ContentData = [];
-  blots.forEach((blot) => {
-    contentData.push(convertBlotToContent(blot));
+export async function convertBlotsToContentData(blots: PuffBlot[]): Promise<ContentData> {
+  const blotConvertingPromises: Promise<ContentElementData>[] = [];
+
+  blots.forEach(async (blot) => {
+    blotConvertingPromises.push(convertBlotToContent(blot));
   });
+
+  const contentData: ContentData = await Promise.all(blotConvertingPromises);
   return contentData;
 }
