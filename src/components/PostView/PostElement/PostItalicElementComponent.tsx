@@ -1,5 +1,4 @@
 import React from 'react';
-import './PostItalicElementComponent.scss';
 import { ItalicElementData } from '../../../types/PostData';
 import renderPostViewContent from '../renderPostViewContent';
 

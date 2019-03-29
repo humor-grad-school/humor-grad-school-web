@@ -1,5 +1,4 @@
 import React from 'react';
-import './PostBlockElementComponent.scss';
 import { BlockElementData } from '../../../types/PostData';
 import renderPostViewContent from '../renderPostViewContent';
 

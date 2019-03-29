@@ -1,5 +1,4 @@
 import React from 'react';
-import './PostUnderlineElementComponent.scss';
 import { UnderlineElementData } from '../../../types/PostData';
 import renderPostViewContent from '../renderPostViewContent';
 

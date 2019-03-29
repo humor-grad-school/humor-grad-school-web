@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
-import './PostViewPage.scss';
+import styled from 'styled-components';
 import renderPostViewContent from './renderPostViewContent';
 import { GlobalState } from '../../GlobalState/globalState';
 import { getGlobalStateForReactComponent } from '../../GlobalState/getGlobalState';
@@ -13,6 +13,34 @@ type PostViewPageProps = RouteComponentProps<PostViewPageParams>
 interface PostViewPageParams {
   postId: string;
 }
+
+const Container = styled.div`
+  margin: 0 3em;
+  max-width: 100%;
+  padding: 2em 1em;
+  justify-content: center;
+  background-color: #EEE;
+`;
+
+const Board = styled.div`
+  margin-bottom: 1em;
+  font-weight: bold;
+  font-size: 1.75em;
+
+  a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.25s;
+    
+    :hover {
+      color: #777;
+    }
+  }
+`;
+
+const Body = styled.div`
+  width: 100%;
+`;
 
 export default class PostViewPage extends Component<PostViewPageProps, {}> {
   private globalState: GlobalState = getGlobalStateForReactComponent(this);
@@ -36,16 +64,14 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
     } = postData;
     // TODO: Findout why {...postData} not work
     return (
-      <div className="post-view-page container">
-        <div className="board">
-          <Link to={`/board/${board.id}`}>
-            { board.name }
-          </Link>
-        </div>
+      <Container>
+        <Board>
+          <Link to={`/board/${board.id}`}>{ board.name }</Link>
+        </Board>
         <PostHeaderComponent postData={postData} />
-        <div className="body">{renderPostViewContent(content)}</div>
+        <Body>{renderPostViewContent(content)}</Body>
         <PostFooterComponent postData={postData} />
-      </div>
+      </Container>
     );
   }
 }

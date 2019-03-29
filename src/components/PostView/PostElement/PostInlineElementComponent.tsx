@@ -1,5 +1,4 @@
 import React from 'react';
-import './PostInlineElementComponent.scss';
 import { InlineElementData } from '../../../types/PostData';
 import renderPostViewContent from '../renderPostViewContent';
 

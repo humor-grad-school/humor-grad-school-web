@@ -1,5 +1,4 @@
 import React from 'react';
-import './PostTextElementComponent.scss';
 import {
   TextElementData,
 } from '../../../types/PostData';

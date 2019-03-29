@@ -1,5 +1,4 @@
 import React from 'react';
-import './PostBoldElementComponent.scss';
 import { BoldElementData } from '../../../types/PostData';
 import renderPostViewContent from '../renderPostViewContent';
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import './PostViewContent.scss';
 import {
   ContentData,
   ImageElementData,
