@@ -1,8 +1,16 @@
 import React, { Component, ReactNode } from 'react';
-import './PostWritePage.scss';
+import styled from 'styled-components';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
 import PostEditorComponent from './PostEditorComponent';
 import { PuffBlot } from '../../types/PuffBlots';
+
+const Container = styled.div`
+  margin: 0 3em;
+  max-width: 100%;
+  padding: 2em 1em;
+  justify-content: center;
+  background-color: #EEE;
+`;
 
 export default class PostWritePage extends Component<{}, {}> {
   private postEditorComponent: React.RefObject<PostEditorComponent>
@@ -21,7 +29,7 @@ export default class PostWritePage extends Component<{}, {}> {
 
   public render(): ReactNode {
     return (
-      <div className="post-write-page container">
+      <Container>
         <PostEditorComponent ref={this.postEditorComponent} />
         <button
           className="post-button"
@@ -30,7 +38,7 @@ export default class PostWritePage extends Component<{}, {}> {
         >
           작성완료!
         </button>
-      </div>
+      </Container>
     );
   }
 }

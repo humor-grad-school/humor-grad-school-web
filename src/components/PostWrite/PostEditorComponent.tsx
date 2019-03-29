@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../../../node_modules/react-quill/dist/quill.snow.css';
-import './PostEditorComponent.scss';
 import ReactQuill from 'react-quill';
 import { PuffBlot } from '../../types/PuffBlots';
 
@@ -22,9 +21,8 @@ export default class PostEditorComponent extends Component<{}, {}> {
 
   public render(): JSX.Element {
     return (
-      <div id="post-editor container">
+      <div>
         <ReactQuill
-          className="editor"
           ref={this.quill}
           modules={this.modules}
           theme="snow"
