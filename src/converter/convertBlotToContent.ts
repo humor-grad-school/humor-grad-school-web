@@ -14,6 +14,7 @@ import {
   UnderlineElementData,
   ImageElementData,
   InlineElementData,
+  BreakElementData,
 } from '../types/PostData';
 import { HgsRestApi } from '../generated/client/ClientApis';
 
@@ -113,6 +114,14 @@ Promise<ContentElementData> {
     case PuffBlotType.Underline: {
       const contentData: UnderlineElementData = {
         type: ContentElementDataType.Underline,
+      };
+      if (children.length) contentData.children = children;
+      return contentData;
+    }
+
+    case PuffBlotType.Break: {
+      const contentData: BreakElementData = {
+        type: ContentElementDataType.Break,
       };
       if (children.length) contentData.children = children;
       return contentData;

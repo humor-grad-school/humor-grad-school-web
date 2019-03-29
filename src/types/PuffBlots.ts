@@ -4,6 +4,7 @@ export enum PuffBlotType {
   Bold = 'bold',
   Italic = 'italic',
   Underline = 'underline',
+  Break = 'break',
   Text = 'text',
   Image = 'image',
 }
@@ -45,6 +46,12 @@ export interface PuffItalicBlot extends PuffBlot {
 export interface PuffUnderlineBlot extends PuffBlot {
   statics: {
     blotName: PuffBlotType.Underline;
+  };
+}
+
+export interface PuffBreakBlot extends PuffBlot {
+  statics: {
+    blotName: PuffBlotType.Break;
   };
 }
 
