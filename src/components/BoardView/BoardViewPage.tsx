@@ -45,8 +45,29 @@ const PostList = styled.ol`
   padding: 0px;
 `;
 
+// TODO: Check etag and then update
+function forceLoad(props: PostViewPageProps): void {
+  const {
+    match,
+  } = props;
+
+  const { boardName } = match.params;
+  const pageNumber = parseInt(match.params.pageNum, 10) || 1;
+
+  BoardActions.loadBoard(boardName, pageNumber);
+}
+
 export default class PostViewPage extends Component<PostViewPageProps, {}> {
   private globalState: GlobalState = getGlobalStateForReactComponent(this);
+
+  // TODO: Check etag and then update
+  public componentWillMount(): void {
+    forceLoad(this.props);
+  }
+
+  public componentWillReceiveProps(nextProps: PostViewPageProps): void {
+    forceLoad(nextProps);
+  }
 
   public render(): ReactNode {
     const {
@@ -56,11 +77,9 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
     const { boardName } = match.params;
     const pageNumber = parseInt(match.params.pageNum, 10) || 1;
 
+    // TODO: Check etag and then update
     const boardData = this.globalState.boardState.boards[boardName];
-    if (!boardData) {
-      BoardActions.loadBoard(boardName, pageNumber);
-      return false;
-    }
+    if (!boardData) return false;
 
     const {
       name,
