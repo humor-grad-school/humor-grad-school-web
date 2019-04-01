@@ -40,7 +40,6 @@ const DoneButton = styled.button`
   }
 `;
 
-
 export default class PostWritePage extends Component<PostWritePageProps, PostWritePageStates> {
   private contentEditorComponent: React.RefObject<ContentEditorComponent>
   = React.createRef<ContentEditorComponent>();

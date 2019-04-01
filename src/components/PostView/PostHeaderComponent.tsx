@@ -83,7 +83,6 @@ export default function PostHeaderComponent({ postData }: PostHeaderComponentPro
     createdAt,
   } = postData;
   return (
-<<<<<<< HEAD
     <Container>
       <Title>
         <Link to={`/post/${id}`}>{title}</Link>
@@ -97,35 +96,5 @@ export default function PostHeaderComponent({ postData }: PostHeaderComponentPro
       </Info>
       <PostLink href={window.location.href}>{window.location.href}</PostLink>
     </Container>
-=======
-    <div className="post-header container">
-      <div className="title">
-        <Link to={`/post/${id}`}>
-          {title}
-        </Link>
-      </div>
-      <div className="info">
-        <div className="writer item">
-          <img
-            className="avatar"
-            src={writer.avatarUrl}
-            alt=""
-          />
-          <div className="name">
-            {writer.username}
-          </div>
-        </div>
-        <div className="passed-time item">
-          {getPassedTimeInString(createdAtInMillis)}
-        </div>
-      </div>
-      <a
-        className="post-link"
-        href={window.location.href}
-      >
-        {window.location.href}
-      </a>
-    </div>
->>>>>>> Change post view url
   );
 }
