@@ -114,7 +114,6 @@ const PostActions = {
     const postContentData = await convertBlotsToContentData(contentInBlots);
     const postContentDataInYml = convertContentData(postContentData);
     const contentS3Key = await uploadContent(postContentDataInYml);
-
     const response = await HgsRestApi.writePost({
       title,
       contentS3Key,
