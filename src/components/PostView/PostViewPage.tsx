@@ -7,6 +7,7 @@ import { getGlobalStateForReactComponent } from '../../GlobalState/getGlobalStat
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
 import PostHeaderComponent from './PostHeaderComponent';
 import PostFooterComponent from './PostFooterComponent';
+import CommentViewComponent from './CommentViewComponent/CommentViewComponent';
 
 type PostViewPageProps = RouteComponentProps<PostViewPageParams>
 
@@ -61,6 +62,7 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
     const {
       board,
       content,
+      comments,
     } = postData;
     // TODO: Findout why {...postData} not work
     return (
@@ -71,6 +73,7 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
         <PostHeaderComponent postData={postData} />
         <Body>{renderPostViewContent(content)}</Body>
         <PostFooterComponent postData={postData} />
+        <CommentViewComponent comments={comments} />
       </Container>
     );
   }

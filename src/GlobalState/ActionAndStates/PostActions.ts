@@ -5,6 +5,7 @@ import {
   Post,
   User,
   Board,
+  Comment,
 } from '../../generated/graphqlQuery';
 import convertPost, { convertBlotsToContentData, convertContentData } from '../../converter/convertPost';
 import { PostData } from '../../types/PostData';
@@ -30,6 +31,27 @@ async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
               .addName(),
           )
           .addLikes()
+          .addComments(
+            Comment
+              .addId()
+              .addWriter(
+                User
+                  .addUsername()
+                  .addAvatarUrl(),
+              )
+              // TODO
+              // .addParentComment(
+              //   Comment
+              //     .addId()
+              //     .addWriter(
+              //       User
+              //         .addUsername(),
+              //     ),
+              // )
+              .addContentS3Key()
+              .addLikes()
+              .addCreatedAt(),
+          )
           .addIsLiked()
           .addCreatedAt());
 
@@ -38,7 +60,6 @@ async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
     const response = await fetch(`http://localhost:9000/content-s3-bucket/${data.post.contentS3Key}`);
 
     const contentDataInYml = await response.text();
-
     return convertPost(data.post, contentDataInYml);
   }));
 }
