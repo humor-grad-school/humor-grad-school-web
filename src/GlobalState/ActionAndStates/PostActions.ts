@@ -82,11 +82,7 @@ async function uploadContent(content: string): Promise<string> {
     isSuccessful,
     errorCode,
     data,
-<<<<<<< HEAD
   } = await HgsRestApi.requestPresignedPostFieldsForContent();
-=======
-  } = await HgsRestApi.requestPresignedPostFieldsForMedia();
->>>>>>> Upload content to S3 and write post
 
   // TODO: Check error if needed
   if (!isSuccessful) throw new Error(errorCode);
@@ -140,10 +136,6 @@ const PostActions = {
     const postContentData = await convertBlotsToContentData(contentInBlots);
     const postContentDataInYml = convertContentData(postContentData);
     const contentS3Key = await uploadContent(postContentDataInYml);
-<<<<<<< HEAD
-=======
-    // TODO: Check error if needed
->>>>>>> Upload content to S3 and write post
     const response = await HgsRestApi.writePost({
       title,
       contentS3Key,

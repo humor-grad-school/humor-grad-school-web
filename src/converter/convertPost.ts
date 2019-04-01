@@ -3,8 +3,6 @@ import {
   PostInfo,
   PostData,
 } from '../types/PostData';
-import convertBlotToContent from './convertBlotToContent';
-import { PuffBlot } from '../types/PuffBlots';
 import {
   CommentTreeElement,
   CommentTreeRoot,
@@ -12,6 +10,8 @@ import {
   CommentInfo,
   ParentComment,
 } from '../types/CommentData';
+import convertBlotToContent from './convertBlotToContent';
+import { PuffBlot } from '../types/PuffBlots';
 import { ContentData, ContentElementData } from '../types/ContentData';
 import convertContent from './convertContent';
 
