@@ -10,7 +10,7 @@ export default function App(): JSX.Element {
       <Switch>
         <Route exact path="/" component={MainPage} />
         <Route path="/post/:postId" component={PostViewPage} />
-        <Route path="/writePost" component={PostWritePage} />
+        <Route path="/writePost/:boardName" component={PostWritePage} />
       </Switch>
     </Router>
   );

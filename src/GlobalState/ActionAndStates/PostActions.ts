@@ -55,6 +55,39 @@ function alertError(errorCode: string): void {
   }
 }
 
+async function uploadContent(content: string): Promise<string> {
+  const {
+    isSuccessful,
+    errorCode,
+    data,
+  } = await HgsRestApi.requestPresignedPostFieldsForContent();
+
+  // TODO: Check error if needed
+  if (!isSuccessful) throw new Error(errorCode);
+  const {
+    fields,
+    key: s3Key,
+    url,
+  } = data;
+
+  const formData = new FormData();
+  Object.entries(fields).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+  formData.append('key', s3Key);
+  formData.append('file', content);
+
+  await fetch(url, {
+    method: 'POST',
+    body: formData,
+  })
+    .then((response: Response) => {
+      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+    });
+
+  return s3Key;
+}
+
 const postLoader = new DataLoader<number, PostData>(postIds => loadPostBatch(postIds));
 
 const globalState = getGlobalState();
@@ -77,11 +110,20 @@ const PostActions = {
     }
   },
 
-  async writePost(contentInBlots: PuffBlot[]): Promise<void> {
+  async writePost(title: string, contentInBlots: PuffBlot[], boardName: string): Promise<number> {
     const postContentData = await convertBlotsToContentData(contentInBlots);
     const postContentDataInYml = convertContentData(postContentData);
-    // TODO: send it to s3
-    console.log(postContentDataInYml);
+    const contentS3Key = await uploadContent(postContentDataInYml);
+    // TODO: Check error if needed
+    const response = await HgsRestApi.writePost({
+      title,
+      contentS3Key,
+      boardName,
+    });
+
+    return response.isSuccessful
+      ? response.data.postId
+      : -1;
   },
 };
 
