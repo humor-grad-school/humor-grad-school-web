@@ -17,6 +17,10 @@ const Container = styled.div`
   padding-bottom: 8ex;
 `;
 
+const CommentAmount = styled.div`
+  font-size: 1.5em;
+`;
+
 const CommentList = styled.ul`
   list-style-type: none;
   margin: 0px;
@@ -83,8 +87,8 @@ export default class CommentViewComponent
     } = this.state;
 
     return (
-      // TODO: header
       <Container>
+        <CommentAmount>{`총 ${comments.length}개의 댓글`}</CommentAmount>
         <CommentNavigatorComponent
           pageNumber={commentPageNum}
           maxPageNumber={this.maxPageNumber}
