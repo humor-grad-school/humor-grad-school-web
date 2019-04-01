@@ -6,6 +6,7 @@ import { CommentInfo } from '../../../types/CommentData';
 import CommentActions from '../../../GlobalState/ActionAndStates/CommentActions';
 import renderCommentContent from './renderCommentContent';
 import CommentHeaderComponent from './CommentHeaderComponent';
+import CommentFooterComponent from './CommentFooterComponent';
 
 type CommentComponentProps = {
   commentInfo: CommentInfo;
@@ -55,8 +56,8 @@ export default class CommentComponent extends Component<CommentComponentProps, {
       <Container issub={parentComment ? 'true' : 'false'}>
         <CommentHeaderComponent commentInfo={commentInfo} />
         <Body>{renderCommentContent(content)}</Body>
+        <CommentFooterComponent commentInfo={commentInfo} />
       </Container>
-      // TODO: footer
     );
   }
 }
