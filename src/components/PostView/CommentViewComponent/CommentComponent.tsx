@@ -7,10 +7,16 @@ import CommentActions from '../../../GlobalState/ActionAndStates/CommentActions'
 import { startRenderContent } from '../../ContentView/renderContent';
 import CommentHeaderComponent from './CommentHeaderComponent';
 import CommentFooterComponent from './CommentFooterComponent';
+import CommentWriteComponent from '../CommentWriteComponent/CommentWriteComponent';
 
 type CommentComponentProps = {
+  postId: number;
   commentInfo: CommentInfo;
   postWriterId: number;
+}
+
+type CommentComponentStates = {
+  isWriting: boolean;
 }
 
 type ContainerProps = {
@@ -37,11 +43,29 @@ const Body = styled.div`
   }
 `;
 
-export default class CommentComponent extends Component<CommentComponentProps, {}> {
+export default class CommentComponent
+  extends Component<CommentComponentProps, CommentComponentStates> {
   private globalState: GlobalState = getGlobalStateForReactComponent(this);
+
+  public constructor(props: CommentComponentProps) {
+    super(props);
+
+    this.state = {
+      isWriting: false,
+    };
+
+    this.handleCancelWriting = this.handleCancelWriting.bind(this);
+  }
+
+  public handleCancelWriting(): void {
+    this.setState({
+      isWriting: false,
+    });
+  }
 
   public render(): ReactNode {
     const {
+      postId,
       commentInfo,
       postWriterId,
     } = this.props;
@@ -61,6 +85,14 @@ export default class CommentComponent extends Component<CommentComponentProps, {
       content,
     } = commentData;
 
+    const {
+      isWriting,
+    } = this.state;
+
+    const parentCommentId = parentComment
+      ? `${parentComment.id}`
+      : undefined;
+
     return (
       <Container issub={parentComment ? 'true' : 'false'}>
         <CommentHeaderComponent
@@ -74,6 +106,24 @@ export default class CommentComponent extends Component<CommentComponentProps, {
         }
         <Body>{startRenderContent(content, { maxImage: 1 })}</Body>
         <CommentFooterComponent commentInfo={commentInfo} />
+        {
+          isWriting
+            ? (
+              <CommentWriteComponent
+                postId={postId}
+                cancelWriting={this.handleCancelWriting}
+                parentCommentId={parentCommentId}
+              />
+            )
+            : (
+              <button
+                type="button"
+                onClick={() => { this.setState({ isWriting: true }); }}
+              >
+                글쓰기
+              </button>
+            )
+        }
       </Container>
     );
   }

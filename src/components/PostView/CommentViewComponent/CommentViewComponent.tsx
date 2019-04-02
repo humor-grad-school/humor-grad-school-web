@@ -94,8 +94,9 @@ export default class CommentViewComponent
       const key = `comment-component-${commentInfo.writer.username}-${commentInfo.createdAt}${Math.random()}`;
       return (
         <CommentComponent
-          commentInfo={commentInfo}
           postWriterId={postWriterId}
+          commentInfo={commentInfo}
+          postId={postId}
           key={key}
         />
       );
