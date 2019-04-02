@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import { CommentInfoes } from '../../../types/CommentData';
 import CommentComponent from './CommentComponent';
 import CommentNavigatorComponent from './CommentNavigatorComponent';
+import CommentWriteComponent from '../CommentWriteComponent/CommentWriteComponent';
 
 type CommentViewComponentProps = {
+  postId: number;
   comments: CommentInfoes;
   postWriterId: number;
 }
@@ -26,6 +28,10 @@ const CommentList = styled.ul`
   list-style-type: none;
   margin: 0px;
   padding: 0px;
+`;
+
+const CommentWriteButton = styled.button`
+
 `;
 
 function sliceComments(comments: CommentInfoes, pageNumber: number): CommentInfoes {
@@ -65,10 +71,13 @@ export default class CommentViewComponent
 
   public render(): ReactNode {
     const {
+      postId,
       comments,
       postWriterId,
     } = this.props;
+
     const {
+      isWriting,
       commentPageNum,
     } = this.state;
 
@@ -85,10 +94,6 @@ export default class CommentViewComponent
       );
     });
 
-    const {
-      isWriting,
-    } = this.state;
-
     return (
       <Container>
         <CommentAmount>{`총 ${comments.length}개의 댓글`}</CommentAmount>
@@ -99,7 +104,18 @@ export default class CommentViewComponent
         />
         <CommentList>
           {commentComponents}
-          {isWriting ? 'im writing' : 'im just watching'}
+          {
+            isWriting
+              ? <CommentWriteComponent postId={postId} />
+              : (
+                <CommentWriteButton
+                  type="button"
+                  onClick={() => { this.setState({ isWriting: true }); }}
+                >
+                  글쓰기
+                </CommentWriteButton>
+              )
+          }
         </CommentList>
         <CommentNavigatorComponent
           pageNumber={commentPageNum}

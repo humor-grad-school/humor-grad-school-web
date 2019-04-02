@@ -73,7 +73,11 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
         <PostHeaderComponent postData={postData} />
         <Body>{startRenderContent(content)}</Body>
         <PostFooterComponent postData={postData} />
-        <CommentViewComponent comments={comments} postWriterId={postData.writer.id} />
+        <CommentViewComponent
+          postWriterId={postData.writer.id}
+          comments={comments}
+          postId={postId}
+        />
       </Container>
     );
   }

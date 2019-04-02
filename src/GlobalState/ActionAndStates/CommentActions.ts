@@ -3,6 +3,8 @@ import { getGlobalState } from '../getGlobalState';
 import convertComment from '../../converter/convertComment';
 import { CommentData, CommentInfoes, CommentInfo } from '../../types/CommentData';
 import { HgsRestApi } from '../../generated/client/ClientApis';
+import { PuffBlot } from '../../types/PuffBlots';
+import { convertBlotsToContentData, convertContentData } from '../../converter/convertPost';
 
 async function loadCommentBatch(commentInfoes: CommentInfoes): Promise<CommentData[]> {
   return Promise.all(commentInfoes.map(async (commentInfo) => {
@@ -24,6 +26,39 @@ function alertError(errorCode: string): void {
     default:
       alert('알 수 없는 오류가 발생했습니다');
   }
+}
+
+async function uploadContent(content: string): Promise<string> {
+  const {
+    isSuccessful,
+    errorCode,
+    data,
+  } = await HgsRestApi.requestPresignedPostFieldsForContent();
+
+  // TODO: Check error if needed
+  if (!isSuccessful) throw new Error(errorCode);
+  const {
+    fields,
+    key: s3Key,
+    url,
+  } = data;
+
+  const formData = new FormData();
+  Object.entries(fields).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+  formData.append('key', s3Key);
+  formData.append('file', content);
+
+  await fetch(url, {
+    method: 'POST',
+    body: formData,
+  })
+    .then((response: Response) => {
+      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+    });
+
+  return s3Key;
 }
 
 const commentLoader = new DataLoader<CommentInfo, CommentData>(
@@ -48,6 +83,27 @@ const CommentActions = {
     } catch (error) {
       alertError(error.message);
     }
+  },
+
+  async writeComment(contentInBlots: PuffBlot[], postId: number, parentCommentId?: string) {
+    const postContentData = await convertBlotsToContentData(contentInBlots);
+    const postContentDataInYml = convertContentData(postContentData);
+    const contentS3Key = await uploadContent(postContentDataInYml);
+    // TODO: Check error if needed
+    const response = parentCommentId
+      ? await HgsRestApi.writeSubComment({
+        parentCommentId,
+        contentS3Key,
+        postId,
+      })
+      : await HgsRestApi.writeComment({
+        contentS3Key,
+        postId,
+      });
+
+    return response.isSuccessful
+      ? response.data.commentId
+      : -1;
   },
 };
 
