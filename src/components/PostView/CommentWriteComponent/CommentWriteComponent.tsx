@@ -7,6 +7,7 @@ import { PuffBlot } from '../../../types/PuffBlots';
 type CommentWritePageProps = {
   parentCommentId?: string;
   postId: number;
+  cancelWriting: () => void;
 }
 
 const Container = styled.div`
@@ -34,6 +35,9 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
   }
 
   public render(): ReactNode {
+    const {
+      cancelWriting,
+    } = this.props;
     return (
       <Container>
         <CommentEditorComponent ref={this.postEditorComponent} />
@@ -42,6 +46,12 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
           type="button"
         >
           작성완료!
+        </button>
+        <button
+          onClick={() => cancelWriting()}
+          type="button"
+        >
+          작성취소
         </button>
       </Container>
     );

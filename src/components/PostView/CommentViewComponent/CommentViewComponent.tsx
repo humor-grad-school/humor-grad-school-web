@@ -59,6 +59,7 @@ export default class CommentViewComponent
       commentPageNum: this.maxPageNumber,
     };
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleCancelWriting = this.handleCancelWriting.bind(this);
   }
 
   private maxPageNumber: number;
@@ -66,6 +67,12 @@ export default class CommentViewComponent
   public handlePageChange(pageNumber: number): void {
     this.setState({
       commentPageNum: pageNumber,
+    });
+  }
+
+  public handleCancelWriting(): void {
+    this.setState({
+      isWriting: false,
     });
   }
 
@@ -106,7 +113,7 @@ export default class CommentViewComponent
           {commentComponents}
           {
             isWriting
-              ? <CommentWriteComponent postId={postId} />
+              ? <CommentWriteComponent postId={postId} cancelWriting={this.handleCancelWriting} />
               : (
                 <CommentWriteButton
                   type="button"
