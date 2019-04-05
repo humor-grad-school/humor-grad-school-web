@@ -21,11 +21,31 @@ const Container = styled.div`
   padding: 2em 1em;
   justify-content: center;
   background-color: #EEE;
+  text-align: center;
 `;
 
 const TitleInput = styled.input`
-
+  margin-bottom: 1em;
+  padding: 0.5em;
+  border: 4px solid #999;
+  width: calc(100% - 1em - 8px);
 `;
+
+const DoneButton = styled.button`
+  color: #FFF;
+  border: 0px;
+  border-radius: 1.5em;
+  padding: 0.75em 1.5em;
+  background-color: #777;
+  transition: background-color 0.25s;
+  cursor: pointer;
+  margin-top: 1em;
+
+  &:hover {
+    background-color: #888;
+  }
+`;
+
 
 export default class PostWritePage extends Component<PostWritePageProps, PostWritePageStates> {
   private postEditorComponent: React.RefObject<PostEditorComponent>
@@ -84,13 +104,13 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
           placeholder="[여기에 제목 입력]"
         />
         <PostEditorComponent ref={this.postEditorComponent} />
-        <button
+        <DoneButton
           className="post-button"
           onClick={() => this.writePost()}
           type="button"
         >
           작성완료!
-        </button>
+        </DoneButton>
       </Container>
     );
   }
