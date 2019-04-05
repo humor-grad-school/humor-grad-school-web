@@ -47,7 +47,7 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     return postEditorComponent.getContent();
   }
 
-  private async postContent(): Promise<void> {
+  private async writePost(): Promise<void> {
     const { match } = this.props;
     const { params } = match;
 
@@ -86,7 +86,7 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
         <PostEditorComponent ref={this.postEditorComponent} />
         <button
           className="post-button"
-          onClick={() => this.postContent()}
+          onClick={() => this.writePost()}
           type="button"
         >
           작성완료!
