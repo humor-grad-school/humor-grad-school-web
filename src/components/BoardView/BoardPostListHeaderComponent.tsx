@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 0.5em;
+  padding: 0.5em 0px;
   border-top: 1px solid #CCC;
   border-bottom: 1px solid #CCC;
 
@@ -15,28 +15,23 @@ const Container = styled.div`
 `;
 
 const Id = styled.div`
-  width: 5%;
-  max-width: 4em;
+  width: 32px;
 `;
 
 const Title = styled.div`
-  width: 60%;
+  width: 100%;
 `;
 
 const Writer = styled.div`
-  margin-left: auto;
-  max-width: 6em;
-  width: 20%;
+  width: 128px;
 `;
 
 const CreatedAt = styled.div`
-  max-width: 4em;
-  width: 10%;
+  width: 64px;
 `;
 
 const Likes = styled.div`
-  max-width: 4em;
-  width: 5%;
+  width: 32px;
 `;
 
 

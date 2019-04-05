@@ -31,18 +31,20 @@ const Item = css`
 const Id = styled.div`
   ${Tinny}
   ${Item}
-  width: 5%;
-  max-width: 4em;
+  width: 32px;
   font-size: 8px;
 `;
 
 const Title = styled.div`
   ${Item}
+  width: 100%;
   font-size: 14px;
   cursor: pointer;
 
   a {
     :link {
+      width: 100%;
+      display: inline-block;
       color: #000;
       text-decoration: none;
     }
@@ -71,24 +73,20 @@ const CommentCount = styled.span`
 
 const Writer = styled.div`
   ${Item}
-  margin-left: auto;
-  width: 20%;
-  max-width: 6em;
+  width: 128px;
   font-size: 14px;
 `;
 
 const CreatedAt = styled.div`
   ${Tinny}
   ${Item}
-  width: 10%;
-  max-width: 4em;
+  width: 64px;
 `;
 
 const Likes = styled.div`
   ${Tinny}
   ${Item}
-  width: 5%;
-  max-width: 4em;
+  width: 32px;
 `;
 
 // TODO: Fix observer-proxy
