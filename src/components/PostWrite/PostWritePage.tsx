@@ -47,14 +47,23 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     return postEditorComponent.getContent();
   }
 
-  private postContent(): void {
+  private async postContent(): Promise<void> {
     const { match } = this.props;
     const { params } = match;
 
     const { title } = this.state;
     const content = this.getContent();
     const { boardName } = params;
-    PostActions.writePost(title, content, boardName);
+
+    try {
+      await PostActions.writePost(title, content, boardName);
+    } catch (error) {
+      if (error.message === '401') {
+        alert('로그인이 필요합니다.');
+        return;
+      }
+      alert('알 수 없는 에러로 실패했습니다.');
+    }
   }
 
   private handleTitleChange(event: React.ChangeEvent<HTMLInputElement>): void {
