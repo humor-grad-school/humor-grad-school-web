@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Redirect } from 'react-router-dom';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
 import PostEditorComponent from './PostEditorComponent';
 import { PuffBlot } from '../../types/PuffBlots';
@@ -13,6 +13,7 @@ interface PostViewPageParams {
 
 type PostWritePageStates = {
   title: string;
+  redirectTo: string;
 }
 
 const Container = styled.div`
@@ -56,6 +57,7 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
 
     this.state = {
       title: '',
+      redirectTo: '',
     };
 
     this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -67,6 +69,12 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     return postEditorComponent.getContent();
   }
 
+  private redirect(redirectTo: string): void {
+    this.setState({
+      redirectTo,
+    });
+  }
+
   private async writePost(): Promise<void> {
     const { match } = this.props;
     const { params } = match;
@@ -76,7 +84,9 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     const { boardName } = params;
 
     try {
-      await PostActions.writePost(title, content, boardName);
+      const postId = await PostActions.writePost(title, content, boardName);
+      if (postId === -1) return;
+      this.redirect(`/post/${postId}`);
     } catch (error) {
       if (error.message === '401') {
         alert('로그인이 필요합니다.');
@@ -93,7 +103,12 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
   }
 
   public render(): ReactNode {
-    const { title } = this.state;
+    const {
+      title,
+      redirectTo,
+    } = this.state;
+
+    if (redirectTo) return <Redirect to={redirectTo} />;
 
     return (
       <Container>
