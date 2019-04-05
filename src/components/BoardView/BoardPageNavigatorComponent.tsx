@@ -40,9 +40,7 @@ export default function BoardPageNavigatorComponent({
   boardName: string;
   pageNumber: number;
 }): JSX.Element {
-  const start = (pageNumber > 4)
-    ? pageNumber - 4
-    : 1;
+  const start = Math.max(1, (pageNumber - 4));
   const end = pageNumber + 4;
 
   const pageButtonElements: JSX.Element[] = [];

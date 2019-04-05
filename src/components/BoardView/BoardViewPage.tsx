@@ -54,7 +54,7 @@ function forceLoad(props: PostViewPageProps): void {
   const { boardName } = match.params;
   const pageNumber = parseInt(match.params.pageNum, 10) || 1;
 
-  BoardActions.loadBoard(boardName, pageNumber);
+  BoardActions.loadBoard(boardName, pageNumber - 1);
 }
 
 export default class PostViewPage extends Component<PostViewPageProps, {}> {
