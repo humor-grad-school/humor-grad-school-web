@@ -39,15 +39,14 @@ async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
                   .addUsername()
                   .addAvatarUrl(),
               )
-              // TODO
-              // .addParentComment(
-              //   Comment
-              //     .addId()
-              //     .addWriter(
-              //       User
-              //         .addUsername(),
-              //     ),
-              // )
+              .addParentComment(
+                Comment
+                  .addId()
+                  .addWriter(
+                    User
+                      .addUsername(),
+                  ),
+              )
               .addContentS3Key()
               .addLikes()
               .addCreatedAt(),
