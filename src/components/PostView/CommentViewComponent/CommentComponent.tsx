@@ -10,6 +10,7 @@ import CommentFooterComponent from './CommentFooterComponent';
 
 type CommentComponentProps = {
   commentInfo: CommentInfo;
+  postWriterId: number;
 }
 
 type ContainerProps = {
@@ -35,6 +36,7 @@ export default class CommentComponent extends Component<CommentComponentProps, {
   public render(): ReactNode {
     const {
       commentInfo,
+      postWriterId,
     } = this.props;
 
     const {
@@ -54,7 +56,10 @@ export default class CommentComponent extends Component<CommentComponentProps, {
 
     return (
       <Container issub={parentComment ? 'true' : 'false'}>
-        <CommentHeaderComponent commentInfo={commentInfo} />
+        <CommentHeaderComponent
+          commentInfo={commentInfo}
+          postWriterId={postWriterId}
+        />
         <Body>{renderCommentContent(content)}</Body>
         <CommentFooterComponent commentInfo={commentInfo} />
       </Container>

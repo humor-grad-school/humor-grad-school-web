@@ -22,6 +22,7 @@ async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
           .addContentS3Key()
           .addWriter(
             User
+              .addId()
               .addUsername()
               .addAvatarUrl(),
           )
@@ -36,6 +37,7 @@ async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
               .addId()
               .addWriter(
                 User
+                  .addId()
                   .addUsername()
                   .addAvatarUrl(),
               )

@@ -77,6 +77,7 @@ export interface ImageElementData extends ContentElementData {
 }
 
 export interface Writer {
+  id: number;
   username: string;
   avatarUrl: string;
 }

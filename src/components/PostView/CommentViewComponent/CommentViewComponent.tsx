@@ -6,6 +6,7 @@ import CommentNavigatorComponent from './CommentNavigatorComponent';
 
 type CommentViewComponentProps = {
   comments: CommentInfoes;
+  postWriterId: number;
 }
 
 type CommentViewComponentState = {
@@ -65,6 +66,7 @@ export default class CommentViewComponent
   public render(): ReactNode {
     const {
       comments,
+      postWriterId,
     } = this.props;
     const {
       commentPageNum,
@@ -77,6 +79,7 @@ export default class CommentViewComponent
       return (
         <CommentComponent
           commentInfo={commentInfo}
+          postWriterId={postWriterId}
           key={key}
         />
       );
