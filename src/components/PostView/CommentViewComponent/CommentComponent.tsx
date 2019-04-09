@@ -22,6 +22,13 @@ const Container = styled.li`
   margin-left: ${(props: ContainerProps) => (props.issub === 'true' ? '2em' : '')}
 `;
 
+const ParentCommentWriter = styled.span`
+  color: #666;
+  padding: 0px 0.5em;
+  border-radius: 1em;
+  background-color: #DDD;
+`;
+
 const Body = styled.div`
   padding: 0px 1em;
 
@@ -60,6 +67,11 @@ export default class CommentComponent extends Component<CommentComponentProps, {
           commentInfo={commentInfo}
           postWriterId={postWriterId}
         />
+        {
+          parentComment
+            ? <ParentCommentWriter>{`@${parentComment.writer.username}`}</ParentCommentWriter>
+            : null
+        }
         <Body>{renderCommentContent(content)}</Body>
         <CommentFooterComponent commentInfo={commentInfo} />
       </Container>
