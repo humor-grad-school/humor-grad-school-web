@@ -7,7 +7,7 @@ function getShortDateString(date: Date): string {
 // TODO: Fix bug on observer-proxy
 export default function getPassedTimeString(createdAt: Date): string {
   // const passedMillis = Date.now() - createdAt.getTime();
-  const passedMillis = Date.now() - new Date(createdAt).getTime();
+  const passedMillis = Date.now() - new Date(createdAt).getTime() - 9 * 60 * 60 * 1000;
 
   const second = Math.floor(passedMillis / 1000);
   const minute = Math.floor(second / 60);
