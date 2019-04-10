@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { PostData } from '../../types/PostData';
+import getPassedTimeString from '../../utils/getPassedTimeString';
 
 type PostHeaderComponentProps = {
   postData: PostData;
@@ -73,31 +74,6 @@ const PostLink = styled.a`
   color: #888;
 `;
 
-
-// TODO: Fix bug on observer-proxy
-function getShortDateString(date: Date): string {
-  // return `${date.getFullYear()}.${date.getMonth()}.${date.getDay()}`;
-  const date1 = new Date(date);
-  return `${date1.getFullYear()}.${date1.getMonth()}.${date1.getDay()}`;
-}
-
-// TODO: Fix bug on observer-proxy
-function getPassedTimeInString(createdAt: Date): string {
-  // const passedMillis = Date.now() - createdAt.getTime();
-  const passedMillis = Date.now() - new Date(createdAt).getTime();
-
-  const second = Math.floor(passedMillis / 1000);
-  const minute = Math.floor(second / 60);
-  const hour = Math.floor(minute / 60);
-  const day = Math.floor(hour / 24);
-
-  if (day >= 30) return getShortDateString(createdAt);
-  if (day !== 0) return `${day} 일 전`;
-  if (hour !== 0) return `${hour} 시간 전`;
-  if (minute !== 0) return `${minute} 분 전`;
-  return `${second} 초 전`;
-}
-
 // TODO: Replace writer's avatar to rank image
 export default function PostHeaderComponent({ postData }: PostHeaderComponentProps): JSX.Element {
   const {
@@ -116,7 +92,7 @@ export default function PostHeaderComponent({ postData }: PostHeaderComponentPro
           <Avartar src={writer.avatarUrl} alt="" />
           <Name>{writer.username}</Name>
         </Writer>
-        <PassedTime>{getPassedTimeInString(createdAt)}</PassedTime>
+        <PassedTime>{getPassedTimeString(createdAt)}</PassedTime>
       </Info>
       <PostLink href={window.location.href}>{window.location.href}</PostLink>
     </Container>

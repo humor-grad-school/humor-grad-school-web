@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Post } from '../../types/BoardData';
+import getPassedTimeString from '../../utils/getPassedTimeString';
 
 const Container = styled.li`
   display: flex;
@@ -89,23 +90,6 @@ const Likes = styled.div`
   width: 32px;
 `;
 
-// TODO: Fix observer-proxy
-function getPassedTimeInString(createdAt: Date): string {
-  // const passedMillis = Date.now() - createdAt.getTime();
-  const passedMillis = Date.now() - new Date(createdAt).getTime();
-
-  const second = Math.floor(passedMillis / 1000);
-  const minute = Math.floor(second / 60);
-  const hour = Math.floor(minute / 60);
-  const day = Math.floor(hour / 24);
-
-  if (day >= 30) return `${createdAt.getFullYear()}.${createdAt.getMonth()}.${createdAt.getDay()}`;
-  if (day !== 0) return `${day} 일 전`;
-  if (hour !== 0) return `${hour} 시간 전`;
-  if (minute !== 0) return `${minute} 분 전`;
-  return `${second} 초 전`;
-}
-
 export default function BoardPostElementComponent({
   post,
 }: {
@@ -129,7 +113,7 @@ export default function BoardPostElementComponent({
         </Link>
       </Title>
       <Writer>{writer.username}</Writer>
-      <CreatedAt>{getPassedTimeInString(createdAt)}</CreatedAt>
+      <CreatedAt>{getPassedTimeString(createdAt)}</CreatedAt>
       <Likes>{likes}</Likes>
     </Container>
   );
