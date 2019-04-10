@@ -1,10 +1,10 @@
 import React, { Component, ReactNode } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import renderPostViewContent from './renderPostViewContent';
 import { GlobalState } from '../../GlobalState/globalState';
 import { getGlobalStateForReactComponent } from '../../GlobalState/getGlobalState';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
+import renderContent from '../ContentView/renderContent';
 import PostHeaderComponent from './PostHeaderComponent';
 import PostFooterComponent from './PostFooterComponent';
 import CommentViewComponent from './CommentViewComponent/CommentViewComponent';
@@ -71,7 +71,7 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
           <Link to={`/board/${board.id}`}>{ board.name }</Link>
         </Board>
         <PostHeaderComponent postData={postData} />
-        <Body>{renderPostViewContent(content)}</Body>
+        <Body>{renderContent(content)}</Body>
         <PostFooterComponent postData={postData} />
         <CommentViewComponent comments={comments} postWriterId={postData.writer.id} />
       </Container>

@@ -1,5 +1,6 @@
 import yaml from 'js-yaml';
-import { ContentData, CommentData, CommentInfo } from '../types/CommentData';
+import { ContentData } from '../types/ContentData';
+import { CommentData, CommentInfo } from '../types/CommentData';
 
 // ---
 // content:

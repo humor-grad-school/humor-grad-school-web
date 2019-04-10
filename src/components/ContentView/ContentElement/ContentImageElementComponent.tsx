@@ -1,7 +1,7 @@
 import React from 'react';
-import { ImageElementData } from '../../../../types/CommentData';
+import { ImageElementData } from '../../../types/ContentData';
 
-export default function CommentImageElementComponent({
+export default function ContentImageElementComponent({
   imageElementData,
 }: {
   imageElementData: ImageElementData;

@@ -1,9 +1,7 @@
 import React from 'react';
-import {
-  TextElementData,
-} from '../../../../types/CommentData';
+import { TextElementData } from '../../../types/ContentData';
 
-export default function CommentTextElementComponent({
+export default function ContentTextElementComponent({
   textElementData,
 }: {
   textElementData: TextElementData;

@@ -6,16 +6,16 @@ import {
 } from '../types/PuffBlots';
 import {
   ContentElementData,
-  TextElementData,
-  ContentElementDataType,
   BlockElementData,
+  ContentElementDataType,
   BoldElementData,
   ItalicElementData,
   UnderlineElementData,
+  BreakElementData,
+  TextElementData,
   ImageElementData,
   InlineElementData,
-  BreakElementData,
-} from '../types/PostData';
+} from '../types/ContentData';
 import { HgsRestApi } from '../generated/client/ClientApis';
 
 function convertBase64ToBlob(base64: string): Blob {

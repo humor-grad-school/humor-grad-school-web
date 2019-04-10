@@ -2,8 +2,6 @@ import yaml from 'js-yaml';
 import {
   PostInfo,
   PostData,
-  ContentData,
-  ContentElementData,
 } from '../types/PostData';
 import convertBlotToContent from './convertBlotToContent';
 import { PuffBlot } from '../types/PuffBlots';
@@ -14,6 +12,7 @@ import {
   CommentInfo,
   ParentComment,
 } from '../types/CommentData';
+import { ContentData, ContentElementData } from '../types/ContentData';
 
 // ---
 // content:
