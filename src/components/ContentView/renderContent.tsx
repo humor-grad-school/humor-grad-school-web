@@ -19,8 +19,36 @@ import ContentBreakElementComponent from './ContentElement/ContentBreakElementCo
 import ContentTextElementComponent from './ContentElement/ContentTextElementComponent';
 import ContentImageElementComponent from './ContentElement/ContentImageElementComponent';
 
+type renderContentOption = {
+  maxImage?: number;
+}
+
+export class RenderContentOptionObject {
+  public readonly maxImage: number;
+
+  public constructor(_option?: renderContentOption) {
+    const option = _option || {};
+
+    this.maxImage = option.maxImage || -1;
+  }
+}
+
+export class RenderContentCounter {
+  private imageCount = 0;
+
+  public get image(): number {
+    return this.imageCount;
+  }
+
+  public increaseImage(): void {
+    this.imageCount += 1;
+  }
+}
+
 export default function renderContent(
   contentData: ContentData,
+  counter: RenderContentCounter,
+  option: RenderContentOptionObject,
 ): (JSX.Element | undefined)[] {
   const contentElements = contentData.map((contentElementData) => {
     switch (contentElementData.type) {
@@ -30,6 +58,8 @@ export default function renderContent(
         return (
           <ContentBlockElementComponent
             key={key}
+            option={option}
+            counter={counter}
             blockElementData={blockElementData}
           />
         );
@@ -40,6 +70,8 @@ export default function renderContent(
         return (
           <ContentInlineElementComponent
             key={key}
+            option={option}
+            counter={counter}
             inlineElementData={inlineElementData}
           />
         );
@@ -50,6 +82,8 @@ export default function renderContent(
         return (
           <ContentBoldElementComponent
             key={key}
+            option={option}
+            counter={counter}
             boldElementData={boldElementData}
           />
         );
@@ -60,6 +94,8 @@ export default function renderContent(
         return (
           <ContentItalicElementComponent
             key={key}
+            option={option}
+            counter={counter}
             italicElementData={italicElementData}
           />
         );
@@ -70,6 +106,8 @@ export default function renderContent(
         return (
           <ContentUnderlineElementComponent
             key={key}
+            option={option}
+            counter={counter}
             underlineElementData={underlineElementData}
           />
         );
@@ -93,6 +131,10 @@ export default function renderContent(
       case ContentElementDataType.Image: {
         const imageElementData = contentElementData as ImageElementData;
         const key = `content-image-element-${imageElementData.source}`;
+
+        if (option.maxImage >= 0 && counter.image >= option.maxImage) return undefined;
+        counter.increaseImage();
+
         return (
           <ContentImageElementComponent
             key={key}
@@ -105,4 +147,13 @@ export default function renderContent(
     }
   });
   return contentElements;
+}
+
+export function startRenderContent(
+  content: ContentData,
+  option?: renderContentOption,
+): (JSX.Element | undefined)[] {
+  const optionObject = new RenderContentOptionObject(option);
+  const counter = new RenderContentCounter();
+  return renderContent(content, counter, optionObject);
 }

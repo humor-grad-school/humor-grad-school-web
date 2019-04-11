@@ -4,7 +4,7 @@ import { getGlobalStateForReactComponent } from '../../../GlobalState/getGlobalS
 import { GlobalState } from '../../../GlobalState/globalState';
 import { CommentInfo } from '../../../types/CommentData';
 import CommentActions from '../../../GlobalState/ActionAndStates/CommentActions';
-import renderContent from '../../ContentView/renderContent';
+import { startRenderContent } from '../../ContentView/renderContent';
 import CommentHeaderComponent from './CommentHeaderComponent';
 import CommentFooterComponent from './CommentFooterComponent';
 
@@ -72,7 +72,7 @@ export default class CommentComponent extends Component<CommentComponentProps, {
             ? <ParentCommentWriter>{`@${parentComment.writer.username}`}</ParentCommentWriter>
             : null
         }
-        <Body>{renderContent(content)}</Body>
+        <Body>{startRenderContent(content)}</Body>
         <CommentFooterComponent commentInfo={commentInfo} />
       </Container>
     );

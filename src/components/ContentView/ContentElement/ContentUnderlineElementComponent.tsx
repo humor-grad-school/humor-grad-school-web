@@ -1,12 +1,16 @@
 import React from 'react';
 import { UnderlineElementData } from '../../../types/ContentData';
-import renderContent from '../renderContent';
+import renderContent, { RenderContentOptionObject, RenderContentCounter } from '../renderContent';
 
 export default function ContentUnderlineElementComponent({
+  option,
+  counter,
   underlineElementData,
 }: {
+  option: RenderContentOptionObject;
+  counter: RenderContentCounter;
   underlineElementData: UnderlineElementData;
 }): JSX.Element {
   const { children } = underlineElementData;
-  return <u>{children ? renderContent(children) : null}</u>;
+  return <u>{children ? renderContent(children, counter, option) : null}</u>;
 }
