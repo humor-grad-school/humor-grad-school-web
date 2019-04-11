@@ -13,63 +13,7 @@ import {
   ParentComment,
 } from '../types/CommentData';
 import { ContentData, ContentElementData } from '../types/ContentData';
-
-// ---
-// content:
-//   -
-//     type: block
-//   -
-//     type: inline
-//   -
-//     type: bold
-//   -
-//     type: italic
-//   -
-//     type: underline
-//   -
-//     type: break
-//   -
-//     type: text
-//     content: you can put text content here.
-//   -
-//     type: image
-//     source: https://image.com/image
-//   -
-//     type: block
-//     children:
-//       -
-//         type: text
-//         content: you can put text content here.
-//   -
-//     type: inline
-//     children:
-//       -
-//         type: text
-//         content: you can put text content here.
-//   -
-//     type: bold
-//     children:
-//       -
-//         type: text
-//         content: you can put text content here.
-//   -
-//     type: italic
-//     children:
-//       -
-//         type: text
-//         content: you can put text content here.
-//   -
-//     type: underline
-//     children:
-//       -
-//         type: text
-//         content: you can put text content here.
-
-// TODO: Check error, If needed
-function convertPostContentData(dataInYml: string): ContentData {
-  const { content } = yaml.load(dataInYml);
-  return content || [];
-}
+import convertContent from './convertContent';
 
 function makeCommentTree(commentInfoes: CommentInfoes): CommentTreeElement[] {
   const commentTreeRoot: CommentTreeRoot = [];
@@ -160,7 +104,7 @@ export default function convertPost(postInfo: PostInfo, dataInYml: string): Post
   const postData: PostData = {
     ...postInfo,
     comments: sortComments(comments),
-    content: convertPostContentData(dataInYml),
+    content: convertContent(dataInYml),
   };
   return postData;
 }
