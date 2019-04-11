@@ -4,6 +4,7 @@ import { CommentInfoes } from '../../../types/CommentData';
 import CommentComponent from './CommentComponent';
 import CommentNavigatorComponent from './CommentNavigatorComponent';
 import CommentWriteComponent from '../CommentWriteComponent/CommentWriteComponent';
+import scrollToId from '../../../utils/scrollToId';
 
 type CommentViewComponentProps = {
   postId: number;
@@ -68,6 +69,7 @@ export default class CommentViewComponent
     this.setState({
       commentPageNum: pageNumber,
     });
+    scrollToId('comment-view');
   }
 
   public handleCancelWriting(): void {
@@ -103,7 +105,7 @@ export default class CommentViewComponent
     });
 
     return (
-      <Container>
+      <Container id="comment-view">
         <CommentAmount>{`총 ${comments.length}개의 댓글`}</CommentAmount>
         <CommentNavigatorComponent
           pageNumber={commentPageNum}
