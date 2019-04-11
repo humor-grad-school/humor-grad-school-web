@@ -72,7 +72,7 @@ export default class CommentComponent extends Component<CommentComponentProps, {
             ? <ParentCommentWriter>{`@${parentComment.writer.username}`}</ParentCommentWriter>
             : null
         }
-        <Body>{startRenderContent(content)}</Body>
+        <Body>{startRenderContent(content, { maxImage: 1 })}</Body>
         <CommentFooterComponent commentInfo={commentInfo} />
       </Container>
     );
