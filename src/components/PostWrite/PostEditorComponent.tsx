@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../../../node_modules/react-quill/dist/quill.snow.css';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import { PuffBlot } from '../../types/PuffBlots';
 
 export default class PostEditorComponent extends Component<{}, {}> {
