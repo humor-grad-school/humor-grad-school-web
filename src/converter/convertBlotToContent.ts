@@ -14,26 +14,7 @@ import { HgsRestApi } from '../generated/client/ClientApis';
 import { BlotType, unconfirmedBlot } from '../types/Blot';
 import TextBlot from '../blots/TextBlot';
 import ContainerBlot from '../blots/ContainerBlot';
-
-function convertBase64ToBlob(base64: string): Blob {
-  const [
-    header,
-    data,
-  ] = base64.split(',');
-
-  const type = header.slice(5, -7);
-  const byteCharacters = atob(data);
-
-  const byteNumbers = [];
-  for (let i = 0; i < byteCharacters.length; i += 1) {
-    byteNumbers.push(byteCharacters.charCodeAt(i));
-  }
-
-  const byteArray = new Uint8Array(byteNumbers);
-
-  const blob = new Blob([byteArray], { type });
-  return blob;
-}
+import ImageBlot, { ImageBlotValue } from '../blots/ImageBlot';
 
 async function uploadMedia(mediaBuffer: Blob): Promise<string> {
   const {
@@ -134,20 +115,20 @@ Promise<ContentElementData> {
       return contentData;
     }
 
-    // TODO: Make image blot
-    // case BlotType.Image: {
-    //   const { currentSrc } = (blot as ImageBlot).domNode;
-    //   const blob = convertBase64ToBlob(currentSrc);
-    //   const imageS3Key = await uploadMedia(blob);
+    case BlotType.Image: {
+      const { image: imageValue } = (blot as ImageBlot).value() as { image: ImageBlotValue };
+      const blob = await fetch(imageValue.url).then(response => response.blob());
+      const imageS3Key = await uploadMedia(blob);
 
-    //   const contentData: ImageElementData = {
-    //     type: ContentElementDataType.Image,
-    //     // TODO: Change s3 url
-    //     source: `http://localhost:9000/after-encoding-s3-bucket/${imageS3Key}.jpg`,
-    //   };
-    //   if (children.length) contentData.children = children;
-    //   return contentData;
-    // }
+      const contentData: ImageElementData = {
+        type: ContentElementDataType.Image,
+        // TODO: Change s3 url
+        source: `http://localhost:9000/after-encoding-s3-bucket/${imageS3Key}.jpg`,
+        fileName: imageValue.alt,
+      };
+      if (children.length) contentData.children = children;
+      return contentData;
+    }
 
     default: {
       const contentData: InlineElementData = {

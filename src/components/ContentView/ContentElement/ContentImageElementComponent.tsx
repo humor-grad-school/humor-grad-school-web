@@ -6,5 +6,11 @@ export default function ContentImageElementComponent({
 }: {
   imageElementData: ImageElementData;
 }): JSX.Element {
-  return <img src={imageElementData.source} alt="" />;
+  return (
+    <img
+      src={imageElementData.source}
+      alt={imageElementData.fileName}
+      title={imageElementData.fileName}
+    />
+  );
 }

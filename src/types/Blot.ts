@@ -1,6 +1,7 @@
 import ContainerBlot from '../blots/ContainerBlot';
 import BlockBlot from '../blots/BlockBlot';
 import TextBlot from '../blots/TextBlot';
+import ImageBlot from '../blots/ImageBlot';
 
 export enum BlotType {
   Block = 'block',
@@ -17,4 +18,5 @@ export type unconfirmedBlot =(
   | ContainerBlot
   | BlockBlot
   | TextBlot
+  | ImageBlot
 );

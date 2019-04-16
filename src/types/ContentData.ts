@@ -48,4 +48,5 @@ export interface TextElementData extends ContentElementData {
 export interface ImageElementData extends ContentElementData {
   type: ContentElementDataType.Image;
   source: string;
+  fileName: string;
 }
