@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import '../../../node_modules/react-quill/dist/quill.snow.css';
 import ReactQuill, { Quill } from 'react-quill';
 import { PuffBlot } from '../../types/PuffBlots';
+import PostEditorToolbarComponent from './PostEditorToolbarComponent';
 
 export default class PostEditorComponent extends Component<{}, {}> {
   private quill: React.RefObject<ReactQuill> = React.createRef<ReactQuill>();
 
   private modules = {
-    toolbar: [
-      ['bold', 'italic', 'underline'],
-      ['image'],
-    ],
+    toolbar: {
+      container: '#ql-custom-toolbar',
+    },
   }
 
   public getContent(): PuffBlot[] {
@@ -22,6 +22,7 @@ export default class PostEditorComponent extends Component<{}, {}> {
   public render(): JSX.Element {
     return (
       <div>
+        <PostEditorToolbarComponent />
         <ReactQuill
           ref={this.quill}
           modules={this.modules}

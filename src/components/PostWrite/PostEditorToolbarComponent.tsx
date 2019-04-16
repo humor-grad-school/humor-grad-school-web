@@ -1,0 +1,19 @@
+import React from 'react';
+
+export default function PostEditorToolbarComponent(): JSX.Element {
+  const Button = ({ className }: { className: string }) => (
+    <button
+      type="button"
+      className={className}
+    />
+  );
+
+  return (
+    <div id="ql-custom-toolbar">
+      <Button className="ql-bold" />
+      <Button className="ql-italic" />
+      <Button className="ql-underline" />
+      <Button className="ql-image" />
+    </div>
+  );
+}
