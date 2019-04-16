@@ -11,9 +11,9 @@ import {
   ParentComment,
 } from '../types/CommentData';
 import convertBlotToContent from './convertBlotToContent';
-import { PuffBlot } from '../types/PuffBlots';
 import { ContentData, ContentElementData } from '../types/ContentData';
 import convertContent from './convertContent';
+import { unconfirmedBlot } from '../types/Blot';
 
 function makeCommentTree(commentInfoes: CommentInfoes): CommentTreeElement[] {
   const commentTreeRoot: CommentTreeRoot = [];
@@ -113,7 +113,7 @@ export function convertContentData(dataInObject: ContentData): string {
   return yaml.dump({ content: dataInObject });
 }
 
-export async function convertBlotsToContentData(blots: PuffBlot[]): Promise<ContentData> {
+export async function convertBlotsToContentData(blots: unconfirmedBlot[]): Promise<ContentData> {
   const blotConvertingPromises: Promise<ContentElementData>[] = [];
 
   blots.forEach(async (blot) => {

@@ -2,7 +2,7 @@ import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 import CommentActions from '../../../GlobalState/ActionAndStates/CommentActions';
 import CommentEditorComponent from './CommentEditorComponent';
-import { PuffBlot } from '../../../types/PuffBlots';
+import { unconfirmedBlot } from '../../../types/Blot';
 
 type CommentWritePageProps = {
   parentCommentId?: string;
@@ -18,7 +18,7 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
   private postEditorComponent: React.RefObject<CommentEditorComponent>
   = React.createRef<CommentEditorComponent>();
 
-  private getContent(): PuffBlot[] {
+  private getContent(): unconfirmedBlot[] {
     if (!this.postEditorComponent || !this.postEditorComponent.current) return [];
     const postEditorComponent = this.postEditorComponent.current;
     return postEditorComponent.getContent();

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
 import PostEditorComponent from './PostEditorComponent';
-import { PuffBlot } from '../../types/PuffBlots';
+import { unconfirmedBlot } from '../../types/Blot';
 
 type PostWritePageProps = RouteComponentProps<PostViewPageParams>
 
@@ -63,7 +63,7 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     this.handleTitleChange = this.handleTitleChange.bind(this);
   }
 
-  private getContent(): PuffBlot[] {
+  private getContent(): unconfirmedBlot[] {
     if (!this.postEditorComponent || !this.postEditorComponent.current) return [];
     const postEditorComponent = this.postEditorComponent.current;
     return postEditorComponent.getContent();

@@ -3,8 +3,8 @@ import { getGlobalState } from '../getGlobalState';
 import convertComment from '../../converter/convertComment';
 import { CommentData, CommentInfoes, CommentInfo } from '../../types/CommentData';
 import { HgsRestApi } from '../../generated/client/ClientApis';
-import { PuffBlot } from '../../types/PuffBlots';
 import { convertBlotsToContentData, convertContentData } from '../../converter/convertPost';
+import { unconfirmedBlot } from '../../types/Blot';
 
 async function loadCommentBatch(commentInfoes: CommentInfoes): Promise<CommentData[]> {
   return Promise.all(commentInfoes.map(async (commentInfo) => {
@@ -85,7 +85,7 @@ const CommentActions = {
     }
   },
 
-  async writeComment(contentInBlots: PuffBlot[], postId: number, parentCommentId?: string) {
+  async writeComment(contentInBlots: unconfirmedBlot[], postId: number, parentCommentId?: string) {
     const postContentData = await convertBlotsToContentData(contentInBlots);
     const postContentDataInYml = convertContentData(postContentData);
     const contentS3Key = await uploadContent(postContentDataInYml);

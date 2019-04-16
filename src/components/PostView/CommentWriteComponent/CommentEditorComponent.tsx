@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactQuill from 'react-quill';
-import { PuffBlot } from '../../../types/PuffBlots';
+import { unconfirmedBlot } from '../../../types/Blot';
 
 export default class CommentEditorComponent extends Component<{}, {}> {
   private quill: React.RefObject<ReactQuill> = React.createRef<ReactQuill>();
@@ -11,7 +11,7 @@ export default class CommentEditorComponent extends Component<{}, {}> {
     ],
   }
 
-  public getContent(): PuffBlot[] {
+  public getContent(): unconfirmedBlot[] {
     if (!this.quill || !this.quill.current) return [];
     const quill = this.quill.current.getEditor();
     return quill.getLines();

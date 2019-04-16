@@ -9,8 +9,8 @@ import {
 } from '../../generated/graphqlQuery';
 import convertPost, { convertBlotsToContentData, convertContentData } from '../../converter/convertPost';
 import { PostData } from '../../types/PostData';
-import { PuffBlot } from '../../types/PuffBlots';
 import { HgsRestApi } from '../../generated/client/ClientApis';
+import { unconfirmedBlot } from '../../types/Blot';
 
 async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
   return Promise.all(postIds.map(async (postId) => {
@@ -132,7 +132,11 @@ const PostActions = {
     }
   },
 
-  async writePost(title: string, contentInBlots: PuffBlot[], boardName: string): Promise<number> {
+  async writePost(
+    title: string,
+    contentInBlots: unconfirmedBlot[],
+    boardName: string,
+  ): Promise<number> {
     const postContentData = await convertBlotsToContentData(contentInBlots);
     const postContentDataInYml = convertContentData(postContentData);
     const contentS3Key = await uploadContent(postContentDataInYml);

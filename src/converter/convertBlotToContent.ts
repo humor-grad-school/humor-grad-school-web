@@ -1,10 +1,4 @@
 import {
-  PuffBlot,
-  PuffBlotType,
-  PuffTextBlot,
-  PuffImageBlot,
-} from '../types/PuffBlots';
-import {
   ContentElementData,
   BlockElementData,
   ContentElementDataType,
@@ -17,6 +11,9 @@ import {
   InlineElementData,
 } from '../types/ContentData';
 import { HgsRestApi } from '../generated/client/ClientApis';
+import { BlotType, unconfirmedBlot } from '../types/Blot';
+import TextBlot from '../blots/TextBlot';
+import ContainerBlot from '../blots/ContainerBlot';
 
 function convertBase64ToBlob(base64: string): Blob {
   const [
@@ -73,13 +70,13 @@ async function uploadMedia(mediaBuffer: Blob): Promise<string> {
   return s3Key;
 }
 
-export default async function convertBlotToContentAndUploadMedia(blot: PuffBlot):
+export default async function convertBlotToContentAndUploadMedia(blot: unconfirmedBlot):
 Promise<ContentElementData> {
-  const blotType: PuffBlotType = blot.statics.blotName;
+  const blotType: BlotType = blot.statics.blotName;
 
   const childAppendingPromises: Promise<ContentElementData>[] = [];
-  if (blot.children) {
-    blot.children.forEach((childBlot: PuffBlot) => {
+  if ((blot as ContainerBlot).children) {
+    (blot as ContainerBlot).children.forEach((childBlot: any) => {
       childAppendingPromises.push(convertBlotToContentAndUploadMedia(childBlot));
     });
   }
@@ -87,7 +84,7 @@ Promise<ContentElementData> {
   const children = await Promise.all(childAppendingPromises);
 
   switch (blotType) {
-    case PuffBlotType.Block: {
+    case BlotType.Block: {
       const contentData: BlockElementData = {
         type: ContentElementDataType.Block,
       };
@@ -95,7 +92,7 @@ Promise<ContentElementData> {
       return contentData;
     }
 
-    case PuffBlotType.Bold: {
+    case BlotType.Bold: {
       const contentData: BoldElementData = {
         type: ContentElementDataType.Bold,
       };
@@ -103,7 +100,7 @@ Promise<ContentElementData> {
       return contentData;
     }
 
-    case PuffBlotType.Italic: {
+    case BlotType.Italic: {
       const contentData: ItalicElementData = {
         type: ContentElementDataType.Italic,
       };
@@ -111,7 +108,7 @@ Promise<ContentElementData> {
       return contentData;
     }
 
-    case PuffBlotType.Underline: {
+    case BlotType.Underline: {
       const contentData: UnderlineElementData = {
         type: ContentElementDataType.Underline,
       };
@@ -119,7 +116,7 @@ Promise<ContentElementData> {
       return contentData;
     }
 
-    case PuffBlotType.Break: {
+    case BlotType.Break: {
       const contentData: BreakElementData = {
         type: ContentElementDataType.Break,
       };
@@ -127,8 +124,8 @@ Promise<ContentElementData> {
       return contentData;
     }
 
-    case PuffBlotType.Text: {
-      const { text } = (blot as PuffTextBlot);
+    case BlotType.Text: {
+      const text = (blot as TextBlot).value();
       const contentData: TextElementData = {
         type: ContentElementDataType.Text,
         content: text,
@@ -137,19 +134,20 @@ Promise<ContentElementData> {
       return contentData;
     }
 
-    case PuffBlotType.Image: {
-      const { currentSrc } = (blot as PuffImageBlot).domNode;
-      const blob = convertBase64ToBlob(currentSrc);
-      const imageS3Key = await uploadMedia(blob);
+    // TODO: Make image blot
+    // case BlotType.Image: {
+    //   const { currentSrc } = (blot as ImageBlot).domNode;
+    //   const blob = convertBase64ToBlob(currentSrc);
+    //   const imageS3Key = await uploadMedia(blob);
 
-      const contentData: ImageElementData = {
-        type: ContentElementDataType.Image,
-        // TODO: Change s3 url
-        source: `http://localhost:9000/after-encoding-s3-bucket/${imageS3Key}.jpg`,
-      };
-      if (children.length) contentData.children = children;
-      return contentData;
-    }
+    //   const contentData: ImageElementData = {
+    //     type: ContentElementDataType.Image,
+    //     // TODO: Change s3 url
+    //     source: `http://localhost:9000/after-encoding-s3-bucket/${imageS3Key}.jpg`,
+    //   };
+    //   if (children.length) contentData.children = children;
+    //   return contentData;
+    // }
 
     default: {
       const contentData: InlineElementData = {
