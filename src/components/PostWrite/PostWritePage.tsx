@@ -2,9 +2,9 @@ import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
-import PostEditorComponent from './PostEditorComponent';
 import { unconfirmedBlot } from '../../types/Blot';
 import PostTitleInputComponent from './PostTitleInputComponent';
+import ContentEditorComponent from '../ContentWrite/ContentEditorComponent';
 
 type PostWritePageProps = RouteComponentProps<PostViewPageParams>
 
@@ -42,8 +42,8 @@ const DoneButton = styled.button`
 
 
 export default class PostWritePage extends Component<PostWritePageProps, PostWritePageStates> {
-  private postEditorComponent: React.RefObject<PostEditorComponent>
-  = React.createRef<PostEditorComponent>();
+  private contentEditorComponent: React.RefObject<ContentEditorComponent>
+  = React.createRef<ContentEditorComponent>();
 
   private postTitleInputComponent: React.RefObject<PostTitleInputComponent>
   = React.createRef<PostTitleInputComponent>();
@@ -63,9 +63,9 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
   }
 
   private getContent(): unconfirmedBlot[] {
-    if (!this.postEditorComponent || !this.postEditorComponent.current) return [];
-    const postEditorComponent = this.postEditorComponent.current;
-    return postEditorComponent.getContent();
+    if (!this.contentEditorComponent || !this.contentEditorComponent.current) return [];
+    const contentEditorComponent = this.contentEditorComponent.current;
+    return contentEditorComponent.getContent();
   }
 
   private redirect(redirectTo: string): void {
@@ -105,7 +105,7 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     return (
       <Container>
         <PostTitleInputComponent ref={this.postTitleInputComponent} />
-        <PostEditorComponent ref={this.postEditorComponent} />
+        <ContentEditorComponent ref={this.contentEditorComponent} />
         <DoneButton
           className="post-button"
           onClick={() => this.writePost()}

@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import '../../../node_modules/react-quill/dist/quill.snow.css';
 import ReactQuill, { Quill } from 'react-quill';
-import PostEditorToolbarComponent from './PostEditorToolbarComponent';
 import { unconfirmedBlot } from '../../types/Blot';
 import ImageBlot from '../../blots/ImageBlot';
+import ContentEditorToolbarComponent from './ContentEditorToolbarComponent';
 
 [
   ImageBlot,
 ].forEach(blot => Quill.register(blot));
 
-export default class PostEditorComponent extends Component<{}, {}> {
+export default class ContentEditorComponent extends Component<{}, {}> {
   private quill: React.RefObject<ReactQuill> = React.createRef<ReactQuill>();
 
   private modules = {
@@ -63,7 +63,7 @@ export default class PostEditorComponent extends Component<{}, {}> {
   public render(): JSX.Element {
     return (
       <div>
-        <PostEditorToolbarComponent />
+        <ContentEditorToolbarComponent />
         <ReactQuill
           ref={this.quill}
           modules={this.modules}

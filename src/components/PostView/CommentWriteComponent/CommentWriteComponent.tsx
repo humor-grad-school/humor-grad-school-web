@@ -1,8 +1,8 @@
 import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 import CommentActions from '../../../GlobalState/ActionAndStates/CommentActions';
-import CommentEditorComponent from './CommentEditorComponent';
 import { unconfirmedBlot } from '../../../types/Blot';
+import ContentEditorComponent from '../../ContentWrite/ContentEditorComponent';
 
 type CommentWritePageProps = {
   parentCommentId?: string;
@@ -15,13 +15,13 @@ const Container = styled.div`
 `;
 
 export default class CommentWritePage extends Component<CommentWritePageProps, {}> {
-  private postEditorComponent: React.RefObject<CommentEditorComponent>
-  = React.createRef<CommentEditorComponent>();
+  private contentEditorComponent: React.RefObject<ContentEditorComponent>
+  = React.createRef<ContentEditorComponent>();
 
   private getContent(): unconfirmedBlot[] {
-    if (!this.postEditorComponent || !this.postEditorComponent.current) return [];
-    const postEditorComponent = this.postEditorComponent.current;
-    return postEditorComponent.getContent();
+    if (!this.contentEditorComponent || !this.contentEditorComponent.current) return [];
+    const contentEditorComponent = this.contentEditorComponent.current;
+    return contentEditorComponent.getContent();
   }
 
   private postContent(): void {
@@ -40,7 +40,7 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
     } = this.props;
     return (
       <Container>
-        <CommentEditorComponent ref={this.postEditorComponent} />
+        <ContentEditorComponent ref={this.contentEditorComponent} />
         <button
           onClick={() => this.postContent()}
           type="button"

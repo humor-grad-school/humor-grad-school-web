@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function PostEditorToolbarComponent(): JSX.Element {
+export default function ContentEditorToolbarComponent(): JSX.Element {
   const Button = ({ className }: { className: string }): JSX.Element => (
     <button
       type="button"
