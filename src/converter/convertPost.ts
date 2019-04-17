@@ -1,4 +1,3 @@
-import yaml from 'js-yaml';
 import {
   PostInfo,
   PostData,
@@ -10,10 +9,7 @@ import {
   CommentInfo,
   ParentComment,
 } from '../types/CommentData';
-import convertBlotToContent from './convertBlotToContent';
-import { ContentData, ContentElementData } from '../types/ContentData';
 import convertContent from './convertContent';
-import { unconfirmedBlot } from '../types/Blot';
 
 function makeCommentTree(commentInfoes: CommentInfoes): CommentTreeElement[] {
   const commentTreeRoot: CommentTreeRoot = [];
@@ -107,19 +103,4 @@ export default function convertPost(postInfo: PostInfo, dataInYml: string): Post
     content: convertContent(dataInYml),
   };
   return postData;
-}
-
-export function convertContentData(dataInObject: ContentData): string {
-  return yaml.dump({ content: dataInObject });
-}
-
-export async function convertBlotsToContentData(blots: unconfirmedBlot[]): Promise<ContentData> {
-  const blotConvertingPromises: Promise<ContentElementData>[] = [];
-
-  blots.forEach(async (blot) => {
-    blotConvertingPromises.push(convertBlotToContent(blot));
-  });
-
-  const contentData: ContentData = await Promise.all(blotConvertingPromises);
-  return contentData;
 }

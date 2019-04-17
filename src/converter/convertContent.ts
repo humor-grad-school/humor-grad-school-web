@@ -57,3 +57,7 @@ export default function convertContent(dataInYml: string): ContentData {
   const { content } = yaml.load(dataInYml);
   return content || [];
 }
+
+export function convertContentData(dataInObject: ContentData): string {
+  return yaml.dump({ content: dataInObject });
+}

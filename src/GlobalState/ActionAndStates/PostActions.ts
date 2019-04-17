@@ -7,10 +7,13 @@ import {
   Board,
   Comment,
 } from '../../generated/graphqlQuery';
-import convertPost, { convertBlotsToContentData, convertContentData } from '../../converter/convertPost';
+import convertPost from '../../converter/convertPost';
 import { PostData } from '../../types/PostData';
 import { HgsRestApi } from '../../generated/client/ClientApis';
 import { unconfirmedBlot } from '../../types/Blot';
+import { uploadContentToS3 } from './ContentActions';
+import { convertContentData } from '../../converter/convertContent';
+import convertBlotsToContentData from '../../converter/convertBlotsToContentData';
 
 async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
   return Promise.all(postIds.map(async (postId) => {
@@ -76,39 +79,6 @@ function alertError(errorCode: string): void {
   }
 }
 
-async function uploadContent(content: string): Promise<string> {
-  const {
-    isSuccessful,
-    errorCode,
-    data,
-  } = await HgsRestApi.requestPresignedPostFieldsForContent();
-
-  // TODO: Check error if needed
-  if (!isSuccessful) throw new Error(errorCode);
-  const {
-    fields,
-    key: s3Key,
-    url,
-  } = data;
-
-  const formData = new FormData();
-  Object.entries(fields).forEach(([key, value]) => {
-    formData.append(key, value);
-  });
-  formData.append('key', s3Key);
-  formData.append('file', content);
-
-  await fetch(url, {
-    method: 'POST',
-    body: formData,
-  })
-    .then((response: Response) => {
-      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
-    });
-
-  return s3Key;
-}
-
 const postLoader = new DataLoader<number, PostData>(postIds => loadPostBatch(postIds));
 
 const globalState = getGlobalState();
@@ -138,7 +108,7 @@ const PostActions = {
   ): Promise<number> {
     const postContentData = await convertBlotsToContentData(contentInBlots);
     const postContentDataInYml = convertContentData(postContentData);
-    const contentS3Key = await uploadContent(postContentDataInYml);
+    const contentS3Key = await uploadContentToS3(postContentDataInYml);
     const response = await HgsRestApi.writePost({
       title,
       contentS3Key,

@@ -9,49 +9,15 @@ import {
   TextElementData,
   ImageElementData,
   InlineElementData,
+  ContentData,
 } from '../types/ContentData';
-import { HgsRestApi } from '../generated/client/ClientApis';
 import { BlotType, unconfirmedBlot } from '../types/Blot';
 import TextBlot from '../blots/TextBlot';
 import ContainerBlot from '../blots/ContainerBlot';
 import ImageBlot, { ImageBlotValue } from '../blots/ImageBlot';
+import { uploadMediaToS3 } from '../GlobalState/ActionAndStates/ContentActions';
 
-async function uploadMedia(mediaBuffer: Blob): Promise<string> {
-  const {
-    isSuccessful,
-    errorCode,
-    data,
-  } = await HgsRestApi.requestPresignedPostFieldsForMedia();
-
-  // TODO: Check error if needed
-  if (!isSuccessful) throw new Error(errorCode);
-  const {
-    fields,
-    key: s3Key,
-    url,
-  } = data;
-
-  const formData = new FormData();
-  Object.entries(fields).forEach(([key, value]) => {
-    formData.append(key, value);
-  });
-  formData.append('key', s3Key);
-  formData.append('file', mediaBuffer);
-
-  await fetch(url, {
-    method: 'POST',
-    body: formData,
-  })
-    .then((response: Response) => {
-      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
-    });
-
-  await HgsRestApi.encodeMedia({ s3Key });
-
-  return s3Key;
-}
-
-export default async function convertBlotToContentAndUploadMedia(blot: unconfirmedBlot):
+async function convertBlotToContentAndUploadMedia(blot: unconfirmedBlot):
 Promise<ContentElementData> {
   const blotType: BlotType = blot.statics.blotName;
 
@@ -118,7 +84,7 @@ Promise<ContentElementData> {
     case BlotType.Image: {
       const { image: imageValue } = (blot as ImageBlot).value() as { image: ImageBlotValue };
       const blob = await fetch(imageValue.url).then(response => response.blob());
-      const imageS3Key = await uploadMedia(blob);
+      const imageS3Key = await uploadMediaToS3(blob);
 
       const contentData: ImageElementData = {
         type: ContentElementDataType.Image,
@@ -138,4 +104,17 @@ Promise<ContentElementData> {
       return contentData;
     }
   }
+}
+
+export default async function convertBlotsToContentData(
+  blots: unconfirmedBlot[],
+): Promise<ContentData> {
+  const blotConvertingPromises: Promise<ContentElementData>[] = [];
+
+  blots.forEach(async (blot) => {
+    blotConvertingPromises.push(convertBlotToContentAndUploadMedia(blot));
+  });
+
+  const contentData: ContentData = await Promise.all(blotConvertingPromises);
+  return contentData;
 }
