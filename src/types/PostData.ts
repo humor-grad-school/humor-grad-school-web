@@ -32,6 +32,5 @@ export interface Writer {
 }
 
 export interface Board {
-  id: number;
   name: string;
 }

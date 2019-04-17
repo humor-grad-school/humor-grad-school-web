@@ -28,7 +28,6 @@ async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
           )
           .addBoard(
             Board
-              .addId()
               .addName(),
           )
           .addLikes()

@@ -68,7 +68,7 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
     return (
       <Container>
         <Board>
-          <Link to={`/board/${board.id}`}>{ board.name }</Link>
+          <Link to={`/board/${board.name}`}>{ board.name }</Link>
         </Board>
         <PostHeaderComponent postData={postData} />
         <Body>{startRenderContent(content)}</Body>
