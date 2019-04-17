@@ -4,6 +4,7 @@ import { RouteComponentProps, Redirect } from 'react-router-dom';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
 import PostEditorComponent from './PostEditorComponent';
 import { unconfirmedBlot } from '../../types/Blot';
+import PostTitleInputComponent from './PostTitleInputComponent';
 
 type PostWritePageProps = RouteComponentProps<PostViewPageParams>
 
@@ -12,7 +13,6 @@ interface PostViewPageParams {
 }
 
 type PostWritePageStates = {
-  title: string;
   redirectTo: string;
 }
 
@@ -23,13 +23,6 @@ const Container = styled.div`
   justify-content: center;
   background-color: #EEE;
   text-align: center;
-`;
-
-const TitleInput = styled.input`
-  margin-bottom: 1em;
-  padding: 0.5em;
-  border: 4px solid #999;
-  width: calc(100% - 1em - 8px);
 `;
 
 const DoneButton = styled.button`
@@ -52,15 +45,21 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
   private postEditorComponent: React.RefObject<PostEditorComponent>
   = React.createRef<PostEditorComponent>();
 
+  private postTitleInputComponent: React.RefObject<PostTitleInputComponent>
+  = React.createRef<PostTitleInputComponent>();
+
   public constructor(props: PostWritePageProps) {
     super(props);
 
     this.state = {
-      title: '',
       redirectTo: '',
     };
+  }
 
-    this.handleTitleChange = this.handleTitleChange.bind(this);
+  private getTitle(): string {
+    if (!this.postTitleInputComponent || !this.postTitleInputComponent.current) return '';
+    const postTitleInputComponent = this.postTitleInputComponent.current;
+    return postTitleInputComponent.getTitle();
   }
 
   private getContent(): unconfirmedBlot[] {
@@ -79,7 +78,7 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     const { match } = this.props;
     const { params } = match;
 
-    const { title } = this.state;
+    const title = this.getTitle();
     const content = this.getContent();
     const { boardName } = params;
 
@@ -96,15 +95,8 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     }
   }
 
-  private handleTitleChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    this.setState({
-      title: event.target.value,
-    });
-  }
-
   public render(): ReactNode {
     const {
-      title,
       redirectTo,
     } = this.state;
 
@@ -112,12 +104,7 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
 
     return (
       <Container>
-        <TitleInput
-          type="text"
-          value={title}
-          onChange={this.handleTitleChange}
-          placeholder="[여기에 제목 입력]"
-        />
+        <PostTitleInputComponent ref={this.postTitleInputComponent} />
         <PostEditorComponent ref={this.postEditorComponent} />
         <DoneButton
           className="post-button"
