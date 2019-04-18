@@ -20,3 +20,14 @@ export type unconfirmedBlot =(
   | TextBlot
   | ImageBlot
 );
+
+export type formatString = (
+  | 'block'
+  | 'inline'
+  | 'bold'
+  | 'italic'
+  | 'underline'
+  | 'break'
+  | 'text'
+  | 'image'
+);

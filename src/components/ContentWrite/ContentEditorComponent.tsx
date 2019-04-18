@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import '../../../node_modules/react-quill/dist/quill.snow.css';
 import ReactQuill, { Quill } from 'react-quill';
-import { unconfirmedBlot } from '../../types/Blot';
+import { unconfirmedBlot, formatString } from '../../types/Blot';
 import ImageBlot from '../../blots/ImageBlot';
 import ContentEditorToolbarComponent from './ContentEditorToolbarComponent';
+
+type ContentEditorComponentProps = {
+  allowedFormats?: formatString[];
+}
 
 [
   ImageBlot,
 ].forEach(blot => Quill.register(blot));
 
-export default class ContentEditorComponent extends Component<{}, {}> {
+export default class ContentEditorComponent extends Component<ContentEditorComponentProps, {}> {
   private quill: React.RefObject<ReactQuill> = React.createRef<ReactQuill>();
 
   private modules = {
@@ -21,11 +25,29 @@ export default class ContentEditorComponent extends Component<{}, {}> {
     },
   }
 
+  public constructor(props: ContentEditorComponentProps) {
+    super(props);
+
+    const {
+      allowedFormats,
+    } = props;
+
+    this.allowedFormats = allowedFormats
+      || [
+        'bold',
+        'italic',
+        'underline',
+        'image',
+      ];
+  }
+
   public getContent(): unconfirmedBlot[] {
     if (!this.quill || !this.quill.current) return [];
     const quill = this.quill.current.getEditor();
     return quill.getLines();
   }
+
+  private allowedFormats: formatString[]
 
   private handleImage(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -63,10 +85,11 @@ export default class ContentEditorComponent extends Component<{}, {}> {
   public render(): JSX.Element {
     return (
       <div>
-        <ContentEditorToolbarComponent />
+        <ContentEditorToolbarComponent allowedFormats={this.allowedFormats} />
         <ReactQuill
           ref={this.quill}
           modules={this.modules}
+          formats={this.allowedFormats}
           theme="snow"
         />
       </div>

@@ -40,7 +40,12 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
     } = this.props;
     return (
       <Container>
-        <ContentEditorComponent ref={this.contentEditorComponent} />
+        <ContentEditorComponent
+          ref={this.contentEditorComponent}
+          allowedFormats={[
+            'image',
+          ]}
+        />
         <button
           onClick={() => this.postContent()}
           type="button"
