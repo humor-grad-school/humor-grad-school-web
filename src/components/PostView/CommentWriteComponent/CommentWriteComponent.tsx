@@ -45,6 +45,9 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
           allowedFormats={[
             'image',
           ]}
+          contentLimit={{
+            image: 1,
+          }}
         />
         <button
           onClick={() => this.postContent()}
