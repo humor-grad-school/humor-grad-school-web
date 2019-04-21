@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../../../node_modules/react-quill/dist/quill.snow.css';
 import ReactQuill, { Quill } from 'react-quill';
+import styled from 'styled-components';
 import { unconfirmedBlot, formatString } from '../../types/Blot';
 import ImageBlot from '../../blots/ImageBlot';
 import ContentEditorToolbarComponent from './ContentEditorToolbarComponent';
@@ -21,6 +22,21 @@ type ContentEditorComponentProps = {
 [
   ImageBlot,
 ].forEach(blot => Quill.register(blot));
+
+const Container = styled.div`
+  .ql-toolbar.ql-snow {
+    border-bottom: 0px;
+    background-color: #CCC;
+  }
+`;
+
+const StyledReactQuill = styled(ReactQuill)`
+  border: 4px solid #CCC;
+
+  .ql-editor {
+    min-height: 25vh;
+  }
+`;
 
 function generateContentLimit(contentLimit?: Partial<ContentLimit>): ContentLimit {
   const resultContentLimit = contentLimit || {};
@@ -141,15 +157,15 @@ export default class ContentEditorComponent extends Component<ContentEditorCompo
 
   public render(): JSX.Element {
     return (
-      <div>
+      <Container>
         <ContentEditorToolbarComponent allowedFormats={this.allowedFormats} />
-        <ReactQuill
+        <StyledReactQuill
           ref={this.quill}
           modules={this.modules}
           formats={this.allowedFormats}
           theme="snow"
         />
-      </div>
+      </Container>
     );
   }
 }
