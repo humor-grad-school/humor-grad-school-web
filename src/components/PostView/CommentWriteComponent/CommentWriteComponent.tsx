@@ -47,6 +47,7 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
           ]}
           contentLimit={{
             image: 1,
+            length: 1000,
           }}
         />
         <button

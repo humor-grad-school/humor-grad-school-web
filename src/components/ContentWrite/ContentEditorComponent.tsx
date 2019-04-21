@@ -10,6 +10,7 @@ const Delta = Quill.import('delta');
 
 type ContentLimit = {
   image: number;
+  length: number;
 }
 
 type ContentEditorComponentProps = {
@@ -24,6 +25,7 @@ type ContentEditorComponentProps = {
 function generateContentLimit(contentLimit?: Partial<ContentLimit>): ContentLimit {
   const resultContentLimit = contentLimit || {};
   resultContentLimit.image = resultContentLimit.image || -1;
+  resultContentLimit.length = resultContentLimit.length || -1;
   return (resultContentLimit as ContentLimit);
 }
 
@@ -87,7 +89,21 @@ export default class ContentEditorComponent extends Component<ContentEditorCompo
     const quill = this.quill.current.getEditor();
     const delta = quill.getContents();
     const embedLimitedOps = limitEmbed(delta.ops, this.contentLimit);
-    if (embedLimitedOps) quill.setContents(new Delta(embedLimitedOps), 'silent');
+    const embedLimitedDelta = embedLimitedOps
+      ? new Delta(embedLimitedOps)
+      : delta;
+
+    const hasLengthLimit = this.contentLimit.length >= 0;
+    const isExceedLengthLimit = embedLimitedDelta.length() > this.contentLimit.length;
+    const lengthLimitedDelta = (hasLengthLimit && isExceedLengthLimit)
+      ? embedLimitedDelta.slice(0, this.contentLimit.length)
+      : null;
+
+    const shouldLimit = embedLimitedOps || lengthLimitedDelta;
+    if (shouldLimit) {
+      const limitedDelta = lengthLimitedDelta || embedLimitedDelta;
+      quill.setContents(limitedDelta, 'silent');
+    }
   }
 
   private handleImage(): Promise<void> {
