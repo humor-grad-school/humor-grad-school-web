@@ -5,7 +5,7 @@ import { unconfirmedBlot } from '../../../types/Blot';
 import ContentEditorComponent from '../../ContentWrite/ContentEditorComponent';
 
 type CommentWritePageProps = {
-  parentCommentId?: string;
+  parentCommentId?: number;
   postId: number;
   cancelWriting: () => void;
 }

@@ -54,7 +54,7 @@ const CommentActions = {
     }
   },
 
-  async writeComment(contentInBlots: unconfirmedBlot[], postId: number, parentCommentId?: string) {
+  async writeComment(contentInBlots: unconfirmedBlot[], postId: number, parentCommentId?: number) {
     const postContentData = await convertBlotsToContentData(contentInBlots);
     const postContentDataInYml = convertContentData(postContentData);
     const contentS3Key = await uploadContentToS3(postContentDataInYml);

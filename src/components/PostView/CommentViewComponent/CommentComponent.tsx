@@ -90,7 +90,7 @@ export default class CommentComponent
     } = this.state;
 
     const parentCommentId = parentComment
-      ? `${parentComment.id}`
+      ? parentComment.id
       : undefined;
 
     return (
