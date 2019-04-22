@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react';
+import React, { Component, ReactNode, createRef } from 'react';
 import styled from 'styled-components';
 import LoginActions from '../../GlobalState/ActionAndStates/LoginActions';
 import LoginComponent from './LoginComponent';
@@ -45,6 +45,8 @@ const Container = styled.div`
 `;
 
 export default class LoginOverlay extends Component<LoginOverlayProps, LoginOverlayStates> {
+  private selfRef = createRef<HTMLDivElement>();
+
   private globalState: GlobalState = getGlobalStateForReactComponent(this);
 
   private origin: string = '';
@@ -60,6 +62,7 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
 
     this.handleSetToken = this.handleSetToken.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
+    this.handleOverlayClick = this.handleOverlayClick.bind(this);
   }
 
   private async handleSetToken(origin: string, idToken: string): Promise<void> {
@@ -86,13 +89,24 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
     console.log(isSuccess);
   }
 
+  private handleOverlayClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+    const isBackgroundClicked = this.selfRef.current === event.target;
+    if (isBackgroundClicked) {
+      LoginActions.closeOverlay();
+    }
+  }
+
   public render(): ReactNode {
     const { step } = this.state;
 
     const isActived = this.globalState.loginState.isOverlayActived;
 
     return (
-      <Overlay active={isActived ? 'true' : 'false'}>
+      <Overlay
+        active={isActived ? 'true' : 'false'}
+        ref={this.selfRef}
+        onClick={this.handleOverlayClick}
+      >
         <div>sex</div>
         <Container>
           <LoginComponent
