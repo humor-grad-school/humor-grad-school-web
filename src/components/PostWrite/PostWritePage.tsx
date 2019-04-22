@@ -5,6 +5,7 @@ import PostActions from '../../GlobalState/ActionAndStates/PostActions';
 import { unconfirmedBlot } from '../../types/Blot';
 import PostTitleInputComponent from './PostTitleInputComponent';
 import ContentEditorComponent from '../ContentWrite/ContentEditorComponent';
+import LoginActions from '../../GlobalState/ActionAndStates/LoginActions';
 
 type PostWritePageProps = RouteComponentProps<PostViewPageParams>
 
@@ -88,6 +89,7 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     } catch (error) {
       if (error.message === '401') {
         alert('로그인이 필요합니다.');
+        LoginActions.openOverlay();
         return;
       }
       alert('알 수 없는 에러로 실패했습니다.');
