@@ -89,10 +89,6 @@ export default class CommentComponent
       isWriting,
     } = this.state;
 
-    const parentCommentId = parentComment
-      ? parentComment.id
-      : undefined;
-
     return (
       <Container issub={parentComment ? 'true' : 'false'}>
         <CommentHeaderComponent
@@ -112,7 +108,7 @@ export default class CommentComponent
               <CommentWriteComponent
                 postId={postId}
                 cancelWriting={this.handleCancelWriting}
-                parentCommentId={parentCommentId}
+                parentCommentId={id}
               />
             )
             : (
