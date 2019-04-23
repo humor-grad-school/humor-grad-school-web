@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 type LoginComponentProps = {
   step: 'login' | 'signUp';
-  setToken: (origin: string, token: string) => void;
+  login: (origin: string, token: string) => void;
 }
 
 type LoginComponentStates = {}
@@ -30,8 +30,8 @@ export default class LoginComponent extends Component<LoginComponentProps, Login
   }
 
   private onDevelopLoginSuccess() {
-    const { setToken } = this.props;
-    setToken('local', 'daff204a-079f-4a6d-96aa-2csdf3s5d85');
+    const { login } = this.props;
+    login('local', 'daff204a-079f-4a6d-96aa-2csdf3s5d85');
   }
 
   public render(): ReactNode {

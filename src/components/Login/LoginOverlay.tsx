@@ -60,12 +60,12 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
       step: 'login',
     };
 
-    this.handleSetToken = this.handleSetToken.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
   }
 
-  private async handleSetToken(origin: string, idToken: string): Promise<void> {
+  private async handleLogin(origin: string, idToken: string): Promise<void> {
     this.origin = origin;
     this.idToken = idToken;
 
@@ -84,7 +84,7 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
   private async handleSignUp(name: string): Promise<void> {
     const isSuccess = await LoginActions.signUp(this.origin, name, this.idToken);
     if (isSuccess) {
-      this.handleSetToken(this.origin, this.idToken);
+      this.handleLogin(this.origin, this.idToken);
 
       this.setState({
         step: 'login',
@@ -115,7 +115,7 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
         <div>sex</div>
         <Container>
           <LoginComponent
-            setToken={this.handleSetToken}
+            login={this.handleLogin}
             step={step}
           />
           <SignUpComponent
