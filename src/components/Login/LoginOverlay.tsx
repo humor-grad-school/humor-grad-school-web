@@ -83,9 +83,14 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
 
   private async handleSignUp(name: string): Promise<void> {
     const isSuccess = await LoginActions.signUp(this.origin, name, this.idToken);
-    this.setState({
-      step: 'login',
-    });
+    if (isSuccess) {
+      this.handleSetToken(this.origin, this.idToken);
+
+      this.setState({
+        step: 'login',
+      });
+    }
+
     console.log(isSuccess);
   }
 
