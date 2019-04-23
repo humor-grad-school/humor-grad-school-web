@@ -20,6 +20,19 @@ const Container = styled.div`
   right: ${(props: ContainerProps) => ((props.step === 'login') ? '0px' : '100%')};
   transform: translateY(-50%);
   transition: right 0.5s;
+  text-align: center;
+`;
+
+const Title = styled.div`
+  font-size: 1.5em;
+  margin-bottom: 4em;
+`;
+
+const DevelopLoginButton = styled.button`
+  display: inline-block;
+  padding: 1em;
+  border-radius: 0.1em;
+  border: 0px;
 `;
 
 export default class LoginComponent extends Component<LoginComponentProps, LoginComponentStates> {
@@ -41,12 +54,13 @@ export default class LoginComponent extends Component<LoginComponentProps, Login
 
     return (
       <Container step={step}>
-        <button
+        <Title>소셜 계정으로 로그인하세요!</Title>
+        <DevelopLoginButton
           type="button"
           onClick={this.onDevelopLoginSuccess}
         >
           develop
-        </button>
+        </DevelopLoginButton>
       </Container>
     );
   }

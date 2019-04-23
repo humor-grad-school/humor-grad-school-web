@@ -22,6 +22,28 @@ const Container = styled.div`
   left: ${(props: ContainerProps) => ((props.step === 'signUp') ? '0px' : '100%')};
   transform: translateY(-50%);
   transition: left 0.5s;
+  text-align: center;
+`;
+
+const Title = styled.div`
+  font-size: 1.5em;
+  margin-bottom: 4em;
+`;
+
+const NicknameInput = styled.input`
+  display: inline-block;
+  border: 4px solid #DDD;
+  border-radius: 4px 0px 0px 4px;
+  padding: 0.5em;
+  font-size: 15px;
+`;
+
+const NicknameButton = styled.button`
+  display: inline-block;
+  border: 4px solid #DDD;
+  border-radius: 0px 4px 4px 0px;
+  padding: 0.5em;
+  font-size: 14px;
 `;
 
 export default class SignUpComponent
@@ -56,17 +78,18 @@ export default class SignUpComponent
 
     return (
       <Container step={step}>
-        <input
+        <Title>처음이시군요? 이름을 지어주세요!</Title>
+        <NicknameInput
           type="text"
           onChange={this.handleUsernameChange}
           placeholder="[여기에 닉네임을 입력]"
         />
-        <button
+        <NicknameButton
           type="button"
           onClick={this.handleSignUp}
         >
           확인
-        </button>
+        </NicknameButton>
       </Container>
     );
   }
