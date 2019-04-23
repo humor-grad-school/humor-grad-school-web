@@ -32,6 +32,14 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
+const CloseGuide = styled.div`
+  position: fixed;
+  top: 1em;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #FFF;
+`;
+
 const Container = styled.div`
   padding: 1em;
   max-height: 64ex;
@@ -112,7 +120,7 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
         ref={this.selfRef}
         onClick={this.handleOverlayClick}
       >
-        <div>sex</div>
+        <CloseGuide>오버레이를 닫으려면 배경을 클릭하세요</CloseGuide>
         <Container>
           <LoginComponent
             login={this.handleLogin}
