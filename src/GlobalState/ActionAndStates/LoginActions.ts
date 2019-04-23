@@ -13,7 +13,11 @@ const LoginActions = {
     });
 
     if (response.isSuccessful) {
+      const { sessionToken } = response.data;
+      HgsRestApi.setSessionToken(sessionToken);
+
       globalState.loginState.isLoggedIn = true;
+
       return true;
     }
 
