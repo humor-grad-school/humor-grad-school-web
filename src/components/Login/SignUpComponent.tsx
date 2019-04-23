@@ -4,6 +4,7 @@ import styled from 'styled-components';
 type SignUpComponentProps = {
   step: 'login' | 'signUp';
   signUp: (username: string) => void;
+  goBack: () => void;
 }
 
 type SignUpComponentStates = {
@@ -23,6 +24,17 @@ const Container = styled.div`
   transform: translateY(-50%);
   transition: left 0.5s;
   text-align: center;
+`;
+
+const GoBackButton = styled.button`
+  display: block;
+  border: 4px solid #DDD;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0);
+  color: #999;
+  padding: 0.25em 0.5em;
+  margin-bottom: 1em;
+  cursor: pointer;
 `;
 
 const Title = styled.div`
@@ -74,10 +86,17 @@ export default class SignUpComponent
   public render(): ReactNode {
     const {
       step,
+      goBack,
     } = this.props;
 
     return (
       <Container step={step}>
+        <GoBackButton
+          type="button"
+          onClick={goBack}
+        >
+          돌아가기
+        </GoBackButton>
         <Title>처음이시군요? 이름을 지어주세요!</Title>
         <NicknameInput
           type="text"

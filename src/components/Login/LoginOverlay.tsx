@@ -6,10 +6,15 @@ import SignUpComponent from './SignUpComponent';
 import { getGlobalStateForReactComponent } from '../../GlobalState/getGlobalState';
 import { GlobalState } from '../../GlobalState/globalState';
 
+enum LoginOverlayStep {
+  Login = 'login',
+  SignUp = 'signUp',
+}
+
 type LoginOverlayProps = {}
 
 type LoginOverlayStates = {
-  step: 'login' | 'signUp';
+  step: LoginOverlayStep;
 }
 
 type OverlayProps = {
@@ -65,12 +70,18 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
     super(props);
 
     this.state = {
-      step: 'login',
+      step: LoginOverlayStep.Login,
     };
 
     this.handleLogin = this.handleLogin.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
+  }
+
+  private stepTo(step: LoginOverlayStep) {
+    this.setState({
+      step,
+    });
   }
 
   private async handleLogin(origin: string, idToken: string): Promise<void> {
@@ -84,9 +95,7 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
       return;
     }
 
-    this.setState({
-      step: 'signUp',
-    });
+    this.stepTo(LoginOverlayStep.SignUp);
   }
 
   private async handleSignUp(name: string): Promise<void> {
@@ -94,9 +103,7 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
     if (isSuccess) {
       this.handleLogin(this.origin, this.idToken);
 
-      this.setState({
-        step: 'login',
-      });
+      this.stepTo(LoginOverlayStep.Login);
     }
 
     console.log(isSuccess);
@@ -128,6 +135,7 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
           />
           <SignUpComponent
             signUp={this.handleSignUp}
+            goBack={() => { this.stepTo(LoginOverlayStep.Login); }}
             step={step}
           />
         </Container>
