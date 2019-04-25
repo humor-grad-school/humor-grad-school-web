@@ -1,12 +1,11 @@
-import React, { Component, ReactNode } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import DevelopLoginComponent from './ThirdPartyLogin/DevelopLogin/DevelopLoginComponent';
 
 type LoginComponentProps = {
   step: 'login' | 'signUp';
-  login: (origin: string, token: string) => void;
+  login: (origin: string, token: string) => Promise<void>;
 }
-
-type LoginComponentStates = {}
 
 type ContainerProps = {
   step: 'login' | 'signUp';
@@ -28,40 +27,22 @@ const Title = styled.div`
   margin-bottom: 4em;
 `;
 
-const DevelopLoginButton = styled.button`
-  display: inline-block;
-  padding: 1em;
-  border-radius: 0.1em;
-  border: 0px;
+const LoginButtonContainer = styled.div`
+  & + & {
+    margin-top: 0.5ex;
+  }
 `;
 
-export default class LoginComponent extends Component<LoginComponentProps, LoginComponentStates> {
-  public constructor(props: LoginComponentProps) {
-    super(props);
+export default function LoginComponent(props: LoginComponentProps): JSX.Element {
+  const {
+    step,
+    login,
+  } = props;
 
-    this.onDevelopLoginSuccess = this.onDevelopLoginSuccess.bind(this);
-  }
-
-  private onDevelopLoginSuccess() {
-    const { login } = this.props;
-    login('local', 'daff204a-079f-4a6d-96aa-2csdf3s5d85');
-  }
-
-  public render(): ReactNode {
-    const {
-      step,
-    } = this.props;
-
-    return (
-      <Container step={step}>
-        <Title>소셜 계정으로 로그인하세요!</Title>
-        <DevelopLoginButton
-          type="button"
-          onClick={this.onDevelopLoginSuccess}
-        >
-          develop
-        </DevelopLoginButton>
-      </Container>
-    );
-  }
+  return (
+    <Container step={step}>
+      <Title>소셜 계정으로 로그인하세요!</Title>
+      <LoginButtonContainer><DevelopLoginComponent login={login} /></LoginButtonContainer>
+    </Container>
+  );
 }
