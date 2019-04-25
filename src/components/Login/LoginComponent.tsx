@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import DevelopLoginComponent from './ThirdPartyLogin/DevelopLogin/DevelopLoginComponent';
+import FacebookLoginComponent from './ThirdPartyLogin/FacebookLogin/FacebookLoginComponent';
 
 type LoginComponentProps = {
   step: 'login' | 'signUp';
@@ -43,6 +44,7 @@ export default function LoginComponent(props: LoginComponentProps): JSX.Element 
     <Container step={step}>
       <Title>소셜 계정으로 로그인하세요!</Title>
       <LoginButtonContainer><DevelopLoginComponent login={login} /></LoginButtonContainer>
+      <LoginButtonContainer><FacebookLoginComponent login={login} /></LoginButtonContainer>
     </Container>
   );
 }
