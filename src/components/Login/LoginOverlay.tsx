@@ -78,7 +78,7 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
   }
 
-  private stepTo(step: LoginOverlayStep) {
+  private stepTo(step: LoginOverlayStep): void {
     this.setState({
       step,
     });

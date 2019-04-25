@@ -77,7 +77,7 @@ export default class SignUpComponent
     });
   }
 
-  private handleSignUp() {
+  private handleSignUp(): void {
     const { signUp } = this.props;
     const { username } = this.state;
     signUp(username);

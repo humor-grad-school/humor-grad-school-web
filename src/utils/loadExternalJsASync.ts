@@ -1,6 +1,6 @@
 const promiseMap: {[id: string]: Promise<any>} = {};
 
-export default function loadExternalJsASync(id: string, url: string) {
+export default function loadExternalJsASync(id: string, url: string): Promise<any> {
   if (promiseMap[id]) {
     return promiseMap[id];
   }
@@ -13,7 +13,7 @@ export default function loadExternalJsASync(id: string, url: string) {
     scriptElement.id = id;
     scriptElement.src = url;
     // tslint:disable-next-line:only-arrow-functions
-    scriptElement.onload = function () {
+    scriptElement.onload = () => {
       resolve();
     };
     const firstScriptElement = document.getElementsByTagName('script')[0];
