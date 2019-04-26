@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import DevelopLoginComponent from './ThirdPartyLogin/DevelopLogin/DevelopLoginComponent';
 import FacebookLoginComponent from './ThirdPartyLogin/FacebookLogin/FacebookLoginComponent';
 import KakaoLoginComponent from './ThirdPartyLogin/KakaoLogin/KakaoLoginComponent';
+import GoogleLoginComponent from './ThirdPartyLogin/GoogleLogin/GoogleLoginComponent';
 
 type LoginComponentProps = {
   step: 'login' | 'signUp';
@@ -47,6 +48,7 @@ export default function LoginComponent(props: LoginComponentProps): JSX.Element 
       <LoginButtonContainer><DevelopLoginComponent login={login} /></LoginButtonContainer>
       <LoginButtonContainer><FacebookLoginComponent login={login} /></LoginButtonContainer>
       <LoginButtonContainer><KakaoLoginComponent login={login} /></LoginButtonContainer>
+      <LoginButtonContainer><GoogleLoginComponent login={login} /></LoginButtonContainer>
     </Container>
   );
 }
