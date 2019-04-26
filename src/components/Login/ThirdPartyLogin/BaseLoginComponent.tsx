@@ -32,7 +32,10 @@ export default abstract class BaseLoginComponent<T, U>
   abstract get origin(): string;
 
   protected login(): void {
-    if (!(this.isLoginFinished && this.isLoginSuccessful)) return;
+    if (!(this.isLoginFinished && this.isLoginSuccessful)) {
+      console.warn('Third party login was not successful. Call this after success');
+      return;
+    }
 
     const {
       login,
