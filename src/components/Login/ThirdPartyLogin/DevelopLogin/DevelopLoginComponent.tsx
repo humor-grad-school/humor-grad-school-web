@@ -12,11 +12,16 @@ const DevelopLoginButton = styled.button`
 export default class DevelopLoginComponent extends BaseLoginComponent<{}, {}> {
   public origin: string = 'local';
 
+  public handleLoginButtonClick(): void {
+    this.onThirdPartyLoginSuccessful({ idToken: 'daff204a-079f-4a6d-96aa-2csdf3s5d85' });
+    this.login();
+  }
+
   public render(): JSX.Element {
     return (
       <DevelopLoginButton
         type="button"
-        onClick={() => { this.onThirdPartyLoginSuccessful({ idToken: 'daff204a-079f-4a6d-96aa-2csdf3s5d85' }); }}
+        onClick={() => { this.handleLoginButtonClick(); }}
       >
         develop
       </DevelopLoginButton>

@@ -29,6 +29,7 @@ export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
           this.onThirdPartyLoginSuccessful({
             idToken: accessToken,
           });
+          this.login();
         },
         fail: (err: any) => {
           console.error(err);

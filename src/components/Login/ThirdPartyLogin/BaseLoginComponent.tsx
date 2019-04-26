@@ -10,26 +10,41 @@ type BaseLoginComponentProps = {
 
 export default abstract class BaseLoginComponent<T, U>
   extends Component<BaseLoginComponentProps & T, U> {
+  public isLoginFinished: boolean = false;
+
+  public isLoginSuccessful: boolean = false;
+
+  private authenticationRequestData: AuthenticationRequestData = { idToken: '' };
+
   protected onThirdPartyLoginSuccessful(
     authenticationRequestData: AuthenticationRequestData,
   ): void {
+    this.authenticationRequestData = authenticationRequestData;
+    this.isLoginFinished = true;
+    this.isLoginSuccessful = true;
+  }
+
+  protected onThirdPartyLoginFailed(): void {
+    this.isLoginFinished = true;
+    this.isLoginSuccessful = false;
+  }
+
+  abstract get origin(): string;
+
+  protected login(): void {
+    if (!(this.isLoginFinished && this.isLoginSuccessful)) return;
+
     const {
       login,
     } = this.props;
 
     const {
       idToken,
-    } = authenticationRequestData;
+    } = this.authenticationRequestData;
 
     login(
       this.origin,
       idToken,
     );
   }
-
-  protected onThirdPartyLoginFailed(): void {
-    alert(`${this.origin}인증에 실패했어요... 시간 있으시면 다시 해볼래요?`);
-  }
-
-  abstract get origin(): string;
 }
