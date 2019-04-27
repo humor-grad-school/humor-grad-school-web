@@ -31,6 +31,9 @@ const Title = styled.div`
 `;
 
 const LoginButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+
   & + & {
     margin-top: 0.5ex;
   }
