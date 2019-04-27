@@ -1,47 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 import loadFacebookSdk from './loadFacebookSdk';
 import BaseLoginComponent from '../BaseLoginComponent';
+import LoginButton from '../LoginButton';
 
 declare let FB: any;
 
-// const FacebookLoginButton = styled.div`
-//   display: inline-block;
-//   width: 222px;
-//   height: 49px;
-//   border-radius: 4px;
-//   cursor: pointer;
-//   background-color: #3b5998;
-//   color: #FFF;
-//   line-height: 49px;
-// `;
-
-const FacebookLoginButton = styled.div`
-  display: flex;
-  align-items: center;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 204px;
-  height: 40px;
-  padding: 0px 8px;
-  background-color: #3b5998;
-  color: #FFF;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: "Roboto";
-  line-height: 40px;
-`;
-
-const LogoContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 24px;
-  width: 25px;
-  height: 25px;
-`;
-
-const FacebookLogo = () => (
+const FacebookLogo = (): JSX.Element => (
   <svg
     id="Layer_1"
     data-name="Layer 1"
@@ -113,12 +77,12 @@ export default class FacebookLoginComponent extends BaseLoginComponent<{}, {}> {
 
   public render(): JSX.Element {
     return (
-      <FacebookLoginButton
+      <LoginButton
+        text="페이스북계정으로 로그인"
+        Logo={FacebookLogo}
         onClick={() => { this.handleLoginButtonClick(); }}
-      >
-        <LogoContainer><FacebookLogo /></LogoContainer>
-        페이스북계정으로 로그인
-      </FacebookLoginButton>
+        backgroundColor="#3b5998"
+      />
     );
   }
 }

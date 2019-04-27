@@ -1,13 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import BaseLoginComponent from '../BaseLoginComponent';
-
-const DevelopLoginButton = styled.button`
-  display: inline-block;
-  padding: 1em;
-  border-radius: 0.1em;
-  border: 0px;
-`;
+import LoginButton from '../LoginButton';
 
 export default class DevelopLoginComponent extends BaseLoginComponent<{}, {}> {
   public origin: string = 'local';
@@ -19,12 +12,11 @@ export default class DevelopLoginComponent extends BaseLoginComponent<{}, {}> {
 
   public render(): JSX.Element {
     return (
-      <DevelopLoginButton
-        type="button"
+      <LoginButton
+        text="develop login"
+        Logo={() => <></>}
         onClick={() => { this.handleLoginButtonClick(); }}
-      >
-        develop
-      </DevelopLoginButton>
+      />
     );
   }
 }

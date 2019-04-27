@@ -1,38 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
 import loadKakaoSdk from './loadKakaoSdk';
 import BaseLoginComponent from '../BaseLoginComponent';
+import LoginButton from '../LoginButton';
 
 declare let Kakao: any;
 
-const KakaoLoginButton = styled.div`
-  display: flex;
-  align-items: center;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 204px;
-  height: 40px;
-  padding: 0px 8px;
-  background-color: #ffeb00;
-  color: #3c1e1e;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: "Roboto";
-  line-height: 40px;
-`;
-
-const LogoContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 24px;
-  width: 25px;
-  height: 25px;
-`;
-
-const Logo = styled.img`
-  width: 30px;
-`;
+const KakaoLogo = (): JSX.Element => (
+  <img
+    width="30px"
+    src="/kakao_logo.png"
+    alt=""
+  />
+);
 
 export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
   public origin: string = 'kakao';
@@ -76,15 +55,14 @@ export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
 
   public render(): JSX.Element {
     return (
-      <KakaoLoginButton onClick={() => { this.handleLoginButtonClick(); }}>
-        <LogoContainer>
-          <Logo
-            src="/kakao_logo.png"
-            alt=""
-          />
-        </LogoContainer>
-        카카오계정으로 로그인
-      </KakaoLoginButton>
+      <LoginButton
+        text="카카오계정으로 로그인"
+        Logo={KakaoLogo}
+        color="#3c1e1e"
+        onClick={() => { this.handleLoginButtonClick(); }}
+        fontWeight="600"
+        backgroundColor="#ffeb00"
+      />
     );
   }
 }

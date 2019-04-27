@@ -1,38 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 import loadGoogleSdk from './loadGoogleSdk';
 import BaseLoginComponent from '../BaseLoginComponent';
+import LoginButton from '../LoginButton';
 
 declare let gapi: any;
 
-const GoogleLoginButton = styled.div`
-  display: flex;
-  align-items: center;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 204px;
-  height: 40px;
-  padding: 0px 8px;
-  background-color: #4285F4;
-  color: #FFF;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: "Roboto";
-  line-height: 40px;
-`;
-
-const LogoContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 24px;
-  width: 25px;
-  height: 25px;
-  background-color: #FFF;
-  border-radius: 4px;
-`;
-
-const GoogleLogo = () => (
+const GoogleLogo = (): JSX.Element => (
   <svg
     className="abcRioButtonSvg"
     version="1.1"
@@ -79,10 +52,13 @@ export default class GoogleLoginComponent extends BaseLoginComponent<{}, {}> {
 
   public render(): JSX.Element {
     return (
-      <GoogleLoginButton id={`${this.loginButtonElementId}`}>
-        <LogoContainer><GoogleLogo /></LogoContainer>
-        구글계정으로 로그인
-      </GoogleLoginButton>
+      <LoginButton
+        id={this.loginButtonElementId}
+        text="구글계정으로 로그인"
+        Logo={GoogleLogo}
+        backgroundColor="#4285F4"
+        logoBackgroundColor="#FFF"
+      />
     );
   }
 }
