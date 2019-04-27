@@ -16,8 +16,6 @@ const KakaoLogo = (): JSX.Element => (
 export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
   public origin: string = 'kakao';
 
-  public isSdkLoaded: boolean = false;
-
   public componentDidMount(): void {
     loadKakaoSdk().then(() => {
       console.log('kakao loaded');

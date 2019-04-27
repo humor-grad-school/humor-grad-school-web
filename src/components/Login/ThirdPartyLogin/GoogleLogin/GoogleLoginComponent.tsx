@@ -32,6 +32,7 @@ export default class GoogleLoginComponent extends BaseLoginComponent<{}, {}> {
   public componentDidMount(): void {
     loadGoogleSdk().then(async () => {
       console.log('google loaded');
+      this.isSdkLoaded = true;
       const auth2 = gapi.auth2.getAuthInstance();
       auth2.attachClickHandler(
         document.getElementById(this.loginButtonElementId),

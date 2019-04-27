@@ -22,8 +22,6 @@ const FacebookLogo = (): JSX.Element => (
 export default class FacebookLoginComponent extends BaseLoginComponent<{}, {}> {
   public origin: string = 'facebook';
 
-  public isSdkLoaded: boolean = false;
-
   private handleLoginResponse(response: any): void {
     switch (response.status) {
       case 'connected': {

@@ -14,6 +14,8 @@ export default abstract class BaseLoginComponent<T, U>
 
   public isLoginSuccessful: boolean = false;
 
+  public isSdkLoaded: boolean = false;
+
   private authenticationRequestData: AuthenticationRequestData = { idToken: '' };
 
   protected onThirdPartyLoginSuccessful(
