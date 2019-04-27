@@ -3,19 +3,25 @@ import loadExternalJsASync from '../../../../utils/loadExternalJsASync';
 let promise: Promise<any>;
 declare let gapi: any;
 
+function loadGapiAuth2WithPromise(): Promise<void> {
+  return new Promise((resolve) => {
+    gapi.load('auth2', () => {
+      gapi.auth2.init({
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        client_id: '74489406824-dlmplsl075187spamd9a4m6g90ah56so.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+      });
+      resolve();
+    });
+  });
+}
+
 const id = 'google-jssdk';
 export default function loadGoogleSdk(): Promise<any> {
   if (!promise) {
     promise = loadExternalJsASync(id, '//apis.google.com/js/platform.js')
-      .then(() => {
-        gapi.load('auth2', () => {
-          // Retrieve the singleton for the GoogleAuth library and set up the client.
-          gapi.auth2.init({
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            client_id: '74489406824-dlmplsl075187spamd9a4m6g90ah56so.apps.googleusercontent.com',
-            cookiepolicy: 'single_host_origin',
-          });
-        });
+      .then(async () => {
+        await loadGapiAuth2WithPromise();
       });
   }
   return promise;
