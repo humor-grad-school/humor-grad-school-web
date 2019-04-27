@@ -10,7 +10,7 @@ type BaseLoginComponentProps = {
 
 export default abstract class BaseLoginComponent<T, U>
   extends Component<BaseLoginComponentProps & T, U> {
-  public isLoginFinished: boolean = false;
+  public isLoginFinished: boolean = true;
 
   public isLoginSuccessful: boolean = false;
 

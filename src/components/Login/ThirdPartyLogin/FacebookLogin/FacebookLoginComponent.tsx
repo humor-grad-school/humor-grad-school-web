@@ -57,11 +57,12 @@ export default class FacebookLoginComponent extends BaseLoginComponent<{}, {}> {
   }
 
   public handleLoginButtonClick(): void {
-    if (!this.isSdkLoaded) return;
+    if (!this.isSdkLoaded || !this.isLoginFinished) return;
 
-    if (!this.isLoginFinished) return;
+    this.isLoginFinished = false;
 
     if (this.isLoginSuccessful) {
+      this.isLoginFinished = true;
       this.login();
       return;
     }
@@ -69,7 +70,7 @@ export default class FacebookLoginComponent extends BaseLoginComponent<{}, {}> {
     FB.login((response: any) => {
       this.handleLoginResponse(response);
 
-      if (!(this.isLoginFinished && this.isLoginSuccessful)) return;
+      if (!this.isLoginFinished || !this.isLoginSuccessful) return;
 
       this.login();
     });

@@ -26,7 +26,9 @@ export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
   }
 
   public handleLoginButtonClick(): void {
-    if (!this.isSdkLoaded) return;
+    if (!this.isSdkLoaded || !this.isLoginFinished) return;
+
+    this.isLoginFinished = false;
 
     Kakao.Auth.login({
       success: (authObject: any) => {
