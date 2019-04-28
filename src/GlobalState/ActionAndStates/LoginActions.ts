@@ -1,5 +1,6 @@
 import { getGlobalState } from '../getGlobalState';
 import { HgsRestApi } from '../../generated/client/ClientApis';
+import { ErrorCode } from '../../generated/ErrorCode';
 
 const globalState = getGlobalState();
 
@@ -33,9 +34,10 @@ const LoginActions = {
       return true;
     }
 
-    if (response.errorCode === 'NoUser') return false;
+    const { errorCode } = response;
+    if (errorCode === ErrorCode.AuthenticateErrorCode.NoUser) return false;
 
-    throw new Error(response.errorCode);
+    throw new Error(errorCode);
   },
 
   logout(): void {
@@ -53,8 +55,12 @@ const LoginActions = {
       },
     });
 
-    if (!response.isSuccessful) return false;
-    return true;
+    if (response.isSuccessful) return true;
+
+    const { errorCode } = response;
+    if (errorCode === ErrorCode.SignUpErrorCode.CreateUserFailed) return false;
+
+    throw new Error(errorCode);
   },
 
   openOverlay() {

@@ -5,6 +5,7 @@ import LoginComponent from './LoginComponent';
 import SignUpComponent from './SignUpComponent';
 import { getGlobalStateForReactComponent } from '../../GlobalState/getGlobalState';
 import { GlobalState } from '../../GlobalState/globalState';
+import { ErrorCode } from '../../generated/ErrorCode';
 
 enum LoginOverlayStep {
   Login = 'login',
@@ -99,14 +100,22 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
   }
 
   private async handleSignUp(name: string): Promise<void> {
-    const isSuccess = await LoginActions.signUp(this.origin, name, this.idToken);
-    if (isSuccess) {
-      this.handleLogin(this.origin, this.idToken);
+    try {
+      const isSuccess = await LoginActions.signUp(this.origin, name, this.idToken);
+      if (isSuccess) {
+        this.handleLogin(this.origin, this.idToken);
+
+        this.stepTo(LoginOverlayStep.Login);
+      } else {
+        alert('이미 쓰고 있는 이름 같은데... 좀 더 개성 있는 이름은 없나요?');
+      }
+    } catch (errorCode) {
+      alert('로그인에 문제가 생겼어요. 다시 해볼래요?');
 
       this.stepTo(LoginOverlayStep.Login);
-    }
 
-    console.log(isSuccess);
+      if (errorCode !== ErrorCode.SignUpErrorCode.NoIdentity) throw new Error(errorCode);
+    }
   }
 
   private handleOverlayClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
