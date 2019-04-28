@@ -4,6 +4,7 @@ import BaseLoginComponent from '../BaseLoginComponent';
 import LoginButton from '../LoginButton';
 import LoginActions from '../../../../GlobalState/ActionAndStates/LoginActions';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let gapi: any;
 
 const GoogleLogo = (): JSX.Element => (
@@ -38,12 +39,14 @@ export default class GoogleLoginComponent extends BaseLoginComponent<{}, {}> {
       auth2.attachClickHandler(
         document.getElementById(this.loginButtonElementId),
         {},
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (googleUser: any) => {
           this.onThirdPartyLoginSuccessful({
             idToken: googleUser.getAuthResponse().id_token,
           });
           this.login();
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (error: any) => {
           console.warn(error);
           this.onThirdPartyLoginFailed();

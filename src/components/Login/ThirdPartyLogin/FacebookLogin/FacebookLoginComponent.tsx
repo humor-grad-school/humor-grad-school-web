@@ -4,6 +4,7 @@ import BaseLoginComponent from '../BaseLoginComponent';
 import LoginButton from '../LoginButton';
 import LoginActions from '../../../../GlobalState/ActionAndStates/LoginActions';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let FB: any;
 
 const FacebookLogo = (): JSX.Element => (
@@ -23,6 +24,7 @@ const FacebookLogo = (): JSX.Element => (
 export default class FacebookLoginComponent extends BaseLoginComponent<{}, {}> {
   public origin: string = 'facebook';
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private handleLoginResponse(response: any): void {
     switch (response.status) {
       case 'connected': {
@@ -49,6 +51,7 @@ export default class FacebookLoginComponent extends BaseLoginComponent<{}, {}> {
     loadFacebookSdk().then(() => {
       console.log('facebook loaded');
       this.isSdkLoaded = true;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       FB.getLoginStatus((response: any) => {
         this.handleLoginResponse(response);
       });
@@ -67,6 +70,7 @@ export default class FacebookLoginComponent extends BaseLoginComponent<{}, {}> {
       return;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     FB.login((response: any) => {
       this.handleLoginResponse(response);
 

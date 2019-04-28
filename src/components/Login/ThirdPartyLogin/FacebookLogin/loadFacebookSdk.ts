@@ -1,6 +1,8 @@
 import loadExternalJsASync from '../../../../utils/loadExternalJsASync';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let promise: Promise<any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let FB: any;
 
 const id = 'facebook-jssdk';

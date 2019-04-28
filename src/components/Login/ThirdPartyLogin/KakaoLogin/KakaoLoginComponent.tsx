@@ -4,6 +4,7 @@ import BaseLoginComponent from '../BaseLoginComponent';
 import LoginButton from '../LoginButton';
 import LoginActions from '../../../../GlobalState/ActionAndStates/LoginActions';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let Kakao: any;
 
 const KakaoLogo = (): JSX.Element => (
@@ -31,6 +32,7 @@ export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
     this.isLoginFinished = false;
 
     Kakao.Auth.login({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       success: (authObject: any) => {
         const {
           access_token: accessToken,
@@ -48,6 +50,7 @@ export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
         });
         this.login();
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       fail: (error: any) => {
         console.error(error);
         this.onThirdPartyLoginFailed();

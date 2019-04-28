@@ -1,6 +1,8 @@
 import loadExternalJsASync from '../../../../utils/loadExternalJsASync';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let promise: Promise<any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let gapi: any;
 
 function loadGapiAuth2WithPromise(): Promise<void> {
@@ -17,6 +19,7 @@ function loadGapiAuth2WithPromise(): Promise<void> {
 }
 
 const id = 'google-jssdk';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function loadGoogleSdk(): Promise<any> {
   if (!promise) {
     promise = loadExternalJsASync(id, '//apis.google.com/js/platform.js')

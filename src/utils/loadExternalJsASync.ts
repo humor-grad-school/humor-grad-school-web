@@ -1,5 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const promiseMap: {[id: string]: Promise<any>} = {};
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function loadExternalJsASync(id: string, url: string): Promise<any> {
   if (promiseMap[id]) {
     return promiseMap[id];
