@@ -3,15 +3,16 @@ import loadKakaoSdk from './loadKakaoSdk';
 import BaseLoginComponent from '../BaseLoginComponent';
 import LoginButton from '../LoginButton';
 import LoginActions from '../../../../GlobalState/ActionAndStates/LoginActions';
+import kakaoLogoSvg from '../../../../svg/kakao_logo.svg';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let Kakao: any;
 
 const KakaoLogo = (): JSX.Element => (
   <img
-    width="30px"
-    src="/kakao_logo.png"
+    src={kakaoLogoSvg}
     alt=""
+    width="25px"
   />
 );
 
