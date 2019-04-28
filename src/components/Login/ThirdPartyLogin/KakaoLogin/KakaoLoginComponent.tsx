@@ -2,6 +2,7 @@ import React from 'react';
 import loadKakaoSdk from './loadKakaoSdk';
 import BaseLoginComponent from '../BaseLoginComponent';
 import LoginButton from '../LoginButton';
+import LoginActions from '../../../../GlobalState/ActionAndStates/LoginActions';
 
 declare let Kakao: any;
 
@@ -20,6 +21,7 @@ export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
     loadKakaoSdk().then(() => {
       console.log('kakao loaded');
       this.isSdkLoaded = true;
+      LoginActions.setThirdPartyLogoutFunction(this.origin, this.logout);
     });
   }
 
@@ -50,6 +52,16 @@ export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
         console.error(error);
         this.onThirdPartyLoginFailed();
       },
+    });
+  }
+
+  public logout(): void {
+    if (!this.isSdkLoaded || !this.isLoginFinished) return;
+
+    this.isLoginFinished = false;
+
+    Kakao.Auth.logout(() => {
+      this.onThirdPartyLogout();
     });
   }
 

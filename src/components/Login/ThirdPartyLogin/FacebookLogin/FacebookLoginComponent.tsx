@@ -2,6 +2,7 @@ import React from 'react';
 import loadFacebookSdk from './loadFacebookSdk';
 import BaseLoginComponent from '../BaseLoginComponent';
 import LoginButton from '../LoginButton';
+import LoginActions from '../../../../GlobalState/ActionAndStates/LoginActions';
 
 declare let FB: any;
 
@@ -51,6 +52,7 @@ export default class FacebookLoginComponent extends BaseLoginComponent<{}, {}> {
       FB.getLoginStatus((response: any) => {
         this.handleLoginResponse(response);
       });
+      LoginActions.setThirdPartyLogoutFunction(this.origin, this.logout);
     });
   }
 
@@ -71,6 +73,16 @@ export default class FacebookLoginComponent extends BaseLoginComponent<{}, {}> {
       if (!this.isLoginFinished || !this.isLoginSuccessful) return;
 
       this.login();
+    });
+  }
+
+  public logout(): void {
+    if (!this.isSdkLoaded || !this.isLoginFinished) return;
+
+    this.isLoginFinished = false;
+
+    FB.logout(() => {
+      this.onThirdPartyLogout();
     });
   }
 

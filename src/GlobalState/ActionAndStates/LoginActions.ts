@@ -3,7 +3,19 @@ import { HgsRestApi } from '../../generated/client/ClientApis';
 
 const globalState = getGlobalState();
 
+const thirdPartyLogoutFunctions: { [key: string]: () => void } = {};
+
 const LoginActions = {
+  setThirdPartyLogoutFunction(origin: string, thirdPartyLogoutFunction: () => void): void {
+    thirdPartyLogoutFunctions[origin] = thirdPartyLogoutFunction;
+  },
+
+  logoutThirdParty(origin: string): void {
+    const thirdPartyLogoutFunction = thirdPartyLogoutFunctions[origin];
+    if (!thirdPartyLogoutFunction) return;
+    thirdPartyLogoutFunction();
+  },
+
   async login(origin: string, idToken: string): Promise<boolean> {
     const response = await HgsRestApi.authenticate({
       origin,
@@ -24,6 +36,12 @@ const LoginActions = {
     if (response.errorCode === 'NoUser') return false;
 
     throw new Error(response.errorCode);
+  },
+
+  logout(): void {
+    HgsRestApi.setSessionToken('');
+
+    globalState.loginState.isLoggedIn = false;
   },
 
   async signUp(origin: string, username: string, idToken: string): Promise<boolean> {

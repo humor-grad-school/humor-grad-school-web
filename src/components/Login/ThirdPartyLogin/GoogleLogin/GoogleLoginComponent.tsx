@@ -2,6 +2,7 @@ import React from 'react';
 import loadGoogleSdk from './loadGoogleSdk';
 import BaseLoginComponent from '../BaseLoginComponent';
 import LoginButton from '../LoginButton';
+import LoginActions from '../../../../GlobalState/ActionAndStates/LoginActions';
 
 declare let gapi: any;
 
@@ -48,7 +49,20 @@ export default class GoogleLoginComponent extends BaseLoginComponent<{}, {}> {
           this.onThirdPartyLoginFailed();
         },
       );
+      LoginActions.setThirdPartyLogoutFunction(this.origin, this.logout);
     });
+  }
+
+  public logout(): void {
+    if (!this.isSdkLoaded || !this.isLoginFinished) return;
+
+    this.isLoginFinished = false;
+
+    const auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut()
+      .then(() => {
+        this.onThirdPartyLogout();
+      });
   }
 
   public render(): JSX.Element {

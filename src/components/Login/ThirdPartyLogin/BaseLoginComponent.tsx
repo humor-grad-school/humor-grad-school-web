@@ -31,7 +31,15 @@ export default abstract class BaseLoginComponent<T, U>
     this.isLoginSuccessful = false;
   }
 
+  protected onThirdPartyLogout(): void {
+    this.isLoginFinished = true;
+    this.isLoginSuccessful = false;
+    this.authenticationRequestData = { idToken: '' };
+  }
+
   abstract get origin(): string;
+
+  public abstract logout(): void;
 
   protected login(): void {
     if (!(this.isLoginFinished && this.isLoginSuccessful)) {
