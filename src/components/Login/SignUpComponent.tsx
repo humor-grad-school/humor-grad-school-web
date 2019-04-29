@@ -21,13 +21,16 @@ const Container = styled.div`
 `;
 
 const GoBackButton = styled.button`
-  display: block;
-  border: 4px solid #DDD;
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0);
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  font-size: 2em;
+  padding: 0px;
+  border: 0px;
+  background-color: #EEE;
+  width: 2ex;
+  height: 2ex;
   color: #999;
-  padding: 0.25em 0.5em;
-  margin-bottom: 1em;
   cursor: pointer;
 `;
 
@@ -41,7 +44,8 @@ const NicknameInput = styled.input`
   border: 4px solid #DDD;
   border-radius: 4px 0px 0px 4px;
   padding: 0.5em;
-  font-size: 15px;
+  vertical-align: middle;
+  font-family: inherit;
 `;
 
 const NicknameButton = styled.button`
@@ -49,7 +53,10 @@ const NicknameButton = styled.button`
   border: 4px solid #DDD;
   border-radius: 0px 4px 4px 0px;
   padding: 0.5em;
-  font-size: 14px;
+  cursor: pointer;
+  color: #777;
+  vertical-align: middle;
+  font-family: inherit;
 `;
 
 export default class SignUpComponent
@@ -89,7 +96,7 @@ export default class SignUpComponent
           type="button"
           onClick={goBack}
         >
-          돌아가기
+          {'<'}
         </GoBackButton>
         <Title>처음이시군요? 이름을 지어주세요!</Title>
         <NicknameInput
