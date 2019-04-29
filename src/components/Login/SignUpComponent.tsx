@@ -2,9 +2,9 @@ import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 
 type SignUpComponentProps = {
-  step: 'login' | 'signUp';
   signUp: (username: string) => void;
   goBack: () => void;
+  isActive: 'true' | 'false';
 }
 
 type SignUpComponentStates = {
@@ -12,18 +12,12 @@ type SignUpComponentStates = {
 }
 
 type ContainerProps = {
-  step: 'login' | 'signUp';
+  isActive: 'true' | 'false';
 }
 
 const Container = styled.div`
-  top: 50%;
-  position: absolute;
-  padding: 1em;
-  width: calc(100% - 2em);
-  left: ${(props: ContainerProps) => ((props.step === 'signUp') ? '0px' : '100%')};
-  transform: translateY(-50%);
-  transition: left 0.5s;
   text-align: center;
+  display: ${(props: ContainerProps) => (props.isActive === 'true' ? 'block' : 'none')};
 `;
 
 const GoBackButton = styled.button`
@@ -85,12 +79,12 @@ export default class SignUpComponent
 
   public render(): ReactNode {
     const {
-      step,
       goBack,
+      isActive,
     } = this.props;
 
     return (
-      <Container step={step}>
+      <Container isActive={isActive}>
         <GoBackButton
           type="button"
           onClick={goBack}

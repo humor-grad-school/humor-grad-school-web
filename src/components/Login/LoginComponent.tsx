@@ -6,23 +6,17 @@ import GoogleLoginComponent from './ThirdPartyLogin/GoogleLogin/GoogleLoginCompo
 import KakaoLoginComponent from './ThirdPartyLogin/KakaoLogin/KakaoLoginComponent';
 
 type LoginComponentProps = {
-  step: 'login' | 'signUp';
   login: (origin: string, token: string) => Promise<void>;
+  isActive: 'true' | 'false';
 }
 
 type ContainerProps = {
-  step: 'login' | 'signUp';
+  isActive: 'true' | 'false';
 }
 
 const Container = styled.div`
-  top: 50%;
-  position: absolute;
-  padding: 1em;
-  width: calc(100% - 2em);
-  right: ${(props: ContainerProps) => ((props.step === 'login') ? '0px' : '100%')};
-  transform: translateY(-50%);
-  transition: right 0.5s;
   text-align: center;
+  display: ${(props: ContainerProps) => (props.isActive === 'true' ? 'block' : 'none')};
 `;
 
 const Title = styled.div`
@@ -41,12 +35,12 @@ const LoginButtonContainer = styled.div`
 
 export default function LoginComponent(props: LoginComponentProps): JSX.Element {
   const {
-    step,
     login,
+    isActive,
   } = props;
 
   return (
-    <Container step={step}>
+    <Container isActive={isActive}>
       <Title>소셜 계정으로 로그인하세요!</Title>
       <LoginButtonContainer><DevelopLoginComponent login={login} /></LoginButtonContainer>
       <LoginButtonContainer><FacebookLoginComponent login={login} /></LoginButtonContainer>

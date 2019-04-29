@@ -47,15 +47,27 @@ const CloseGuide = styled.div`
 `;
 
 const Container = styled.div`
-  padding: 1em;
-  max-height: 64ex;
-  max-width: 28em;
-  height: 80vh;
-  width: 80vw;
+  padding: 4em 2em;
+  max-height: 80vh;
+  max-width: 80vw;
   overflow-x: hidden;
   overflow-y: auto;
   background-color: #FFF;
   position: relative;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  font-size: 2em;
+  padding: 0px;
+  border: 0px;
+  background-color: #EEE;
+  width: 2ex;
+  height: 2ex;
+  color: #999;
+  cursor: pointer;
 `;
 
 export default class LoginOverlay extends Component<LoginOverlayProps, LoginOverlayStates> {
@@ -138,14 +150,17 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
       >
         <CloseGuide>오버레이를 닫으려면 배경을 클릭하세요</CloseGuide>
         <Container>
+          <CloseButton onClick={LoginActions.closeOverlay}>
+            X
+          </CloseButton>
           <LoginComponent
             login={this.handleLogin}
-            step={step}
+            isActive={step === LoginOverlayStep.Login ? 'true' : 'false'}
           />
           <SignUpComponent
             signUp={this.handleSignUp}
             goBack={() => { this.stepTo(LoginOverlayStep.Login); }}
-            step={step}
+            isActive={step === LoginOverlayStep.SignUp ? 'true' : 'false'}
           />
         </Container>
       </Overlay>
