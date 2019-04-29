@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import DevelopLoginComponent from './ThirdPartyLogin/DevelopLogin/DevelopLoginComponent';
 import FacebookLoginComponent from './ThirdPartyLogin/FacebookLogin/FacebookLoginComponent';
@@ -7,6 +7,8 @@ import KakaoLoginComponent from './ThirdPartyLogin/KakaoLogin/KakaoLoginComponen
 
 type LoginComponentProps = {
   login: (origin: string, token: string) => Promise<void>;
+  autoLogin: boolean;
+  onAutoLoginChange: (event: ChangeEvent<HTMLInputElement>) => void;
   isActive: 'true' | 'false';
 }
 
@@ -33,9 +35,20 @@ const LoginButtonContainer = styled.div`
   }
 `;
 
+const AutoLoginContainer = styled.div`
+  margin-top: 2em;
+`;
+
+const AutoLoginCheckBox = styled.input`
+  cursor: pointer;
+  vertical-align: text-bottom;
+`;
+
 export default function LoginComponent(props: LoginComponentProps): JSX.Element {
   const {
     login,
+    autoLogin,
+    onAutoLoginChange,
     isActive,
   } = props;
 
@@ -46,6 +59,14 @@ export default function LoginComponent(props: LoginComponentProps): JSX.Element 
       <LoginButtonContainer><FacebookLoginComponent login={login} /></LoginButtonContainer>
       <LoginButtonContainer><GoogleLoginComponent login={login} /></LoginButtonContainer>
       <LoginButtonContainer><KakaoLoginComponent login={login} /></LoginButtonContainer>
+      <AutoLoginContainer>
+        자동으로 로그인할래요?
+        <AutoLoginCheckBox
+          type="checkbox"
+          checked={autoLogin}
+          onChange={onAutoLoginChange}
+        />
+      </AutoLoginContainer>
     </Container>
   );
 }

@@ -1,6 +1,7 @@
 import { getGlobalState } from '../getGlobalState';
 import { HgsRestApi } from '../../generated/client/ClientApis';
 import { ErrorCode } from '../../generated/ErrorCode';
+import { setSessionTokenInLocalStorage, getSessionTokenFromLocalStorage } from '../../utils/localStoreageSessionToken';
 
 const globalState = getGlobalState();
 
@@ -17,7 +18,7 @@ const LoginActions = {
     thirdPartyLogoutFunction();
   },
 
-  async login(origin: string, idToken: string): Promise<boolean> {
+  async login(origin: string, idToken: string, autoLogin?: boolean): Promise<boolean> {
     const response = await HgsRestApi.authenticate({
       origin,
       authenticationRequestData: {
@@ -28,6 +29,8 @@ const LoginActions = {
     if (response.isSuccessful) {
       const { sessionToken } = response.data;
       HgsRestApi.setSessionToken(sessionToken);
+
+      if (autoLogin) setSessionTokenInLocalStorage(sessionToken);
 
       globalState.loginState.isLoggedIn = true;
 
@@ -43,7 +46,18 @@ const LoginActions = {
   logout(): void {
     HgsRestApi.setSessionToken('');
 
+    setSessionTokenInLocalStorage('');
+
     globalState.loginState.isLoggedIn = false;
+  },
+
+  loginFromLocalStorage(): void {
+    const sessionToken = getSessionTokenFromLocalStorage();
+    if (!sessionToken) return;
+
+    HgsRestApi.setSessionToken(sessionToken);
+
+    globalState.loginState.isLoggedIn = true;
   },
 
   async signUp(origin: string, username: string, idToken: string): Promise<boolean> {

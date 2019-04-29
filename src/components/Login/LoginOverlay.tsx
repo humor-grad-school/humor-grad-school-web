@@ -16,6 +16,7 @@ type LoginOverlayProps = {}
 
 type LoginOverlayStates = {
   step: LoginOverlayStep;
+  autoLogin: boolean;
 }
 
 type OverlayProps = {
@@ -84,10 +85,12 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
 
     this.state = {
       step: LoginOverlayStep.Login,
+      autoLogin: false,
     };
 
     this.handleLogin = this.handleLogin.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
+    this.handleAutoLoginChange = this.handleAutoLoginChange.bind(this);
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
   }
 
@@ -101,7 +104,9 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
     this.origin = origin;
     this.idToken = idToken;
 
-    const isSuccess = await LoginActions.login(origin, idToken);
+    const { autoLogin } = this.state;
+
+    const isSuccess = await LoginActions.login(origin, idToken, autoLogin);
 
     if (isSuccess) {
       LoginActions.closeOverlay();
@@ -130,6 +135,12 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
     }
   }
 
+  private handleAutoLoginChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    this.setState({
+      autoLogin: event.target.checked,
+    });
+  }
+
   private handleOverlayClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
     const isBackgroundClicked = this.selfRef.current === event.target;
     if (isBackgroundClicked) {
@@ -138,7 +149,10 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
   }
 
   public render(): ReactNode {
-    const { step } = this.state;
+    const {
+      step,
+      autoLogin,
+    } = this.state;
 
     const isActived = this.globalState.loginState.isOverlayActived;
 
@@ -155,6 +169,8 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
           </CloseButton>
           <LoginComponent
             login={this.handleLogin}
+            autoLogin={autoLogin}
+            onAutoLoginChange={this.handleAutoLoginChange}
             isActive={step === LoginOverlayStep.Login ? 'true' : 'false'}
           />
           <SignUpComponent
