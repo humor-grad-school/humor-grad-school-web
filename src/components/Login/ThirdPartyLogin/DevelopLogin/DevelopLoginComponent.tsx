@@ -8,7 +8,7 @@ export default class DevelopLoginComponent extends BaseLoginComponent<{}, {}> {
 
   public componentDidMount(): void {
     this.isSdkLoaded = true;
-    LoginActions.setThirdPartyLogoutFunction(this.origin, this.logout);
+    LoginActions.setThirdPartyLogoutFunction(this.origin, this.logout.bind(this));
   }
 
   public handleLoginButtonClick(): void {
@@ -17,7 +17,7 @@ export default class DevelopLoginComponent extends BaseLoginComponent<{}, {}> {
   }
 
   public logout(): void {
-    if (!this.isSdkLoaded || !this.isLoginFinished) return;
+    if (!this.isSdkLoaded || !this.isLoginFinished || !this.isLoginSuccessful) return;
 
     this.isLoginFinished = false;
 

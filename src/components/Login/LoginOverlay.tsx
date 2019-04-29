@@ -90,6 +90,7 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
 
     this.handleLogin = this.handleLogin.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
+    this.handleGoBack = this.handleGoBack.bind(this);
     this.handleAutoLoginChange = this.handleAutoLoginChange.bind(this);
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
   }
@@ -135,6 +136,11 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
     }
   }
 
+  private handleGoBack() {
+    this.stepTo(LoginOverlayStep.Login);
+    LoginActions.logoutThirdParty(this.origin);
+  }
+
   private handleAutoLoginChange(event: React.ChangeEvent<HTMLInputElement>): void {
     this.setState({
       autoLogin: event.target.checked,
@@ -175,7 +181,7 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
           />
           <SignUpComponent
             signUp={this.handleSignUp}
-            goBack={() => { this.stepTo(LoginOverlayStep.Login); }}
+            goBack={this.handleGoBack}
             isActive={step === LoginOverlayStep.SignUp ? 'true' : 'false'}
           />
         </Container>

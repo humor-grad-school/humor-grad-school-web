@@ -51,7 +51,7 @@ export default class FacebookLoginComponent extends BaseLoginComponent<{}, {}> {
       FB.getLoginStatus((response: any) => {
         this.handleLoginResponse(response);
       });
-      LoginActions.setThirdPartyLogoutFunction(this.origin, this.logout);
+      LoginActions.setThirdPartyLogoutFunction(this.origin, this.logout.bind(this));
     });
   }
 
@@ -77,7 +77,7 @@ export default class FacebookLoginComponent extends BaseLoginComponent<{}, {}> {
   }
 
   public logout(): void {
-    if (!this.isSdkLoaded || !this.isLoginFinished) return;
+    if (!this.isSdkLoaded || !this.isLoginFinished || !this.isLoginSuccessful) return;
 
     this.isLoginFinished = false;
 

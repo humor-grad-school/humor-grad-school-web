@@ -5,17 +5,23 @@ import { setSessionTokenInLocalStorage, getSessionTokenFromLocalStorage } from '
 
 const globalState = getGlobalState();
 
-const thirdPartyLogoutFunctions: { [key: string]: () => void } = {};
+const thirdPartyLogoutFunctions: Map<string, () => void> = new Map();
 
 const LoginActions = {
   setThirdPartyLogoutFunction(origin: string, thirdPartyLogoutFunction: () => void): void {
-    thirdPartyLogoutFunctions[origin] = thirdPartyLogoutFunction;
+    thirdPartyLogoutFunctions.set(origin, thirdPartyLogoutFunction);
   },
 
-  logoutThirdParty(origin: string): void {
-    const thirdPartyLogoutFunction = thirdPartyLogoutFunctions[origin];
-    if (!thirdPartyLogoutFunction) return;
-    thirdPartyLogoutFunction();
+  logoutThirdParty(origin?: string): void {
+    if (origin) {
+      const thirdPartyLogoutFunction = thirdPartyLogoutFunctions.get(origin);
+      if (!thirdPartyLogoutFunction) return;
+      thirdPartyLogoutFunction();
+    } else {
+      thirdPartyLogoutFunctions.forEach(thirdPartyLogoutFunction => (
+        thirdPartyLogoutFunction()
+      ));
+    }
   },
 
   async login(origin: string, idToken: string, autoLogin?: boolean): Promise<boolean> {
@@ -49,6 +55,8 @@ const LoginActions = {
     setSessionTokenInLocalStorage('');
 
     globalState.loginState.isLoggedIn = false;
+
+    LoginActions.logoutThirdParty();
   },
 
   loginFromLocalStorage(): void {

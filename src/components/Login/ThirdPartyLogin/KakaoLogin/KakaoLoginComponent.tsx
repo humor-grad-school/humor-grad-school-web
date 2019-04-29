@@ -23,7 +23,7 @@ export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
     loadKakaoSdk().then(() => {
       console.log('kakao loaded');
       this.isSdkLoaded = true;
-      LoginActions.setThirdPartyLogoutFunction(this.origin, this.logout);
+      LoginActions.setThirdPartyLogoutFunction(this.origin, this.logout.bind(this));
     });
   }
 
@@ -60,7 +60,7 @@ export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
   }
 
   public logout(): void {
-    if (!this.isSdkLoaded || !this.isLoginFinished) return;
+    if (!this.isSdkLoaded || !this.isLoginFinished || !this.isLoginSuccessful) return;
 
     this.isLoginFinished = false;
 
