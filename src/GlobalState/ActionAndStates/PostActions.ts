@@ -14,6 +14,7 @@ import { unconfirmedBlot } from '../../types/Blot';
 import { uploadContentToS3 } from './ContentActions';
 import { convertContentData } from '../../converter/convertContent';
 import convertBlotsToContentData from '../../converter/convertBlotsToContentData';
+import LoginActions from './LoginActions';
 
 async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
   return Promise.all(postIds.map(async (postId) => {
@@ -98,6 +99,7 @@ const PostActions = {
       globalState.postState.posts[postId].likes += 1;
     } catch (error) {
       alertError(error.message);
+      if (error.message === '401') LoginActions.openOverlay();
     }
   },
 

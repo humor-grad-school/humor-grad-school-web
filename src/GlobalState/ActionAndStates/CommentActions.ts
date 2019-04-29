@@ -7,6 +7,7 @@ import { unconfirmedBlot } from '../../types/Blot';
 import { uploadContentToS3 } from './ContentActions';
 import { convertContentData } from '../../converter/convertContent';
 import convertBlotsToContentData from '../../converter/convertBlotsToContentData';
+import LoginActions from './LoginActions';
 
 async function loadCommentBatch(commentInfoes: CommentInfoes): Promise<CommentData[]> {
   return Promise.all(commentInfoes.map(async (commentInfo) => {
@@ -51,6 +52,7 @@ const CommentActions = {
       globalState.commentState.comments[commentId].likes += 1;
     } catch (error) {
       alertError(error.message);
+      if (error.message === '401') LoginActions.openOverlay();
     }
   },
 

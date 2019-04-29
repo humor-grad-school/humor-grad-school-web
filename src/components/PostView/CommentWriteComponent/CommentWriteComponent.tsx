@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CommentActions from '../../../GlobalState/ActionAndStates/CommentActions';
 import { unconfirmedBlot } from '../../../types/Blot';
 import ContentEditorComponent from '../../ContentWrite/ContentEditorComponent';
+import LoginActions from '../../../GlobalState/ActionAndStates/LoginActions';
 
 type CommentWritePageProps = {
   parentCommentId?: number;
@@ -24,14 +25,24 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
     return contentEditorComponent.getContent();
   }
 
-  private postContent(): void {
+  private async writeComment(): Promise<void> {
     const {
       postId,
       parentCommentId,
     } = this.props;
 
     const content = this.getContent();
-    CommentActions.writeComment(content, postId, parentCommentId);
+    try {
+      const commentId = await CommentActions.writeComment(content, postId, parentCommentId);
+      if (commentId === -1) return;
+    } catch (error) {
+      if (error.message === '401') {
+        alert('로그인이 필요합니다.');
+        LoginActions.openOverlay();
+        return;
+      }
+      alert('알 수 없는 에러로 실패했습니다.');
+    }
   }
 
   public render(): ReactNode {
@@ -51,7 +62,7 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
           }}
         />
         <button
-          onClick={() => this.postContent()}
+          onClick={() => this.writeComment()}
           type="button"
         >
           작성완료!
