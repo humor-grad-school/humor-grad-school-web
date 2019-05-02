@@ -1,7 +1,7 @@
 import { getGlobalState } from '../getGlobalState';
 import { HgsRestApi } from '../../generated/client/ClientApis';
-import { ErrorCode } from '../../generated/ErrorCode';
 import { setSessionTokenInLocalStorage, getSessionTokenFromLocalStorage } from '../../utils/localStoreageSessionToken';
+import { ResponseType } from '../../generated/ResponseType';
 
 const globalState = getGlobalState();
 
@@ -26,7 +26,11 @@ const LoginActions = {
     }
   },
 
-  async login(origin: string, idToken: string, autoLogin?: boolean): Promise<boolean> {
+  async login(
+    origin: string,
+    idToken: string,
+    autoLogin?: boolean,
+  ): Promise<ResponseType.AuthenticateResponseType> {
     const response = await HgsRestApi.authenticate({
       origin,
       authenticationRequestData: {
@@ -43,16 +47,9 @@ const LoginActions = {
       }
 
       globalState.loginState.isLoggedIn = true;
-
-      return true;
     }
 
-    const { errorCode } = response;
-    if (errorCode === ErrorCode.AuthenticateErrorCode.NoUser) {
-      return false;
-    }
-
-    throw new Error(errorCode);
+    return response as ResponseType.AuthenticateResponseType;
   },
 
   logout(): void {
@@ -76,7 +73,11 @@ const LoginActions = {
     globalState.loginState.isLoggedIn = true;
   },
 
-  async signUp(origin: string, username: string, idToken: string): Promise<boolean> {
+  async signUp(
+    origin: string,
+    username: string,
+    idToken: string,
+  ): Promise<ResponseType.SignUpResponseType> {
     const response = await HgsRestApi.signUp({
       origin,
       username,
@@ -85,16 +86,7 @@ const LoginActions = {
       },
     });
 
-    if (response.isSuccessful) {
-      return true;
-    }
-
-    const { errorCode } = response;
-    if (errorCode === ErrorCode.SignUpErrorCode.CreateUserFailed) {
-      return false;
-    }
-
-    throw new Error(errorCode);
+    return response;
   },
 
   openOverlay() {

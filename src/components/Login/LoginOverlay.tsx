@@ -107,33 +107,52 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
 
     const { autoLogin } = this.state;
 
-    const isSuccess = await LoginActions.login(origin, idToken, autoLogin);
+    const response = await LoginActions.login(origin, idToken, autoLogin);
 
-    if (isSuccess) {
+    if (response.isSuccessful) {
       LoginActions.closeOverlay();
       return;
     }
 
-    this.stepTo(LoginOverlayStep.SignUp);
+    switch (response.errorCode) {
+      case ErrorCode.AuthenticateErrorCode.NoUser: {
+        this.stepTo(LoginOverlayStep.SignUp);
+        break;
+      }
+
+      case ErrorCode.AuthenticateErrorCode.WrongIdentityType: {
+        throw new Error(response.errorCode);
+      }
+
+      default: {
+        alert('로그인에 문제가 생겼어요. 다시 해볼래요?');
+        break;
+      }
+    }
   }
 
   private async handleSignUp(name: string): Promise<void> {
-    try {
-      const isSuccess = await LoginActions.signUp(this.origin, name, this.idToken);
-      if (isSuccess) {
-        this.handleLogin(this.origin, this.idToken);
-
-        this.stepTo(LoginOverlayStep.Login);
-      } else {
-        alert('이미 쓰고 있는 이름 같은데... 좀 더 개성 있는 이름은 없나요?');
-      }
-    } catch (errorCode) {
-      alert('로그인에 문제가 생겼어요. 다시 해볼래요?');
-
+    const response = await LoginActions.signUp(this.origin, name, this.idToken);
+    if (response.isSuccessful) {
+      this.handleLogin(this.origin, this.idToken);
       this.stepTo(LoginOverlayStep.Login);
 
-      if (errorCode !== ErrorCode.SignUpErrorCode.NoIdentity) {
-        throw new Error(errorCode);
+      return;
+    }
+
+    switch (response.errorCode) {
+      case ErrorCode.SignUpErrorCode.CreateUserFailed: {
+        alert('이미 쓰고 있는 이름 같은데... 좀 더 개성 있는 이름은 없나요?');
+        break;
+      }
+
+      case ErrorCode.SignUpErrorCode.WrongOrigin: {
+        throw new Error(response.errorCode);
+      }
+
+      default: {
+        alert('로그인에 문제가 생겼어요. 다시 해볼래요?');
+        this.stepTo(LoginOverlayStep.Login);
       }
     }
   }
