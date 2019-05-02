@@ -9,16 +9,16 @@ type LoginComponentProps = {
   login: (origin: string, token: string) => Promise<void>;
   autoLogin: boolean;
   onAutoLoginChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  isActive: 'true' | 'false';
+  isActive: boolean;
 }
 
 type ContainerProps = {
-  isActive: 'true' | 'false';
+  isActive: boolean;
 }
 
 const Container = styled.div`
   text-align: center;
-  display: ${(props: ContainerProps) => (props.isActive === 'true' ? 'block' : 'none')};
+  display: ${(props: ContainerProps) => (props.isActive ? 'block' : 'none')};
 `;
 
 const Title = styled.div`

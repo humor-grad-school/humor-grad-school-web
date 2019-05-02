@@ -4,7 +4,7 @@ import styled from 'styled-components';
 type SignUpComponentProps = {
   signUp: (username: string) => void;
   goBack: () => void;
-  isActive: 'true' | 'false';
+  isActive: boolean;
 }
 
 type SignUpComponentStates = {
@@ -12,12 +12,12 @@ type SignUpComponentStates = {
 }
 
 type ContainerProps = {
-  isActive: 'true' | 'false';
+  isActive: boolean;
 }
 
 const Container = styled.div`
   text-align: center;
-  display: ${(props: ContainerProps) => (props.isActive === 'true' ? 'block' : 'none')};
+  display: ${(props: ContainerProps) => (props.isActive ? 'block' : 'none')};
 `;
 
 const GoBackButton = styled.button`
