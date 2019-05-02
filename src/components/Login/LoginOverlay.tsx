@@ -157,7 +157,7 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
     }
   }
 
-  private handleGoBack() {
+  private handleGoBack(): void {
     this.stepTo(LoginOverlayStep.Login);
     LoginActions.logoutThirdParty(this.origin);
   }
