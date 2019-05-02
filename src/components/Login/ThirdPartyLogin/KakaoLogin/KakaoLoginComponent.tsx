@@ -28,7 +28,9 @@ export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
   }
 
   public handleLoginButtonClick(): void {
-    if (!this.isSdkLoaded || !this.isLoginFinished) return;
+    if (!this.isSdkLoaded || !this.isLoginFinished) {
+      return;
+    }
 
     this.isLoginFinished = false;
 
@@ -60,7 +62,9 @@ export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
   }
 
   public logout(): void {
-    if (!this.isSdkLoaded || !this.isLoginFinished || !this.isLoginSuccessful) return;
+    if (!this.isSdkLoaded || !this.isLoginFinished || !this.isLoginSuccessful) {
+      return;
+    }
 
     this.isLoginFinished = false;
 

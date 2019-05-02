@@ -103,7 +103,7 @@ export default class SignUpComponent
           type="text"
           onChange={this.handleUsernameChange}
           placeholder="[여기에 닉네임을 입력]"
-          onKeyUp={(event) => { if (event.key === 'Enter') this.handleSignUp(); }}
+          onKeyUp={(event) => { if (event.key === 'Enter') { this.handleSignUp(); } }}
         />
         <NicknameButton
           type="button"

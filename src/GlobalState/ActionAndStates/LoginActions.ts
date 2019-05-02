@@ -15,7 +15,9 @@ const LoginActions = {
   logoutThirdParty(origin?: string): void {
     if (origin) {
       const thirdPartyLogoutFunction = thirdPartyLogoutFunctions.get(origin);
-      if (!thirdPartyLogoutFunction) return;
+      if (!thirdPartyLogoutFunction) {
+        return;
+      }
       thirdPartyLogoutFunction();
     } else {
       thirdPartyLogoutFunctions.forEach(thirdPartyLogoutFunction => (
@@ -36,7 +38,9 @@ const LoginActions = {
       const { sessionToken } = response.data;
       HgsRestApi.setSessionToken(sessionToken);
 
-      if (autoLogin) setSessionTokenInLocalStorage(sessionToken);
+      if (autoLogin) {
+        setSessionTokenInLocalStorage(sessionToken);
+      }
 
       globalState.loginState.isLoggedIn = true;
 
@@ -44,7 +48,9 @@ const LoginActions = {
     }
 
     const { errorCode } = response;
-    if (errorCode === ErrorCode.AuthenticateErrorCode.NoUser) return false;
+    if (errorCode === ErrorCode.AuthenticateErrorCode.NoUser) {
+      return false;
+    }
 
     throw new Error(errorCode);
   },
@@ -61,7 +67,9 @@ const LoginActions = {
 
   loginFromLocalStorage(): void {
     const sessionToken = getSessionTokenFromLocalStorage();
-    if (!sessionToken) return;
+    if (!sessionToken) {
+      return;
+    }
 
     HgsRestApi.setSessionToken(sessionToken);
 
@@ -77,10 +85,14 @@ const LoginActions = {
       },
     });
 
-    if (response.isSuccessful) return true;
+    if (response.isSuccessful) {
+      return true;
+    }
 
     const { errorCode } = response;
-    if (errorCode === ErrorCode.SignUpErrorCode.CreateUserFailed) return false;
+    if (errorCode === ErrorCode.SignUpErrorCode.CreateUserFailed) {
+      return false;
+    }
 
     throw new Error(errorCode);
   },

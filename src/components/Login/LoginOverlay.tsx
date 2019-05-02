@@ -132,7 +132,9 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
 
       this.stepTo(LoginOverlayStep.Login);
 
-      if (errorCode !== ErrorCode.SignUpErrorCode.NoIdentity) throw new Error(errorCode);
+      if (errorCode !== ErrorCode.SignUpErrorCode.NoIdentity) {
+        throw new Error(errorCode);
+      }
     }
   }
 

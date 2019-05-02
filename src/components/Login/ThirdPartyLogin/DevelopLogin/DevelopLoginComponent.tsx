@@ -17,7 +17,9 @@ export default class DevelopLoginComponent extends BaseLoginComponent<{}, {}> {
   }
 
   public logout(): void {
-    if (!this.isSdkLoaded || !this.isLoginFinished || !this.isLoginSuccessful) return;
+    if (!this.isSdkLoaded || !this.isLoginFinished || !this.isLoginSuccessful) {
+      return;
+    }
 
     this.isLoginFinished = false;
 
