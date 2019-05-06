@@ -30,7 +30,7 @@ const LoginActions = {
     origin: string,
     idToken: string,
     autoLogin?: boolean,
-  ): Promise<ResponseType.AuthenticateResponseType> {
+  ): ReturnType<typeof HgsRestApi.authenticate> {
     const response = await HgsRestApi.authenticate({
       origin,
       authenticationRequestData: {
@@ -49,7 +49,7 @@ const LoginActions = {
       globalState.loginState.isLoggedIn = true;
     }
 
-    return response as ResponseType.AuthenticateResponseType;
+    return response;
   },
 
   logout(): void {
