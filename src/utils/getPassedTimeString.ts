@@ -1,12 +1,9 @@
 function getShortDateString(date: Date): string {
-  // return `${date.getFullYear()}.${date.getMonth()}.${date.getDay()}`;
   const date1 = new Date(date);
   return `${date1.getFullYear()}.${date1.getMonth()}.${date1.getDay()}`;
 }
 
-// TODO: Fix bug on observer-proxy
 export default function getPassedTimeString(createdAt: Date): string {
-  // const passedMillis = Date.now() - createdAt.getTime();
   const passedMillis = Date.now() - new Date(createdAt).getTime() - 9 * 60 * 60 * 1000;
 
   const second = Math.floor(passedMillis / 1000);

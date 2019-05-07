@@ -41,8 +41,6 @@ function makeCommentTree(commentInfoes: CommentInfoes): CommentTreeElement[] {
 }
 
 const sortByCreatedAt = (a: CommentTreeElement, b: CommentTreeElement): number => {
-  // TODO: Fix bug on observer-proxy
-  // a.createdAt.getTime() - b.createdAt.getTime()
   const aDate = new Date(a.createdAt);
   const bDate = new Date(b.createdAt);
 

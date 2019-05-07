@@ -74,7 +74,6 @@ const PostLink = styled.a`
   color: #888;
 `;
 
-// TODO: Replace writer's avatar to rank image
 export default function PostHeaderComponent({ postData }: PostHeaderComponentProps): JSX.Element {
   const {
     id,

@@ -64,7 +64,6 @@ async function likePost(postId: number): Promise<void> {
   }
 }
 
-// TODO: Display likes
 export default function PostFooterComponent({ postData }: PostFooterComponentProps): JSX.Element {
   const {
     id,

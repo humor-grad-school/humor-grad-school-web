@@ -60,7 +60,6 @@ function forceLoad(props: PostViewPageProps): void {
 export default class PostViewPage extends Component<PostViewPageProps, {}> {
   private globalState: GlobalState = getGlobalStateForReactComponent(this);
 
-  // TODO: Check etag and then update
   public componentWillMount(): void {
     forceLoad(this.props);
   }
@@ -77,7 +76,6 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
     const { boardName } = match.params;
     const pageNumber = parseInt(match.params.pageNum, 10) || 1;
 
-    // TODO: Check etag and then update
     const boardData = this.globalState.boardState.boards[boardName];
     if (!boardData) {
       return false;
