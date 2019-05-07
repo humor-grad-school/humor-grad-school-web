@@ -24,7 +24,6 @@ export default class GoogleLoginComponent extends BaseLoginComponent<{}, {}> {
 
   public componentDidMount(): void {
     loadGoogleSdk().then(async () => {
-      console.log('google loaded');
       this.isSdkLoaded = true;
       const auth2 = gapi.auth2.getAuthInstance();
       auth2.attachClickHandler(
@@ -39,7 +38,7 @@ export default class GoogleLoginComponent extends BaseLoginComponent<{}, {}> {
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (error: any) => {
-          console.warn(error);
+          console.error(error);
           this.onThirdPartyLoginFailed();
         },
       );

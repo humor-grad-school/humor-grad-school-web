@@ -44,7 +44,6 @@ const Likes = styled.span`
 `;
 
 async function likePost(postId: number): Promise<void> {
-  console.log('asd');
   const response = await PostActions.likePost(postId);
   if (response.isSuccessful) {
     return;
