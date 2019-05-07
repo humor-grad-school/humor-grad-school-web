@@ -21,7 +21,9 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
   = React.createRef<ContentEditorComponent>();
 
   private getContent(): unconfirmedBlot[] {
-    if (!this.contentEditorComponent || !this.contentEditorComponent.current) return [];
+    if (!this.contentEditorComponent || !this.contentEditorComponent.current) {
+      return [];
+    }
     const contentEditorComponent = this.contentEditorComponent.current;
     return contentEditorComponent.getContent();
   }

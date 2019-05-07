@@ -15,12 +15,17 @@ function makeCommentTree(commentInfoes: CommentInfoes): CommentTreeElement[] {
   const commentTreeRoot: CommentTreeRoot = [];
 
   commentInfoes.forEach((commentInfo) => {
-    if (!commentInfo.parentComment) return commentTreeRoot.push(commentInfo as CommentTreeElement);
+    if (!commentInfo.parentComment) {
+      return commentTreeRoot.push(commentInfo as CommentTreeElement);
+    }
+
     const parentCommentIndex = commentTreeRoot.findIndex(
       commentTreeElement => commentTreeElement.id
         === (commentInfo.parentComment as ParentComment).id,
     );
-    if (parentCommentIndex === -1) return false;
+    if (parentCommentIndex === -1) {
+      return false;
+    }
 
     if (!commentTreeRoot[parentCommentIndex].children) {
       commentTreeRoot[parentCommentIndex].children = [];

@@ -79,7 +79,9 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
 
     // TODO: Check etag and then update
     const boardData = this.globalState.boardState.boards[boardName];
-    if (!boardData) return false;
+    if (!boardData) {
+      return false;
+    }
 
     const {
       name,

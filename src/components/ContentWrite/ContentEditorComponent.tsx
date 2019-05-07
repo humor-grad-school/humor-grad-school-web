@@ -79,19 +79,25 @@ export default class ContentEditorComponent extends Component<ContentEditorCompo
   }
 
   public componentDidMount(): void {
-    if (!this.quill || !this.quill.current) return;
+    if (!this.quill || !this.quill.current) {
+      return;
+    }
     const quill = this.quill.current.getEditor();
     quill.on('text-change', this.handleTextChange);
   }
 
   public componentWillUnmount(): void {
-    if (!this.quill || !this.quill.current) return;
+    if (!this.quill || !this.quill.current) {
+      return;
+    }
     const quill = this.quill.current.getEditor();
     quill.off('text-change', this.handleTextChange);
   }
 
   public getContent(): unconfirmedBlot[] {
-    if (!this.quill || !this.quill.current) return [];
+    if (!this.quill || !this.quill.current) {
+      return [];
+    }
     const quill = this.quill.current.getEditor();
     return quill.getLines();
   }
@@ -101,7 +107,9 @@ export default class ContentEditorComponent extends Component<ContentEditorCompo
   private contentLimit: ContentLimit
 
   private handleTextChange(): void {
-    if (!this.quill || !this.quill.current) return;
+    if (!this.quill || !this.quill.current) {
+      return;
+    }
     const quill = this.quill.current.getEditor();
     const delta = quill.getContents();
     const embedLimitedOps = limitEmbed(delta.ops, this.contentLimit);
@@ -125,7 +133,9 @@ export default class ContentEditorComponent extends Component<ContentEditorCompo
   private handleImage(): Promise<void> {
     return new Promise((resolve, reject) => {
       const quillComponent = this.quill.current;
-      if (!quillComponent) return;
+      if (!quillComponent) {
+        return;
+      }
       const quill = quillComponent.getEditor();
 
       const inputElement = document.createElement('input');
@@ -133,7 +143,9 @@ export default class ContentEditorComponent extends Component<ContentEditorCompo
       inputElement.accept = 'image/*';
       inputElement.oninput = () => {
         const { files } = inputElement;
-        if (!files) return reject();
+        if (!files) {
+          return reject();
+        }
         const file = files[0];
         const url = URL.createObjectURL(file);
 

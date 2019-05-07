@@ -14,9 +14,17 @@ export default function getPassedTimeString(createdAt: Date): string {
   const hour = Math.floor(minute / 60);
   const day = Math.floor(hour / 24);
 
-  if (day >= 30) return getShortDateString(createdAt);
-  if (day !== 0) return `${day} 일 전`;
-  if (hour !== 0) return `${hour} 시간 전`;
-  if (minute !== 0) return `${minute} 분 전`;
+  if (day >= 30) {
+    return getShortDateString(createdAt);
+  }
+  if (day !== 0) {
+    return `${day} 일 전`;
+  }
+  if (hour !== 0) {
+    return `${hour} 시간 전`;
+  }
+  if (minute !== 0) {
+    return `${minute} 분 전`;
+  }
   return `${second} 초 전`;
 }
