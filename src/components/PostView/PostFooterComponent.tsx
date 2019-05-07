@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { PostData } from '../../types/PostData';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
+import { ErrorCode } from '../../generated/ErrorCode';
+import LoginActions from '../../GlobalState/ActionAndStates/LoginActions';
 
 type PostFooterComponentProps = {
   postData: PostData;
@@ -41,6 +43,27 @@ const Likes = styled.span`
   color: #CCC;
 `;
 
+async function likePost(postId: number): Promise<void> {
+  console.log('asd');
+  const response = await PostActions.likePost(postId);
+  if (response.isSuccessful) {
+    return;
+  }
+
+  switch (response.errorCode) {
+    case ErrorCode.DefaultErrorCode.Unauthenticated: {
+      alert('로그인이 필요해요');
+      LoginActions.openOverlay();
+      break;
+    }
+
+    default: {
+      alert('알 수 없는 에러로 실패했어요');
+      break;
+    }
+  }
+}
+
 // TODO: Display likes
 export default function PostFooterComponent({ postData }: PostFooterComponentProps): JSX.Element {
   const {
@@ -52,7 +75,7 @@ export default function PostFooterComponent({ postData }: PostFooterComponentPro
     <Container>
       <LikeButton
         isLiked={isLiked}
-        onClick={() => { if (!isLiked) PostActions.likePost(id); }}
+        onClick={() => (isLiked ? null : likePost(id))}
         type="button"
       >
         {isLiked ? '좋아했습니다?' : '좋아요!'}

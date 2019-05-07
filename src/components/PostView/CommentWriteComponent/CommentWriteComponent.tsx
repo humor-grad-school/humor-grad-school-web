@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CommentActions from '../../../GlobalState/ActionAndStates/CommentActions';
 import { unconfirmedBlot } from '../../../types/Blot';
 import ContentEditorComponent from '../../ContentWrite/ContentEditorComponent';
+import { ErrorCode } from '../../../generated/ErrorCode';
 import LoginActions from '../../../GlobalState/ActionAndStates/LoginActions';
 
 type CommentWritePageProps = {
@@ -32,16 +33,33 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
     } = this.props;
 
     const content = this.getContent();
+
+    // TODO: Rework it not to use try catch
+    let errorCode = '';
+
     try {
-      const commentId = await CommentActions.writeComment(content, postId, parentCommentId);
-      if (commentId === -1) return;
-    } catch (error) {
-      if (error.message === '401') {
-        alert('로그인이 필요합니다.');
-        LoginActions.openOverlay();
+      const response = parentCommentId
+        ? await CommentActions.writeSubComment(content, postId, parentCommentId)
+        : await CommentActions.writeComment(content, postId);
+
+      if (response.isSuccessful) {
         return;
       }
-      alert('알 수 없는 에러로 실패했습니다.');
+    } catch (error) {
+      errorCode = error;
+    }
+
+    switch (errorCode) {
+      case ErrorCode.DefaultErrorCode.Unauthenticated: {
+        alert('로그인이 필요해요');
+        LoginActions.openOverlay();
+        break;
+      }
+
+      default: {
+        alert('알 수 없는 에러로 실패했어요');
+        break;
+      }
     }
   }
 

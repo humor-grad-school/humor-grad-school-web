@@ -6,6 +6,7 @@ import { unconfirmedBlot } from '../../types/Blot';
 import PostTitleInputComponent from './PostTitleInputComponent';
 import ContentEditorComponent from '../ContentWrite/ContentEditorComponent';
 import LoginActions from '../../GlobalState/ActionAndStates/LoginActions';
+import { ErrorCode } from '../../generated/ErrorCode';
 
 type PostWritePageProps = RouteComponentProps<PostViewPageParams>
 
@@ -82,17 +83,31 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     const content = this.getContent();
     const { boardName } = params;
 
+    // TODO: Rework it not to use try catch
+    let errorCode = '';
+
     try {
-      const postId = await PostActions.writePost(title, content, boardName);
-      if (postId === -1) return;
-      this.redirect(`/post/${postId}`);
-    } catch (error) {
-      if (error.message === '401') {
-        alert('로그인이 필요합니다.');
-        LoginActions.openOverlay();
+      const response = await PostActions.writePost(title, content, boardName);
+
+      if (response.isSuccessful) {
+        this.redirect(`/post/${response.data.postId}`);
         return;
       }
-      alert('알 수 없는 에러로 실패했습니다.');
+    } catch (error) {
+      errorCode = error;
+    }
+
+    switch (errorCode) {
+      case ErrorCode.DefaultErrorCode.Unauthenticated: {
+        alert('로그인이 필요해요');
+        LoginActions.openOverlay();
+        break;
+      }
+
+      default: {
+        alert('알 수 없는 에러로 실패했어요');
+        break;
+      }
     }
   }
 

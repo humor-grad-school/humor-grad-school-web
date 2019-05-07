@@ -1,69 +1,58 @@
 import { HgsRestApi } from '../../generated/client/ClientApis';
 
-export async function uploadContentToS3(content: string): Promise<string> {
-  const {
-    isSuccessful,
-    errorCode,
-    data,
-  } = await HgsRestApi.requestPresignedPostFieldsForContent();
+export async function uploadContentToS3(
+  content: string,
+): ReturnType<typeof HgsRestApi.requestPresignedPostFieldsForContent> {
+  const response = await HgsRestApi.requestPresignedPostFieldsForContent();
 
-  // TODO: Check error if needed
-  if (!isSuccessful) throw new Error(errorCode);
-  const {
-    fields,
-    key: s3Key,
-    url,
-  } = data;
+  if (response.isSuccessful) {
+    const formData = new FormData();
 
-  const formData = new FormData();
-  Object.entries(fields).forEach(([key, value]) => {
-    formData.append(key, value);
-  });
-  formData.append('key', s3Key);
-  formData.append('file', content);
+    Object.entries(response.data.fields).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    formData.append('key', response.data.key);
+    formData.append('file', content);
 
-  await fetch(url, {
-    method: 'POST',
-    body: formData,
-  })
-    .then((response: Response) => {
-      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+    const fetchResponse = await fetch(response.data.url, {
+      method: 'POST',
+      body: formData,
     });
 
-  return s3Key;
+    if (!fetchResponse.ok) {
+      throw new Error(`${fetchResponse.status} ${fetchResponse.statusText}`);
+    }
+  }
+
+  return response;
 }
 
-export async function uploadMediaToS3(mediaBuffer: Blob): Promise<string> {
-  const {
-    isSuccessful,
-    errorCode,
-    data,
-  } = await HgsRestApi.requestPresignedPostFieldsForMedia();
+export async function uploadMediaToS3(
+  mediaBuffer: Blob,
+): ReturnType<typeof HgsRestApi.requestPresignedPostFieldsForMedia> {
+  const response = await HgsRestApi.requestPresignedPostFieldsForMedia();
 
-  // TODO: Check error if needed
-  if (!isSuccessful) throw new Error(errorCode);
-  const {
-    fields,
-    key: s3Key,
-    url,
-  } = data;
+  if (response.isSuccessful) {
+    const s3Key = response.data.key;
+    const formData = new FormData();
 
-  const formData = new FormData();
-  Object.entries(fields).forEach(([key, value]) => {
-    formData.append(key, value);
-  });
-  formData.append('key', s3Key);
-  formData.append('file', mediaBuffer);
+    Object.entries(response.data.fields).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    formData.append('key', s3Key);
+    formData.append('file', mediaBuffer);
 
-  await fetch(url, {
-    method: 'POST',
-    body: formData,
-  })
-    .then((response: Response) => {
-      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+    const fetchResponse = await fetch(response.data.url, {
+      method: 'POST',
+      body: formData,
     });
 
-  await HgsRestApi.encodeMedia({ s3Key });
+    if (!fetchResponse.ok) {
+      throw new Error(`${fetchResponse.status} ${fetchResponse.statusText}`);
+    }
 
-  return s3Key;
+    await HgsRestApi.encodeMedia({ s3Key });
+  }
+
+  return response;
 }
