@@ -7,34 +7,80 @@ import {
   CommentTreeRoot,
   CommentInfoes,
   CommentInfo,
-  ParentComment,
 } from '../types/CommentData';
 import convertContent from './convertContent';
+
+function findParentComment(
+  commentTreeElement: CommentTreeElement,
+  parentCommentId: number,
+): CommentTreeElement | undefined {
+  if (commentTreeElement.id === parentCommentId) {
+    return commentTreeElement;
+  }
+
+  const { children } = commentTreeElement;
+  if (!children) {
+    return undefined;
+  }
+
+  const parentComment = children.reduce((
+    accumulator: CommentTreeElement | undefined,
+    currentElement,
+  ) => {
+    if (accumulator) {
+      return accumulator;
+    }
+    return findParentComment(currentElement, parentCommentId);
+  }, undefined);
+
+  return parentComment;
+}
+
+function startFindParentComment(
+  commentTreeRoot: CommentTreeRoot,
+  parentCommentId: number,
+): CommentTreeElement | undefined {
+  const parentCommentOnTop = commentTreeRoot.find(
+    commentTreeElement => commentTreeElement.id === parentCommentId,
+  );
+
+  if (parentCommentOnTop) {
+    return parentCommentOnTop;
+  }
+
+  const parentComment = commentTreeRoot.reduce((
+    accumulator: CommentTreeElement | undefined,
+    currentElement,
+  ) => {
+    if (accumulator) {
+      return accumulator;
+    }
+    return findParentComment(currentElement, parentCommentId);
+  }, undefined);
+
+  return parentComment;
+}
 
 function makeCommentTree(commentInfoes: CommentInfoes): CommentTreeElement[] {
   const commentTreeRoot: CommentTreeRoot = [];
 
   commentInfoes.forEach((commentInfo) => {
     if (!commentInfo.parentComment) {
-      return commentTreeRoot.push(commentInfo as CommentTreeElement);
+      commentTreeRoot.push(commentInfo);
+      return;
     }
 
-    const parentCommentIndex = commentTreeRoot.findIndex(
-      commentTreeElement => commentTreeElement.id
-        === (commentInfo.parentComment as ParentComment).id,
-    );
-    if (parentCommentIndex === -1) {
-      return false;
+    const parentComment = startFindParentComment(commentTreeRoot, commentInfo.parentComment.id);
+
+    if (!parentComment) {
+      return;
     }
 
-    if (!commentTreeRoot[parentCommentIndex].children) {
-      commentTreeRoot[parentCommentIndex].children = [];
+    if (!parentComment.children) {
+      parentComment.children = [];
     }
 
-    (commentTreeRoot[parentCommentIndex].children as CommentTreeElement[])
-      .push(commentInfo as CommentTreeElement);
-
-    return true;
+    parentComment.children.push(commentInfo);
   });
 
   return commentTreeRoot;
