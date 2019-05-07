@@ -77,6 +77,11 @@ const PostActions = {
     globalState.postState.posts[postId] = postData;
   },
 
+  async reloadPost(postId: number): Promise<void> {
+    postLoader.clear(postId);
+    await PostActions.loadPost(postId);
+  },
+
   async likePost(postId: number): ReturnType<typeof HgsRestApi.likePost> {
     const response = await HgsRestApi.likePost({ postId });
 
