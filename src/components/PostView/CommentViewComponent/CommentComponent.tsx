@@ -20,12 +20,12 @@ type CommentComponentStates = {
 }
 
 type ContainerProps = {
-  issub: 'true' | 'false';
+  issub: boolean;
 }
 
 const Container = styled.li`
   margin-bottom: 1em;
-  margin-left: ${(props: ContainerProps) => (props.issub === 'true' ? '2em' : '')}
+  margin-left: ${(props: ContainerProps) => (props.issub ? '2em' : '')}
 `;
 
 const ParentCommentWriter = styled.span`
@@ -90,7 +90,7 @@ export default class CommentComponent
     } = this.state;
 
     return (
-      <Container issub={parentComment ? 'true' : 'false'}>
+      <Container issub={!!parentComment}>
         <CommentHeaderComponent
           commentInfo={commentInfo}
           postWriterId={postWriterId}
