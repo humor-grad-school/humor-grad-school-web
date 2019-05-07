@@ -84,7 +84,13 @@ Promise<ContentElementData> {
     case BlotType.Image: {
       const { image: imageValue } = (blot as ImageBlot).value() as { image: ImageBlotValue };
       const blob = await fetch(imageValue.url).then(response => response.blob());
-      const imageS3Key = await uploadMediaToS3(blob);
+      const uploadMediaToS3Response = await uploadMediaToS3(blob);
+
+      if (!uploadMediaToS3Response.isSuccessful) {
+        throw uploadMediaToS3Response.errorCode;
+      }
+
+      const imageS3Key = uploadMediaToS3Response.data.key;
 
       const contentData: ImageElementData = {
         type: ContentElementDataType.Image,

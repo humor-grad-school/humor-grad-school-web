@@ -67,18 +67,6 @@ async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
   }));
 }
 
-// TODO: Make custom alert?
-function alertError(errorCode: string): void {
-  switch (errorCode) {
-    case '401':
-      alert('로그인 되지 않았습니다');
-      break;
-
-    default:
-      alert('알 수 없는 오류가 발생했습니다');
-  }
-}
-
 const postLoader = new DataLoader<number, PostData>(postIds => loadPostBatch(postIds));
 
 const globalState = getGlobalState();
@@ -89,35 +77,39 @@ const PostActions = {
     globalState.postState.posts[postId] = postData;
   },
 
-  async likePost(postId: number): Promise<void> {
-    try {
-      const data = await HgsRestApi.likePost({ postId });
-      // TODO: Is isSuccessful false? Is it possible?
-      if (!data.isSuccessful) return;
+  async likePost(postId: number): ReturnType<typeof HgsRestApi.likePost> {
+    const response = await HgsRestApi.likePost({ postId });
+
+    if (response.isSuccessful) {
       globalState.postState.posts[postId].isLiked = true;
       globalState.postState.posts[postId].likes += 1;
-    } catch (error) {
-      alertError(error.message);
     }
+
+    return response;
   },
 
   async writePost(
     title: string,
     contentInBlots: unconfirmedBlot[],
     boardName: string,
-  ): Promise<number> {
+  ): ReturnType<typeof HgsRestApi.writePost> {
     const postContentData = await convertBlotsToContentData(contentInBlots);
     const postContentDataInYml = convertContentData(postContentData);
-    const contentS3Key = await uploadContentToS3(postContentDataInYml);
+    const uploadContentToS3Response = await uploadContentToS3(postContentDataInYml);
+
+    if (!uploadContentToS3Response.isSuccessful) {
+      throw uploadContentToS3Response.errorCode;
+    }
+
+    const contentS3Key = uploadContentToS3Response.data.key;
+
     const response = await HgsRestApi.writePost({
       title,
       contentS3Key,
       boardName,
     });
 
-    return response.isSuccessful
-      ? response.data.postId
-      : -1;
+    return response;
   },
 };
 
