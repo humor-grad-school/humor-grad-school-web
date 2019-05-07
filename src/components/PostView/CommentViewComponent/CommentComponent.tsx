@@ -101,7 +101,7 @@ export default class CommentComponent
             : null
         }
         <Body>{startRenderContent(content, { maxImage: 1 })}</Body>
-        <CommentFooterComponent commentInfo={commentInfo} />
+        <CommentFooterComponent commentData={commentData} />
         {
           isWriting
             ? (

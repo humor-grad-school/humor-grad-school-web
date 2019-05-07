@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CommentInfo } from '../../../types/CommentData';
+import { CommentData } from '../../../types/CommentData';
 import CommentActions from '../../../GlobalState/ActionAndStates/CommentActions';
 import { ErrorCode } from '../../../generated/ErrorCode';
 import LoginActions from '../../../GlobalState/ActionAndStates/LoginActions';
@@ -50,14 +50,14 @@ async function likeComment(commentId: number): Promise<void> {
 }
 
 export default function CommentFooterComponent({
-  commentInfo,
+  commentData,
 }: {
-  commentInfo: CommentInfo;
+  commentData: CommentData;
 }): JSX.Element {
   const {
     id,
     likes,
-  } = commentInfo;
+  } = commentData;
 
   return (
     <Container>
