@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import MainPage from './components/MainPage';
+import MainPage from './components/MainPage/MainPage';
 import PostViewPage from './components/PostView/PostViewPage';
 import PostWritePage from './components/PostWrite/PostWritePage';
 import BoardViewPage from './components/BoardView/BoardViewPage';
