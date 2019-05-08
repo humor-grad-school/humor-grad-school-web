@@ -11,8 +11,18 @@ const Container = styled.ol`
 
 export default function PostListComponent({
   posts,
+  postLimit = Infinity,
 }: {
   posts: Post[];
+  postLimit?: number;
 }): JSX.Element {
-  return <Container>{renderPostListItem(posts)}</Container>;
+  const limitedPosts = posts.length > postLimit
+    ? posts.slice(0, postLimit)
+    : posts;
+
+  return (
+    <Container>
+      {renderPostListItem(limitedPosts)}
+    </Container>
+  );
 }

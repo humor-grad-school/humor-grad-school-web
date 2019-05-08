@@ -51,7 +51,7 @@ export default class FeedComponent extends Component<FeedComponentProps, {}> {
     return (
       <Container>
         <FeedPostListHeaderComponent boardName={boardName} />
-        <PostListComponent posts={posts} />
+        <PostListComponent posts={posts} postLimit={5} />
       </Container>
     );
   }
