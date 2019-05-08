@@ -90,7 +90,7 @@ const Likes = styled.div`
   width: 32px;
 `;
 
-export default function BoardPostElementComponent({
+export default function PostListItemComponent({
   post,
 }: {
   post: Post;
