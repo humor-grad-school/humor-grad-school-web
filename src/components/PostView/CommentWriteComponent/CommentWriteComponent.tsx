@@ -33,6 +33,7 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
     const {
       postId,
       parentCommentId,
+      cancelWriting,
     } = this.props;
 
     const content = this.getContent();
@@ -47,6 +48,7 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
 
       if (response.isSuccessful) {
         PostActions.reloadPost(postId);
+        cancelWriting();
         return;
       }
     } catch (error) {
