@@ -5,6 +5,7 @@ import { unconfirmedBlot } from '../../../types/Blot';
 import ContentEditorComponent from '../../ContentWrite/ContentEditorComponent';
 import { ErrorCode } from '../../../generated/ErrorCode';
 import LoginActions from '../../../GlobalState/ActionAndStates/LoginActions';
+import PostActions from '../../../GlobalState/ActionAndStates/PostActions';
 
 type CommentWritePageProps = {
   parentCommentId?: number;
@@ -32,6 +33,7 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
     const {
       postId,
       parentCommentId,
+      cancelWriting,
     } = this.props;
 
     const content = this.getContent();
@@ -45,6 +47,8 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
         : await CommentActions.writeComment(content, postId);
 
       if (response.isSuccessful) {
+        PostActions.reloadPost(postId);
+        cancelWriting();
         return;
       }
     } catch (error) {
