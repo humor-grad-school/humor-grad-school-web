@@ -132,7 +132,9 @@ export default function renderContent(
         const imageElementData = contentElementData as ImageElementData;
         const key = `content-image-element-${imageElementData.source}`;
 
-        if (option.maxImage >= 0 && counter.image >= option.maxImage) return undefined;
+        if (option.maxImage >= 0 && counter.image >= option.maxImage) {
+          return undefined;
+        }
         counter.increaseImage();
 
         return (

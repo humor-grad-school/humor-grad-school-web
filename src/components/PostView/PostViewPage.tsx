@@ -64,7 +64,6 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
       content,
       comments,
     } = postData;
-    // TODO: Findout why {...postData} not work
     return (
       <Container>
         <Board>

@@ -52,7 +52,6 @@ import { ContentData } from '../types/ContentData';
 //         type: text
 //         content: you can put text content here.
 
-// TODO: Check error, If needed
 export default function convertContent(dataInYml: string): ContentData {
   const { content } = yaml.load(dataInYml);
   return content || [];

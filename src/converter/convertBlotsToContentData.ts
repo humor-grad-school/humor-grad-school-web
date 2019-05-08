@@ -35,7 +35,9 @@ Promise<ContentElementData> {
       const contentData: BlockElementData = {
         type: ContentElementDataType.Block,
       };
-      if (children.length) contentData.children = children;
+      if (children.length) {
+        contentData.children = children;
+      }
       return contentData;
     }
 
@@ -43,7 +45,9 @@ Promise<ContentElementData> {
       const contentData: BoldElementData = {
         type: ContentElementDataType.Bold,
       };
-      if (children.length) contentData.children = children;
+      if (children.length) {
+        contentData.children = children;
+      }
       return contentData;
     }
 
@@ -51,7 +55,9 @@ Promise<ContentElementData> {
       const contentData: ItalicElementData = {
         type: ContentElementDataType.Italic,
       };
-      if (children.length) contentData.children = children;
+      if (children.length) {
+        contentData.children = children;
+      }
       return contentData;
     }
 
@@ -59,7 +65,9 @@ Promise<ContentElementData> {
       const contentData: UnderlineElementData = {
         type: ContentElementDataType.Underline,
       };
-      if (children.length) contentData.children = children;
+      if (children.length) {
+        contentData.children = children;
+      }
       return contentData;
     }
 
@@ -67,7 +75,9 @@ Promise<ContentElementData> {
       const contentData: BreakElementData = {
         type: ContentElementDataType.Break,
       };
-      if (children.length) contentData.children = children;
+      if (children.length) {
+        contentData.children = children;
+      }
       return contentData;
     }
 
@@ -77,7 +87,9 @@ Promise<ContentElementData> {
         type: ContentElementDataType.Text,
         content: text,
       };
-      if (children.length) contentData.children = children;
+      if (children.length) {
+        contentData.children = children;
+      }
       return contentData;
     }
 
@@ -98,7 +110,9 @@ Promise<ContentElementData> {
         source: `http://localhost:9000/after-encoding-s3-bucket/${imageS3Key}.jpg`,
         fileName: imageValue.alt,
       };
-      if (children.length) contentData.children = children;
+      if (children.length) {
+        contentData.children = children;
+      }
       return contentData;
     }
 
@@ -106,7 +120,9 @@ Promise<ContentElementData> {
       const contentData: InlineElementData = {
         type: ContentElementDataType.Inline,
       };
-      if (children.length) contentData.children = children;
+      if (children.length) {
+        contentData.children = children;
+      }
       return contentData;
     }
   }

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 type PageButtonProps = {
-  iscurrentpage: 'true' | 'false';
+  isCurrentPage: boolean;
 }
 
 const Container = styled.div`
@@ -24,8 +24,8 @@ const PageButton = styled(Link)`
   text-align: center;
   border-radius: 2em;
   display: inline-block;
-  color: ${(props: PageButtonProps) => (props.iscurrentpage === 'true' ? '#FFF' : '#000')}
-  ${(props: PageButtonProps) => (props.iscurrentpage === 'true' ? 'background-color: #AAA' : '')}
+  color: ${(props: PageButtonProps) => (props.isCurrentPage ? '#FFF' : '#000')}
+  ${(props: PageButtonProps) => (props.isCurrentPage ? 'background-color: #AAA' : '')}
   transition: background-color 0.25s, color 0.25s;
 
   :hover {
@@ -48,7 +48,7 @@ export default function BoardPageNavigatorComponent({
   for (let i = start; i <= end; i += 1) {
     pageButtonElements.push(
       <PageButton
-        iscurrentpage={i === pageNumber ? 'true' : 'false'}
+        isCurrentPage={i === pageNumber}
         key={`board-page-navigator-page-button-${i}`}
         to={`/board/${boardName}/${i}`}
       >

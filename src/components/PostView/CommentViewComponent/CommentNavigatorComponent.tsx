@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 type PageButtonProps = {
-  iscurrentpage: 'true' | 'false';
+  isCurrentPage: boolean;
 }
 
 const Container = styled.div`
@@ -26,8 +26,8 @@ const PageButton = styled.button`
   display: inline-block;
   border: 0px;
   vertical-align: middle;
-  color: ${(props: PageButtonProps) => (props.iscurrentpage === 'true' ? '#FFF' : '#000')}
-  ${(props: PageButtonProps) => (props.iscurrentpage === 'true' ? 'background-color: #AAA' : '')}
+  color: ${(props: PageButtonProps) => (props.isCurrentPage ? '#FFF' : '#000')}
+  ${(props: PageButtonProps) => (props.isCurrentPage ? 'background-color: #AAA' : '')}
   transition: background-color 0.25s, color 0.25s;
   cursor: pointer;
   :hover {
@@ -54,7 +54,7 @@ export default function CommentNavigatorComponent({
   for (let i = start; i <= end; i += 1) {
     pageButtonElements.push(
       <PageButton
-        iscurrentpage={i === pageNumber ? 'true' : 'false'}
+        isCurrentPage={i === pageNumber}
         key={`comment-navigator-page-button-${i}`}
         onClick={() => { changePageNumber(i); }}
       >

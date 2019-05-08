@@ -58,13 +58,17 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
   }
 
   private getTitle(): string {
-    if (!this.postTitleInputComponent || !this.postTitleInputComponent.current) return '';
+    if (!this.postTitleInputComponent || !this.postTitleInputComponent.current) {
+      return '';
+    }
     const postTitleInputComponent = this.postTitleInputComponent.current;
     return postTitleInputComponent.getTitle();
   }
 
   private getContent(): unconfirmedBlot[] {
-    if (!this.contentEditorComponent || !this.contentEditorComponent.current) return [];
+    if (!this.contentEditorComponent || !this.contentEditorComponent.current) {
+      return [];
+    }
     const contentEditorComponent = this.contentEditorComponent.current;
     return contentEditorComponent.getContent();
   }
@@ -116,7 +120,9 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
       redirectTo,
     } = this.state;
 
-    if (redirectTo) return <Redirect to={redirectTo} />;
+    if (redirectTo) {
+      return <Redirect to={redirectTo} />;
+    }
 
     return (
       <Container>

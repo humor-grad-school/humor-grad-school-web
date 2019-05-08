@@ -21,7 +21,6 @@ export default class KakaoLoginComponent extends BaseLoginComponent<{}, {}> {
 
   public componentDidMount(): void {
     loadKakaoSdk().then(() => {
-      console.log('kakao loaded');
       this.isSdkLoaded = true;
       LoginActions.setThirdPartyLogoutFunction(this.origin, this.logout.bind(this));
     });

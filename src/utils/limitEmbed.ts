@@ -21,13 +21,17 @@ export default function limitEmbed(
 
   const limitedOps = (ops || []).filter((op) => {
     const { insert } = op;
-    if (!insert || typeof insert === 'string') return true;
+    if (!insert || typeof insert === 'string') {
+      return true;
+    }
 
     const keys = Object.keys(insert);
 
     const isBelowLimit = embedKeys.every((embedKey) => {
       const hasNoEmbed = !keys.includes(embedKey);
-      if (hasNoEmbed) return true;
+      if (hasNoEmbed) {
+        return true;
+      }
 
       const hasLimit = limit[embedKey] >= 0;
       const isReachedLimit = counter[embedKey] >= limit[embedKey];

@@ -45,7 +45,6 @@ export default class FacebookLoginComponent extends BaseLoginComponent<{}, {}> {
 
   public componentDidMount(): void {
     loadFacebookSdk().then(() => {
-      console.log('facebook loaded');
       this.isSdkLoaded = true;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       FB.getLoginStatus((response: any) => {

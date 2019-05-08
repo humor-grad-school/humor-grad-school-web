@@ -44,7 +44,6 @@ const Likes = styled.span`
 `;
 
 async function likePost(postId: number): Promise<void> {
-  console.log('asd');
   const response = await PostActions.likePost(postId);
   if (response.isSuccessful) {
     return;
@@ -64,7 +63,6 @@ async function likePost(postId: number): Promise<void> {
   }
 }
 
-// TODO: Display likes
 export default function PostFooterComponent({ postData }: PostFooterComponentProps): JSX.Element {
   const {
     id,

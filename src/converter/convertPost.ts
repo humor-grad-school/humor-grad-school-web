@@ -15,12 +15,17 @@ function makeCommentTree(commentInfoes: CommentInfoes): CommentTreeElement[] {
   const commentTreeRoot: CommentTreeRoot = [];
 
   commentInfoes.forEach((commentInfo) => {
-    if (!commentInfo.parentComment) return commentTreeRoot.push(commentInfo as CommentTreeElement);
+    if (!commentInfo.parentComment) {
+      return commentTreeRoot.push(commentInfo as CommentTreeElement);
+    }
+
     const parentCommentIndex = commentTreeRoot.findIndex(
       commentTreeElement => commentTreeElement.id
         === (commentInfo.parentComment as ParentComment).id,
     );
-    if (parentCommentIndex === -1) return false;
+    if (parentCommentIndex === -1) {
+      return false;
+    }
 
     if (!commentTreeRoot[parentCommentIndex].children) {
       commentTreeRoot[parentCommentIndex].children = [];
@@ -36,8 +41,6 @@ function makeCommentTree(commentInfoes: CommentInfoes): CommentTreeElement[] {
 }
 
 const sortByCreatedAt = (a: CommentTreeElement, b: CommentTreeElement): number => {
-  // TODO: Fix bug on observer-proxy
-  // a.createdAt.getTime() - b.createdAt.getTime()
   const aDate = new Date(a.createdAt);
   const bDate = new Date(b.createdAt);
 

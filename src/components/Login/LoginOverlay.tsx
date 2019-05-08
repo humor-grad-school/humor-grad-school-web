@@ -20,12 +20,12 @@ type LoginOverlayStates = {
 }
 
 type OverlayProps = {
-  active: boolean;
+  isActive: boolean;
 }
 
 const Overlay = styled.div`
   position: fixed;
-  display: ${(props: OverlayProps) => (props.active ? 'fixed' : 'none')};
+  display: ${(props: OverlayProps) => (props.isActive ? 'fixed' : 'none')};
   width: 100vw;
   height: 100vh;
   z-index: 1;
@@ -185,7 +185,7 @@ export default class LoginOverlay extends Component<LoginOverlayProps, LoginOver
 
     return (
       <Overlay
-        active={isActived}
+        isActive={isActived}
         ref={this.selfRef}
         onClick={this.handleOverlayClick}
       >
