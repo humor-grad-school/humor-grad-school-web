@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import renderPostListItem, { PostListViewMode } from './renderPostListItem';
-import { Post } from '../../types/BoardData';
+import { BoardPostData } from '../../GlobalState/ActionAndStates/BoardActions';
 
 const Container = styled.ol`
   list-style-type: none;
@@ -14,7 +14,7 @@ export default function PostListComponent({
   postLimit = Infinity,
   viewMode = PostListViewMode.Details,
 }: {
-  posts: Post[];
+  posts: BoardPostData[];
   postLimit?: number;
   viewMode?: PostListViewMode;
 }): JSX.Element {

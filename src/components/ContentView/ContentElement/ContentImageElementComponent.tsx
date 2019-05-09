@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageElementData } from '../../../types/ContentData';
+import { ImageElementData } from '../../../contentConverter/ContentData';
 
 export default function ContentImageElementComponent({
   imageElementData,

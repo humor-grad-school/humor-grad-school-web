@@ -1,7 +1,7 @@
 import React from 'react';
-import { Posts } from '../../types/BoardData';
 import PostListItemComponentInDetailsMode from './PostListItem/PostListItemComponentInDetailsMode';
 import PostListItemComponentInMediumThumbnailMode from './PostListItem/PostListItemComponentInMediumThumbnailMode';
+import { BoardPostData } from '../../GlobalState/ActionAndStates/BoardActions';
 
 export enum PostListViewMode {
   Details = 'details',
@@ -21,7 +21,7 @@ function getBasePostListItem(viewMode: PostListViewMode) {
 }
 
 export default function renderPostListItem(
-  posts: Posts,
+  posts: BoardPostData[],
   viewMode: PostListViewMode,
 ): (JSX.Element | undefined)[] {
   const BasePostListItem = getBasePostListItem(viewMode);

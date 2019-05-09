@@ -1,4 +1,4 @@
-import { PostData } from '../../types/PostData';
+import { PostData } from './PostActions';
 
 export interface PostState {
   posts: PostData[];

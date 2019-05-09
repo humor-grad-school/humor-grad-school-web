@@ -1,5 +1,5 @@
 import React from 'react';
-import { BoldElementData } from '../../../types/ContentData';
+import { BoldElementData } from '../../../contentConverter/ContentData';
 import renderContent, { RenderContentOptionObject, RenderContentCounter } from '../renderContent';
 
 export default function ContentBoldElementComponent({

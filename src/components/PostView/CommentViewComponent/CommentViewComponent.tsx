@@ -1,14 +1,14 @@
 import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
-import { CommentInfoes } from '../../../types/CommentData';
 import CommentComponent from './CommentComponent';
 import CommentNavigatorComponent from './CommentNavigatorComponent';
 import CommentWriteComponent from '../CommentWriteComponent/CommentWriteComponent';
 import scrollToId from '../../../utils/scrollToId';
+import { CommentData } from '../../../GlobalState/ActionAndStates/CommentActions';
 
 type CommentViewComponentProps = {
   postId: number;
-  comments: CommentInfoes;
+  comments: CommentData[];
   postWriterId: number;
 }
 
@@ -35,7 +35,7 @@ const CommentWriteButton = styled.button`
 
 `;
 
-function sliceComments(comments: CommentInfoes, pageNumber: number): CommentInfoes {
+function sliceComments(comments: CommentData[], pageNumber: number): CommentData[] {
   const start = (pageNumber - 1) * 20;
   const end = pageNumber * 20;
   const slicedComments = comments.slice(start, end);
@@ -92,12 +92,12 @@ export default class CommentViewComponent
 
     const slicedComments = sliceComments(comments, commentPageNum);
 
-    const commentComponents = slicedComments.map((commentInfo) => {
-      const key = `comment-component-${commentInfo.writer.username}-${commentInfo.createdAt}${Math.random()}`;
+    const commentComponents = slicedComments.map((commentData) => {
+      const key = `comment-component-${commentData.writer.username}-${commentData.createdAt}${Math.random()}`;
       return (
         <CommentComponent
           postWriterId={postWriterId}
-          commentInfo={commentInfo}
+          commentData={commentData}
           postId={postId}
           key={key}
         />

@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import { ContentData } from '../types/ContentData';
+import { ContentData } from './ContentData';
 
 // ---
 // content:

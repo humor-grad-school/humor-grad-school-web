@@ -2,16 +2,15 @@ import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 import { getGlobalStateForReactComponent } from '../../../GlobalState/getGlobalState';
 import { GlobalState } from '../../../GlobalState/globalState';
-import { CommentInfo } from '../../../types/CommentData';
-import CommentActions from '../../../GlobalState/ActionAndStates/CommentActions';
 import { startRenderContent } from '../../ContentView/renderContent';
 import CommentHeaderComponent from './CommentHeaderComponent';
 import CommentFooterComponent from './CommentFooterComponent';
 import CommentWriteComponent from '../CommentWriteComponent/CommentWriteComponent';
+import { CommentData } from '../../../GlobalState/ActionAndStates/CommentActions';
 
 type CommentComponentProps = {
   postId: number;
-  commentInfo: CommentInfo;
+  commentData: CommentData;
   postWriterId: number;
 }
 
@@ -66,20 +65,14 @@ export default class CommentComponent
   public render(): ReactNode {
     const {
       postId,
-      commentInfo,
+      commentData,
       postWriterId,
     } = this.props;
 
     const {
       id,
       parentComment,
-    } = commentInfo;
-
-    const commentData = this.globalState.commentState.comments[id];
-    if (!commentData) {
-      CommentActions.loadComment(commentInfo);
-      return false;
-    }
+    } = commentData;
 
     const {
       content,
@@ -92,7 +85,7 @@ export default class CommentComponent
     return (
       <Container isSubComment={!!parentComment}>
         <CommentHeaderComponent
-          commentInfo={commentInfo}
+          commentData={commentData}
           postWriterId={postWriterId}
         />
         {

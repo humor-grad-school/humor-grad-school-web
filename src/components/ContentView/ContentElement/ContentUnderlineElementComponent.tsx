@@ -1,5 +1,5 @@
 import React from 'react';
-import { UnderlineElementData } from '../../../types/ContentData';
+import { UnderlineElementData } from '../../../contentConverter/ContentData';
 import renderContent, { RenderContentOptionObject, RenderContentCounter } from '../renderContent';
 
 export default function ContentUnderlineElementComponent({

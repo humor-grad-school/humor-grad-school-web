@@ -1,40 +1,92 @@
 import DataLoader from 'dataloader';
 import { getGlobalState } from '../getGlobalState';
-import convertComment from '../../converter/convertComment';
-import { CommentData, CommentInfoes, CommentInfo } from '../../types/CommentData';
 import { HgsRestApi } from '../../generated/client/ClientApis';
-import { unconfirmedBlot } from '../../types/Blot';
+import { unconfirmedBlot } from '../../contentConverter/Blot';
 import { uploadContentToS3 } from './ContentActions';
-import { convertContentData } from '../../converter/convertContent';
-import convertBlotsToContentData from '../../converter/convertBlotsToContentData';
+import convertContent, { convertContentData } from '../../contentConverter/convertContent';
+import convertBlotsToContentData from '../../contentConverter/convertBlotsToContentData';
+import { ContentData } from '../../contentConverter/ContentData';
+import { GraphQLQueryType, User, Comment } from '../../generated/graphqlQuery';
 
-async function loadCommentBatch(commentInfoes: CommentInfoes): Promise<CommentData[]> {
-  return Promise.all(commentInfoes.map(async (commentInfo) => {
-    const response = await fetch(`http://localhost:9000/content-s3-bucket/${commentInfo.contentS3Key}`);
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export function generateCommentQuery() {
+  return Comment
+    .addId()
+    .addWriter(
+      User
+        .addId()
+        .addUsername()
+        .addAvatarUrl(),
+    )
+    .addParentComment(
+      Comment
+        .addId()
+        .addWriter(
+          User
+            .addUsername(),
+        ),
+    )
+    .addContentS3Key()
+    .addLikes()
+    .addCreatedAt();
+}
+
+type CommentDataWithoutContent = GraphQLQueryType<ReturnType<typeof generateCommentQuery>>
+
+export type CommentData = CommentDataWithoutContent & {
+  content: ContentData;
+}
+
+async function loadCommentBatch(contentS3Keys: string[]): Promise<ContentData[]> {
+  return Promise.all(contentS3Keys.map(async (contentS3Key) => {
+    const response = await fetch(`http://localhost:9000/content-s3-bucket/${contentS3Key}`);
 
     const contentDataInYml = await response.text();
 
-    return convertComment(commentInfo, contentDataInYml);
+    return convertContent(contentDataInYml);
   }));
 }
 
-const commentLoader = new DataLoader<CommentInfo, CommentData>(
-  commentInfo => loadCommentBatch(commentInfo),
+const commentContentLoader = new DataLoader<string, ContentData>(
+  commentData => loadCommentBatch(commentData),
 );
 
 const globalState = getGlobalState();
 
 const CommentActions = {
-  async loadComment(commentInfo: CommentInfo): Promise<void> {
-    const { id } = commentInfo;
-    const commentData = await commentLoader.load(commentInfo);
-    globalState.commentState.comments[id] = commentData;
+  async saveCommentDataWithContent(
+    commentDataWithoutContent: CommentDataWithoutContent,
+  ): Promise<CommentData> {
+    const commentContentData = await commentContentLoader
+      .load(commentDataWithoutContent.contentS3Key);
+
+    const commentData = {
+      ...commentDataWithoutContent,
+      content: commentContentData,
+    };
+
+    globalState.commentState.comments[commentData.id] = {
+      ...commentData,
+      content: commentContentData,
+    };
+
+    return commentData;
   },
 
   async likeComment(commentId: number): ReturnType<typeof HgsRestApi.likeComment> {
     const response = await HgsRestApi.likeComment({ commentId });
+
     if (response.isSuccessful) {
-      globalState.commentState.comments[commentId].likes += 1;
+      globalState.postState.posts.forEach((post) => {
+        const targetComment = post.comments.find(comment => comment.id === commentId);
+
+        if (!targetComment) {
+          return;
+        }
+
+        targetComment.likes += 1;
+      });
     }
 
     return response;

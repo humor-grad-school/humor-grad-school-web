@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextElementData } from '../../../types/ContentData';
+import { TextElementData } from '../../../contentConverter/ContentData';
 
 export default function ContentTextElementComponent({
   textElementData,

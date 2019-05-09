@@ -1,5 +1,5 @@
 import React from 'react';
-import { ItalicElementData } from '../../../types/ContentData';
+import { ItalicElementData } from '../../../contentConverter/ContentData';
 import renderContent, { RenderContentOptionObject, RenderContentCounter } from '../renderContent';
 
 export default function ContentItalicElementComponent({

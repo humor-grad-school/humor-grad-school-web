@@ -5,9 +5,40 @@ import {
   Post,
   Board,
   User,
+  GraphQLQueryType,
 } from '../../generated/graphqlQuery';
-import convertBoard from '../../converter/convertBoard';
-import { BoardData } from '../../types/BoardData';
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function generateBoardPostQuery() {
+  return Post
+    .addId()
+    .addTitle()
+    .addWriter(
+      User
+        .addUsername(),
+    )
+    .addLikes()
+    .addCommentCount()
+    .addThumbnailUrl()
+    .addCreatedAt();
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function generateBoardQuery(
+  boardName: string,
+  pageNumber: number,
+) {
+  return Query
+    .addBoard(boardName,
+      Board
+        .addName()
+        .addPosts(pageNumber, 25,
+          generateBoardPostQuery()));
+}
+
+export type BoardData = GraphQLQueryType<ReturnType<typeof generateBoardQuery>>['board'];
+
+export type BoardPostData = GraphQLQueryType<ReturnType<typeof generateBoardPostQuery>>;
 
 async function loadBoardBatch(boardInfos: {
   boardName: string;
@@ -17,26 +48,13 @@ async function loadBoardBatch(boardInfos: {
     boardName,
     pageNumber,
   }) => {
-    const query = Query
-      .addBoard(boardName,
-        Board
-          .addName()
-          .addPosts(pageNumber, 25,
-            Post
-              .addId()
-              .addTitle()
-              .addWriter(
-                User
-                  .addUsername(),
-              )
-              .addLikes()
-              .addCommentCount()
-              .addThumbnailUrl()
-              .addCreatedAt()));
+    const query = generateBoardQuery(boardName, pageNumber);
 
     const { data } = await query.fetch();
 
-    return convertBoard(data.board);
+    data.board.posts.reverse();
+
+    return data.board;
   }));
 }
 

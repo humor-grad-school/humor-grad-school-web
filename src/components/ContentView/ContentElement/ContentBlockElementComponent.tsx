@@ -1,5 +1,5 @@
 import React from 'react';
-import { BlockElementData } from '../../../types/ContentData';
+import { BlockElementData } from '../../../contentConverter/ContentData';
 import renderContent, { RenderContentOptionObject, RenderContentCounter } from '../renderContent';
 
 export default function ContentBlockElementComponent({
