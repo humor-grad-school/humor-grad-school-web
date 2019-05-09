@@ -33,5 +33,5 @@ export default function renderPostListItem(
     />
   ));
 
-  return contentElements.reverse();
+  return contentElements;
 }

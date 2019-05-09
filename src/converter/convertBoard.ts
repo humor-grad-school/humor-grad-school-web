@@ -13,5 +13,6 @@ export default function convertPost(boardInfo: BoardInfo): BoardData {
   const boardData: BoardData = {
     ...boardInfo,
   };
+  boardData.posts.reverse();
   return boardData;
 }
