@@ -5,6 +5,7 @@ import { GlobalState } from '../../../GlobalState/globalState';
 import { getGlobalStateForReactComponent } from '../../../GlobalState/getGlobalState';
 import PostListComponent from '../../PostList/PostListComponent';
 import FeedPostListHeaderComponent from './FeedPostListHeaderComponent';
+import { PostListViewMode } from '../../PostList/renderPostListItem';
 
 type FeedComponentProps = {
   boardName: string;
@@ -51,7 +52,11 @@ export default class FeedComponent extends Component<FeedComponentProps, {}> {
     return (
       <Container>
         <FeedPostListHeaderComponent boardName={boardName} />
-        <PostListComponent posts={posts} postLimit={5} />
+        <PostListComponent
+          posts={posts}
+          postLimit={5}
+          viewMode={PostListViewMode.MediumThumbnail}
+        />
       </Container>
     );
   }

@@ -31,6 +31,7 @@ async function loadBoardBatch(boardInfos: {
               )
               .addLikes()
               .addCommentCount()
+              .addThumbnailUrl()
               .addCreatedAt()));
 
     const { data } = await query.fetch();

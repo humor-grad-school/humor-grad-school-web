@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import renderPostListItem from './renderPostListItem';
+import renderPostListItem, { PostListViewMode } from './renderPostListItem';
 import { Post } from '../../types/BoardData';
 
 const Container = styled.ol`
@@ -12,9 +12,11 @@ const Container = styled.ol`
 export default function PostListComponent({
   posts,
   postLimit = Infinity,
+  viewMode = PostListViewMode.Details,
 }: {
   posts: Post[];
   postLimit?: number;
+  viewMode?: PostListViewMode;
 }): JSX.Element {
   const limitedPosts = posts.length > postLimit
     ? posts.slice(0, postLimit)
@@ -22,7 +24,7 @@ export default function PostListComponent({
 
   return (
     <Container>
-      {renderPostListItem(limitedPosts)}
+      {renderPostListItem(limitedPosts, viewMode)}
     </Container>
   );
 }

@@ -16,6 +16,7 @@ export type Post = {
   writer: Writer;
   likes: number;
   commentCount: number;
+  thumbnailUrl: string;
   createdAt: Date;
 }
 
