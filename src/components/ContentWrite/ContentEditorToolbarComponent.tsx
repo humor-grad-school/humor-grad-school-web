@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatString } from '../../types/Blot';
+import { formatString } from '../../contentConverter/Blot';
 
 export default function ContentEditorToolbarComponent({
   allowedFormats,

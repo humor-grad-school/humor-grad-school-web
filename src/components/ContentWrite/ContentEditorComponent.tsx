@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../../../node_modules/react-quill/dist/quill.snow.css';
 import ReactQuill, { Quill } from 'react-quill';
 import styled from 'styled-components';
-import { unconfirmedBlot, formatString } from '../../types/Blot';
+import { unconfirmedBlot, formatString } from '../../contentConverter/Blot';
 import ImageBlot from '../../blots/ImageBlot';
 import ContentEditorToolbarComponent from './ContentEditorToolbarComponent';
 import limitEmbed from '../../utils/limitEmbed';

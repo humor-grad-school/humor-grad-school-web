@@ -9,7 +9,7 @@ import {
   UnderlineElementData,
   TextElementData,
   ImageElementData,
-} from '../../types/ContentData';
+} from '../../contentConverter/ContentData';
 import ContentBlockElementComponent from './ContentElement/ContentBlockElementComponent';
 import ContentInlineElementComponent from './ContentElement/ContentInlineElementComponent';
 import ContentBoldElementComponent from './ContentElement/ContentBoldElementComponent';

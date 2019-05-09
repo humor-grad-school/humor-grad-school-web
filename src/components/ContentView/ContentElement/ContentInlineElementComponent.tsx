@@ -1,5 +1,5 @@
 import React from 'react';
-import { InlineElementData } from '../../../types/ContentData';
+import { InlineElementData } from '../../../contentConverter/ContentData';
 import renderContent, { RenderContentOptionObject, RenderContentCounter } from '../renderContent';
 
 export default function ContentInlineElementComponent({

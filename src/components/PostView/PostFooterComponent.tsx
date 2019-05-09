@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { PostData } from '../../types/PostData';
-import PostActions from '../../GlobalState/ActionAndStates/PostActions';
+import PostActions, { PostData } from '../../GlobalState/ActionAndStates/PostActions';
 import { ErrorCode } from '../../generated/ErrorCode';
 import LoginActions from '../../GlobalState/ActionAndStates/LoginActions';
 
@@ -27,7 +26,7 @@ const LikeButton = styled.button`
   padding: 0.75em 1.5em;
   background-color: #777;
   transition: background-color 0.25s;
-  
+
   ${(props: LikeButtonProps) => (props.isLiked
     ? ''
     : `

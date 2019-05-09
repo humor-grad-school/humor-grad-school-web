@@ -1,4 +1,4 @@
-import { CommentData } from '../../types/CommentData';
+import { CommentData } from './CommentActions';
 
 export interface CommentState {
   comments: CommentData[];

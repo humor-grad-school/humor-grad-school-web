@@ -2,7 +2,7 @@ import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
-import { unconfirmedBlot } from '../../types/Blot';
+import { unconfirmedBlot } from '../../contentConverter/Blot';
 import PostTitleInputComponent from './PostTitleInputComponent';
 import ContentEditorComponent from '../ContentWrite/ContentEditorComponent';
 import LoginActions from '../../GlobalState/ActionAndStates/LoginActions';

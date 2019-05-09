@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 import CommentActions from '../../../GlobalState/ActionAndStates/CommentActions';
-import { unconfirmedBlot } from '../../../types/Blot';
+import { unconfirmedBlot } from '../../../contentConverter/Blot';
 import ContentEditorComponent from '../../ContentWrite/ContentEditorComponent';
 import { ErrorCode } from '../../../generated/ErrorCode';
 import LoginActions from '../../../GlobalState/ActionAndStates/LoginActions';

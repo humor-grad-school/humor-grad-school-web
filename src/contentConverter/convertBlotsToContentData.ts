@@ -10,8 +10,8 @@ import {
   ImageElementData,
   InlineElementData,
   ContentData,
-} from '../types/ContentData';
-import { BlotType, unconfirmedBlot } from '../types/Blot';
+} from './ContentData';
+import { BlotType, unconfirmedBlot } from './Blot';
 import TextBlot from '../blots/TextBlot';
 import ContainerBlot from '../blots/ContainerBlot';
 import ImageBlot, { ImageBlotValue } from '../blots/ImageBlot';

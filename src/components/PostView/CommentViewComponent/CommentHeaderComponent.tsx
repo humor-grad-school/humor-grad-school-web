@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { CommentInfo } from '../../../types/CommentData';
 import getPassedTimeString from '../../../utils/getPassedTimeString';
+import { CommentData } from '../../../GlobalState/ActionAndStates/CommentActions';
 
 type ContainerProps = {
   isPostWritersComment: boolean;
@@ -45,16 +45,16 @@ const PassedTime = styled.div`
 `;
 
 export default function CommentHeaderComponent({
-  commentInfo,
+  commentData,
   postWriterId,
 }: {
-  commentInfo: CommentInfo;
+  commentData: CommentData;
   postWriterId: number;
 }): JSX.Element {
   const {
     writer,
     createdAt,
-  } = commentInfo;
+  } = commentData;
 
   return (
     <Container isPostWritersComment={postWriterId === writer.id}>

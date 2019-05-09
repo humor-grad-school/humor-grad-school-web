@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { GlobalState } from '../../GlobalState/globalState';
 import { getGlobalStateForReactComponent } from '../../GlobalState/getGlobalState';
 import BoardActions from '../../GlobalState/ActionAndStates/BoardActions';
-import renderPostViewContent from './renderBoardViewContent';
 import BoardPostListHeaderComponent from './BoardPostListHeaderComponent';
 import BoardPostListFooterComponent from './BoardPostListFooterComponent';
+import PostListComponent from '../PostList/PostListComponent';
 
 type PostViewPageProps = RouteComponentProps<PostViewPageParams>
 
@@ -37,12 +37,6 @@ const Board = styled.div`
   a:hover {
     color: #777;
   }
-`;
-
-const PostList = styled.ol`
-  list-style-type: none;
-  margin: 0px;
-  padding: 0px;
 `;
 
 // TODO: Check etag and then update
@@ -89,7 +83,7 @@ export default class PostViewPage extends Component<PostViewPageProps, {}> {
       <Container>
         <Board><Link to={`/board/${name}`}>{ name }</Link></Board>
         <BoardPostListHeaderComponent />
-        <PostList>{renderPostViewContent(posts)}</PostList>
+        <PostListComponent posts={posts} />
         <BoardPostListFooterComponent {...{ boardName, pageNumber }} />
       </Container>
     );

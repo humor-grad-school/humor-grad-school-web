@@ -1,8 +1,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Post } from '../../types/BoardData';
-import getPassedTimeString from '../../utils/getPassedTimeString';
+import getPassedTimeString from '../../../utils/getPassedTimeString';
+import { BoardPostData } from '../../../GlobalState/ActionAndStates/BoardActions';
 
 const Container = styled.li`
   display: flex;
@@ -90,10 +90,10 @@ const Likes = styled.div`
   width: 32px;
 `;
 
-export default function BoardPostElementComponent({
+export default function PostListItemComponentInDetailsMode({
   post,
 }: {
-  post: Post;
+  post: BoardPostData;
 }): JSX.Element {
   const {
     id,

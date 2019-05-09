@@ -1,4 +1,4 @@
-import { BoardData } from '../../types/BoardData';
+import { BoardData } from './BoardActions';
 
 export interface BoardState {
   boards: {

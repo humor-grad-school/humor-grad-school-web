@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CommentData } from '../../../types/CommentData';
-import CommentActions from '../../../GlobalState/ActionAndStates/CommentActions';
+import CommentActions, { CommentData } from '../../../GlobalState/ActionAndStates/CommentActions';
 import { ErrorCode } from '../../../generated/ErrorCode';
 import LoginActions from '../../../GlobalState/ActionAndStates/LoginActions';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { PostData } from '../../types/PostData';
 import getPassedTimeString from '../../utils/getPassedTimeString';
+import { PostData } from '../../GlobalState/ActionAndStates/PostActions';
 
 type PostHeaderComponentProps = {
   postData: PostData;

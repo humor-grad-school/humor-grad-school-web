@@ -5,65 +5,68 @@ import {
   Post,
   User,
   Board,
-  Comment,
+  GraphQLQueryType,
 } from '../../generated/graphqlQuery';
-import convertPost from '../../converter/convertPost';
-import { PostData } from '../../types/PostData';
 import { HgsRestApi } from '../../generated/client/ClientApis';
-import { unconfirmedBlot } from '../../types/Blot';
+import { unconfirmedBlot } from '../../contentConverter/Blot';
 import { uploadContentToS3 } from './ContentActions';
-import { convertContentData } from '../../converter/convertContent';
-import convertBlotsToContentData from '../../converter/convertBlotsToContentData';
+import convertContent, { convertContentData } from '../../contentConverter/convertContent';
+import convertBlotsToContentData from '../../contentConverter/convertBlotsToContentData';
+import { ContentData } from '../../contentConverter/ContentData';
+import sortComments from '../../utils/sortComments';
+import CommentActions, { CommentData, generateCommentQuery } from './CommentActions';
+
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function generatePostQuery(postId: number) {
+  return Query
+    .addPost(postId,
+      Post
+        .addId()
+        .addTitle()
+        .addContentS3Key()
+        .addWriter(
+          User
+            .addId()
+            .addUsername()
+            .addAvatarUrl(),
+        )
+        .addBoard(
+          Board
+            .addName(),
+        )
+        .addLikes()
+        .addComments(
+          generateCommentQuery(),
+        )
+        .addIsLiked()
+        .addCreatedAt());
+}
+
+type PostGraphQlResult = GraphQLQueryType<ReturnType<typeof generatePostQuery>>
+
+export type PostData = PostGraphQlResult['post'] & {
+  content: ContentData;
+  comments: CommentData[];
+}
 
 async function loadPostBatch(postIds: number[]): Promise<PostData[]> {
   return Promise.all(postIds.map(async (postId) => {
-    const query = Query
-      .addPost(postId,
-        Post
-          .addId()
-          .addTitle()
-          .addContentS3Key()
-          .addWriter(
-            User
-              .addId()
-              .addUsername()
-              .addAvatarUrl(),
-          )
-          .addBoard(
-            Board
-              .addName(),
-          )
-          .addLikes()
-          .addComments(
-            Comment
-              .addId()
-              .addWriter(
-                User
-                  .addId()
-                  .addUsername()
-                  .addAvatarUrl(),
-              )
-              .addParentComment(
-                Comment
-                  .addId()
-                  .addWriter(
-                    User
-                      .addUsername(),
-                  ),
-              )
-              .addContentS3Key()
-              .addLikes()
-              .addCreatedAt(),
-          )
-          .addIsLiked()
-          .addCreatedAt());
+    const query = generatePostQuery(postId);
 
     const { data } = await query.fetch();
+
+    const comments = await Promise.all(data.post.comments.map(comment =>
+      CommentActions.saveCommentDataWithContent(comment)));
 
     const response = await fetch(`http://localhost:9000/content-s3-bucket/${data.post.contentS3Key}`);
 
     const contentDataInYml = await response.text();
-    return convertPost(data.post, contentDataInYml);
+    return {
+      ...data.post,
+      comments: sortComments(comments),
+      content: convertContent(contentDataInYml),
+    };
   }));
 }
 
