@@ -43,17 +43,13 @@ function sliceComments(comments: CommentData[], pageNumber: number): CommentData
 }
 
 function getMaxPageNumber(commentAmount: number): number {
-  return Math.ceil(commentAmount / 20);
+  return Math.max(Math.ceil(commentAmount / 20), 1);
 }
 
 export default class CommentViewComponent
   extends Component<CommentViewComponentProps, CommentViewComponentState> {
   public constructor(props: CommentViewComponentProps) {
     super(props);
-
-    const { comments } = this.props;
-
-    this.maxPageNumber = getMaxPageNumber(comments.length);
 
     this.state = {
       isWriting: false,
@@ -63,7 +59,10 @@ export default class CommentViewComponent
     this.handleCancelWriting = this.handleCancelWriting.bind(this);
   }
 
-  private maxPageNumber: number;
+  private get maxPageNumber(): number {
+    const { comments } = this.props;
+    return getMaxPageNumber(comments.length);
+  }
 
   public handlePageChange(pageNumber: number): void {
     this.setState({

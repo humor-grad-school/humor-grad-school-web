@@ -8,7 +8,6 @@ import convertBlotsToContentData from '../../contentConverter/convertBlotsToCont
 import { ContentData } from '../../contentConverter/ContentData';
 import { GraphQLQueryType, User, Comment } from '../../generated/graphqlQuery';
 
-
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function generateCommentQuery() {
   return Comment
