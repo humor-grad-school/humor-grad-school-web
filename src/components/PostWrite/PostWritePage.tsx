@@ -2,11 +2,13 @@ import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 import PostActions from '../../GlobalState/ActionAndStates/PostActions';
-import { unconfirmedBlot } from '../../contentConverter/Blot';
 import PostTitleInputComponent from './PostTitleInputComponent';
 import ContentEditorComponent from '../ContentWrite/ContentEditorComponent';
 import LoginActions from '../../GlobalState/ActionAndStates/LoginActions';
 import { ErrorCode } from '../../generated/ErrorCode';
+import { uploadContentToS3 } from '../../GlobalState/ActionAndStates/ContentActions';
+import { convertContentData } from '../../contentConverter/convertContent';
+import startUploadMediaInContentDataToS3 from '../../utils/uploadMediaInContentDataToS3';
 
 type PostWritePageProps = RouteComponentProps<PostViewPageParams>
 
@@ -43,6 +45,21 @@ const DoneButton = styled.button`
 `;
 
 export default class PostWritePage extends Component<PostWritePageProps, PostWritePageStates> {
+  private static handleWritePostError(errorCode?: string): void {
+    switch (errorCode) {
+      case ErrorCode.DefaultErrorCode.Unauthenticated: {
+        alert('로그인이 필요해요');
+        LoginActions.openOverlay();
+        break;
+      }
+
+      default: {
+        alert('알 수 없는 에러로 실패했어요');
+        break;
+      }
+    }
+  }
+
   private contentEditorComponent: React.RefObject<ContentEditorComponent>
   = React.createRef<ContentEditorComponent>();
 
@@ -65,7 +82,7 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     return postTitleInputComponent.getTitle();
   }
 
-  private getContent(): unconfirmedBlot[] {
+  private getContent(): ReturnType<typeof ContentEditorComponent.prototype.getContent> {
     if (!this.contentEditorComponent || !this.contentEditorComponent.current) {
       return [];
     }
@@ -81,38 +98,41 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
 
   private async writePost(): Promise<void> {
     const { match } = this.props;
-    const { params } = match;
+    const { boardName } = match.params;
 
     const title = this.getTitle();
     const content = this.getContent();
-    const { boardName } = params;
 
-    // TODO: Rework it not to use try catch
-    let errorCode = '';
-
-    try {
-      const response = await PostActions.writePost(title, content, boardName);
-
-      if (response.isSuccessful) {
-        this.redirect(`/post/${response.data.postId}`);
-        return;
+    const mediaUploadResponse = await startUploadMediaInContentDataToS3(content);
+    const isMediaUploadSuccessful = mediaUploadResponse.responses.every((response) => {
+      if (!response.isSuccessful) {
+        PostWritePage.handleWritePostError(response.errorCode);
       }
-    } catch (error) {
-      errorCode = error;
+      return response.isSuccessful;
+    });
+    if (!isMediaUploadSuccessful) {
+      return;
     }
 
-    switch (errorCode) {
-      case ErrorCode.DefaultErrorCode.Unauthenticated: {
-        alert('로그인이 필요해요');
-        LoginActions.openOverlay();
-        break;
-      }
-
-      default: {
-        alert('알 수 없는 에러로 실패했어요');
-        break;
-      }
+    const contentInString = convertContentData(mediaUploadResponse.mediaUploadedContentData);
+    const contentUploadResponse = await uploadContentToS3(contentInString);
+    if (!contentUploadResponse.isSuccessful) {
+      PostWritePage.handleWritePostError(contentUploadResponse.errorCode);
+      return;
     }
+
+    const response = await PostActions.writePost(
+      title,
+      contentUploadResponse.data.key,
+      boardName,
+    );
+
+    if (response.isSuccessful) {
+      this.redirect(`/post/${response.data.postId}`);
+      return;
+    }
+
+    PostWritePage.handleWritePostError(response.errorCode);
   }
 
   public render(): ReactNode {

@@ -8,10 +8,7 @@ import {
   GraphQLQueryType,
 } from '../../generated/graphqlQuery';
 import { HgsRestApi } from '../../generated/client/ClientApis';
-import { unconfirmedBlot } from '../../contentConverter/Blot';
-import { uploadContentToS3 } from './ContentActions';
-import convertContent, { convertContentData } from '../../contentConverter/convertContent';
-import convertBlotsToContentData from '../../contentConverter/convertBlotsToContentData';
+import convertContent from '../../contentConverter/convertContent';
 import { ContentData } from '../../contentConverter/ContentData';
 import sortComments from '../../utils/sortComments';
 import CommentActions, { CommentData, generateCommentQuery } from './CommentActions';
@@ -98,19 +95,9 @@ const PostActions = {
 
   async writePost(
     title: string,
-    contentInBlots: unconfirmedBlot[],
+    contentS3Key: string,
     boardName: string,
   ): ReturnType<typeof HgsRestApi.writePost> {
-    const postContentData = await convertBlotsToContentData(contentInBlots);
-    const postContentDataInYml = convertContentData(postContentData);
-    const uploadContentToS3Response = await uploadContentToS3(postContentDataInYml);
-
-    if (!uploadContentToS3Response.isSuccessful) {
-      throw uploadContentToS3Response.errorCode;
-    }
-
-    const contentS3Key = uploadContentToS3Response.data.key;
-
     const response = await HgsRestApi.writePost({
       title,
       contentS3Key,

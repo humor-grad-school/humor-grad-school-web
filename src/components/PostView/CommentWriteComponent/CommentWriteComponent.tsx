@@ -1,13 +1,15 @@
 import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 import CommentActions from '../../../GlobalState/ActionAndStates/CommentActions';
-import { unconfirmedBlot } from '../../../contentConverter/Blot';
 import ContentEditorComponent from '../../ContentWrite/ContentEditorComponent';
 import { ErrorCode } from '../../../generated/ErrorCode';
 import LoginActions from '../../../GlobalState/ActionAndStates/LoginActions';
 import PostActions from '../../../GlobalState/ActionAndStates/PostActions';
+import startUploadMediaInContentDataToS3 from '../../../utils/uploadMediaInContentDataToS3';
+import { convertContentData } from '../../../contentConverter/convertContent';
+import { uploadContentToS3 } from '../../../GlobalState/ActionAndStates/ContentActions';
 
-type CommentWritePageProps = {
+type CommentWriteComponentProps = {
   parentCommentId?: number;
   postId: number;
   cancelWriting: () => void;
@@ -17,11 +19,26 @@ const Container = styled.div`
   margin: 0px 0px;
 `;
 
-export default class CommentWritePage extends Component<CommentWritePageProps, {}> {
+export default class CommentWriteComponent extends Component<CommentWriteComponentProps, {}> {
+  private static handleWriteCommentError(errorCode?: string): void {
+    switch (errorCode) {
+      case ErrorCode.DefaultErrorCode.Unauthenticated: {
+        alert('로그인이 필요해요');
+        LoginActions.openOverlay();
+        break;
+      }
+
+      default: {
+        alert('알 수 없는 에러로 실패했어요');
+        break;
+      }
+    }
+  }
+
   private contentEditorComponent: React.RefObject<ContentEditorComponent>
   = React.createRef<ContentEditorComponent>();
 
-  private getContent(): unconfirmedBlot[] {
+  private getContent(): ReturnType<typeof ContentEditorComponent.prototype.getContent> {
     if (!this.contentEditorComponent || !this.contentEditorComponent.current) {
       return [];
     }
@@ -38,35 +55,36 @@ export default class CommentWritePage extends Component<CommentWritePageProps, {
 
     const content = this.getContent();
 
-    // TODO: Rework it not to use try catch
-    let errorCode = '';
-
-    try {
-      const response = parentCommentId
-        ? await CommentActions.writeSubComment(content, postId, parentCommentId)
-        : await CommentActions.writeComment(content, postId);
-
-      if (response.isSuccessful) {
-        PostActions.reloadPost(postId);
-        cancelWriting();
-        return;
+    const mediaUploadResponse = await startUploadMediaInContentDataToS3(content);
+    const isMediaUploadSuccessful = mediaUploadResponse.responses.every((response) => {
+      if (!response.isSuccessful) {
+        CommentWriteComponent.handleWriteCommentError(response.errorCode);
       }
-    } catch (error) {
-      errorCode = error;
+      return response.isSuccessful;
+    });
+    if (!isMediaUploadSuccessful) {
+      return;
     }
 
-    switch (errorCode) {
-      case ErrorCode.DefaultErrorCode.Unauthenticated: {
-        alert('로그인이 필요해요');
-        LoginActions.openOverlay();
-        break;
-      }
-
-      default: {
-        alert('알 수 없는 에러로 실패했어요');
-        break;
-      }
+    const contentInString = convertContentData(mediaUploadResponse.mediaUploadedContentData);
+    const contentUploadResponse = await uploadContentToS3(contentInString);
+    if (!contentUploadResponse.isSuccessful) {
+      CommentWriteComponent.handleWriteCommentError(contentUploadResponse.errorCode);
+      return;
     }
+
+    const contentS3Key = contentUploadResponse.data.key;
+    const response = parentCommentId
+      ? await CommentActions.writeSubComment(contentS3Key, postId, parentCommentId)
+      : await CommentActions.writeComment(contentS3Key, postId);
+
+    if (response.isSuccessful) {
+      PostActions.reloadPost(postId);
+      cancelWriting();
+      return;
+    }
+
+    CommentWriteComponent.handleWriteCommentError(response.errorCode);
   }
 
   public render(): ReactNode {

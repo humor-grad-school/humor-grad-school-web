@@ -1,10 +1,7 @@
 import DataLoader from 'dataloader';
 import { getGlobalState } from '../getGlobalState';
 import { HgsRestApi } from '../../generated/client/ClientApis';
-import { unconfirmedBlot } from '../../contentConverter/Blot';
-import { uploadContentToS3 } from './ContentActions';
-import convertContent, { convertContentData } from '../../contentConverter/convertContent';
-import convertBlotsToContentData from '../../contentConverter/convertBlotsToContentData';
+import convertContent from '../../contentConverter/convertContent';
 import { ContentData } from '../../contentConverter/ContentData';
 import { GraphQLQueryType, User, Comment } from '../../generated/graphqlQuery';
 
@@ -92,19 +89,9 @@ const CommentActions = {
   },
 
   async writeComment(
-    contentInBlots: unconfirmedBlot[],
+    contentS3Key: string,
     postId: number,
   ): ReturnType<typeof HgsRestApi.writeComment> {
-    const postContentData = await convertBlotsToContentData(contentInBlots);
-    const postContentDataInYml = convertContentData(postContentData);
-    const uploadContentToS3Response = await uploadContentToS3(postContentDataInYml);
-
-    if (!uploadContentToS3Response.isSuccessful) {
-      throw uploadContentToS3Response.errorCode;
-    }
-
-    const contentS3Key = uploadContentToS3Response.data.key;
-
     const response = await HgsRestApi.writeComment({
       contentS3Key,
       postId,
@@ -114,20 +101,10 @@ const CommentActions = {
   },
 
   async writeSubComment(
-    contentInBlots: unconfirmedBlot[],
+    contentS3Key: string,
     postId: number,
     parentCommentId: number,
   ): ReturnType<typeof HgsRestApi.writeSubComment> {
-    const postContentData = await convertBlotsToContentData(contentInBlots);
-    const postContentDataInYml = convertContentData(postContentData);
-    const uploadContentToS3Response = await uploadContentToS3(postContentDataInYml);
-
-    if (!uploadContentToS3Response.isSuccessful) {
-      throw uploadContentToS3Response.errorCode;
-    }
-
-    const contentS3Key = uploadContentToS3Response.data.key;
-
     const response = await HgsRestApi.writeSubComment({
       parentCommentId,
       contentS3Key,
