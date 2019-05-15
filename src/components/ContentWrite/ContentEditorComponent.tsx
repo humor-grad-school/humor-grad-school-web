@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import '../../../node_modules/react-quill/dist/quill.snow.css';
 import ReactQuill, { Quill } from 'react-quill';
 import styled from 'styled-components';
-import { unconfirmedBlot, formatString } from '../../contentConverter/Blot';
+import { formatString } from '../../contentConverter/Blot';
 import ImageBlot from '../../blots/ImageBlot';
 import ContentEditorToolbarComponent from './ContentEditorToolbarComponent';
 import limitEmbed from '../../utils/limitEmbed';
+import convertBlotsToContentData from '../../contentConverter/convertBlotsToContentData';
 
 const Delta = Quill.import('delta');
 
@@ -94,12 +95,13 @@ export default class ContentEditorComponent extends Component<ContentEditorCompo
     quill.off('text-change', this.handleTextChange);
   }
 
-  public getContent(): unconfirmedBlot[] {
+  public getContent(): ReturnType<typeof convertBlotsToContentData> {
     if (!this.quill || !this.quill.current) {
       return [];
     }
     const quill = this.quill.current.getEditor();
-    return quill.getLines();
+    const contentBlots = quill.getLines();
+    return convertBlotsToContentData(contentBlots);
   }
 
   private allowedFormats: formatString[]

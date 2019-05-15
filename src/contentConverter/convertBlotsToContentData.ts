@@ -15,20 +15,17 @@ import { BlotType, unconfirmedBlot } from './Blot';
 import TextBlot from '../blots/TextBlot';
 import ContainerBlot from '../blots/ContainerBlot';
 import ImageBlot, { ImageBlotValue } from '../blots/ImageBlot';
-import { uploadMediaToS3 } from '../GlobalState/ActionAndStates/ContentActions';
 
-async function convertBlotToContentAndUploadMedia(blot: unconfirmedBlot):
-Promise<ContentElementData> {
+function convertBlotToContent(blot: unconfirmedBlot): ContentElementData {
   const blotType: BlotType = blot.statics.blotName;
 
-  const childAppendingPromises: Promise<ContentElementData>[] = [];
+  const children: ContentElementData[] = [];
   if ((blot as ContainerBlot).children) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (blot as ContainerBlot).children.forEach((childBlot: any) => {
-      childAppendingPromises.push(convertBlotToContentAndUploadMedia(childBlot));
+      children.push(convertBlotToContent(childBlot));
     });
   }
-
-  const children = await Promise.all(childAppendingPromises);
 
   switch (blotType) {
     case BlotType.Block: {
@@ -95,19 +92,9 @@ Promise<ContentElementData> {
 
     case BlotType.Image: {
       const { image: imageValue } = (blot as ImageBlot).value() as { image: ImageBlotValue };
-      const blob = await fetch(imageValue.url).then(response => response.blob());
-      const uploadMediaToS3Response = await uploadMediaToS3(blob);
-
-      if (!uploadMediaToS3Response.isSuccessful) {
-        throw uploadMediaToS3Response.errorCode;
-      }
-
-      const imageS3Key = uploadMediaToS3Response.data.key;
-
       const contentData: ImageElementData = {
         type: ContentElementDataType.Image,
-        // TODO: Change s3 url
-        source: `http://localhost:9000/after-encoding-s3-bucket/${imageS3Key}.jpg`,
+        source: imageValue.url,
         fileName: imageValue.alt,
       };
       if (children.length) {
@@ -128,15 +115,12 @@ Promise<ContentElementData> {
   }
 }
 
-export default async function convertBlotsToContentData(
-  blots: unconfirmedBlot[],
-): Promise<ContentData> {
-  const blotConvertingPromises: Promise<ContentElementData>[] = [];
+export default function convertBlotsToContentData(blots: unconfirmedBlot[]): ContentData {
+  const contentData: ContentData = [];
 
-  blots.forEach(async (blot) => {
-    blotConvertingPromises.push(convertBlotToContentAndUploadMedia(blot));
+  blots.forEach((blot) => {
+    contentData.push(convertBlotToContent(blot));
   });
 
-  const contentData: ContentData = await Promise.all(blotConvertingPromises);
   return contentData;
 }
