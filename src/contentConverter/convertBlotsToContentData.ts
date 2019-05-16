@@ -11,12 +11,13 @@ import {
   InlineElementData,
   ContentData,
 } from './ContentData';
-import { BlotType, unconfirmedBlot } from './Blot';
+import { BlotType, UnconfirmedBlot } from './Blot';
 import TextBlot from '../blots/TextBlot';
 import ContainerBlot from '../blots/ContainerBlot';
 import ImageBlot, { ImageBlotValue } from '../blots/ImageBlot';
+import EmbedBlot from '../blots/EmbedBlot';
 
-function convertBlotToContent(blot: unconfirmedBlot): ContentElementData {
+function convertBlotToContent(blot: UnconfirmedBlot): ContentElementData {
   const blotType: BlotType = blot.statics.blotName;
 
   const children: ContentElementData[] = [];
@@ -96,6 +97,7 @@ function convertBlotToContent(blot: unconfirmedBlot): ContentElementData {
         type: ContentElementDataType.Image,
         source: imageValue.url,
         fileName: imageValue.alt,
+        encodingUrlPromise: imageValue.encodingUrlPromise,
       };
       if (children.length) {
         contentData.children = children;
@@ -115,7 +117,7 @@ function convertBlotToContent(blot: unconfirmedBlot): ContentElementData {
   }
 }
 
-export default function convertBlotsToContentData(blots: unconfirmedBlot[]): ContentData {
+export default function convertBlotsToContentData(blots: EmbedBlot[]): ContentData {
   const contentData: ContentData = [];
 
   blots.forEach((blot) => {

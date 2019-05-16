@@ -9,6 +9,9 @@ import { ErrorCode } from '../../generated/ErrorCode';
 import { uploadContentToS3 } from '../../GlobalState/ActionAndStates/ContentActions';
 import { convertContentData } from '../../contentConverter/convertContent';
 import startUploadMediaInContentDataToS3 from '../../utils/uploadMediaInContentDataToS3';
+import EmbedBlot from '../../blots/EmbedBlot';
+import { MediaBlot } from '../../blots/ImageBlot';
+import convertBlotsToContentData from '../../contentConverter/convertBlotsToContentData';
 
 type PostWritePageProps = RouteComponentProps<PostViewPageParams>
 
@@ -90,6 +93,14 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     return contentEditorComponent.getContent();
   }
 
+  private getBlots(): EmbedBlot[] {
+    if (!this.contentEditorComponent || !this.contentEditorComponent.current) {
+      return [];
+    }
+    const contentEditorComponent = this.contentEditorComponent.current;
+    return contentEditorComponent.getBlots();
+  }
+
   private redirect(redirectTo: string): void {
     this.setState({
       redirectTo,
@@ -100,39 +111,51 @@ export default class PostWritePage extends Component<PostWritePageProps, PostWri
     const { match } = this.props;
     const { boardName } = match.params;
 
-    const title = this.getTitle();
-    const content = this.getContent();
+    const blots = this.getBlots();
 
-    const mediaUploadResponse = await startUploadMediaInContentDataToS3(content);
-    const isMediaUploadSuccessful = mediaUploadResponse.responses.every((response) => {
-      if (!response.isSuccessful) {
-        PostWritePage.handleWritePostError(response.errorCode);
-      }
-      return response.isSuccessful;
-    });
-    if (!isMediaUploadSuccessful) {
-      return;
+    const mediaBlots = blots.filter(blot => blot instanceof MediaBlot);
+
+    const encodingFailedMediaBlotsOnPreviousTime = mediaBlots.filter();
+
+    retryEncoding(encodingFailedMediaBlotsOnPreviousTime);
+
+    const firstEncodingFailedMediaBlot = Promise.race(); // if mediaBlot's encoding  promise is pending, run await that.
+
+    if (firstEncodingFailedMediaBlot) {
+      // Alert, let user try again
     }
 
-    const contentInString = convertContentData(mediaUploadResponse.mediaUploadedContentData);
-    const contentUploadResponse = await uploadContentToS3(contentInString);
+    const contentData = convertBlotsToContentData(blots);
+    // ...On Editing...
+    // - Encode Media in background
+
+    // Function writePost(Blots): Promise<void>
+    // - Check background encoding is successful or retry failed encoding request on previous time.
+    // --> What if we fail to encode?
+    // ----> warn to user and let them try again.
+    // - Convert Blot to ElementData
+    // DONE
+
+    const contentInYml = convertContentData(contentData);
+    const contentUploadResponse = await uploadContentToS3(contentInYml);
     if (!contentUploadResponse.isSuccessful) {
       PostWritePage.handleWritePostError(contentUploadResponse.errorCode);
       return;
     }
 
-    const response = await PostActions.writePost(
+    const title = this.getTitle();
+    const writePostResponse = await PostActions.writePost(
       title,
       contentUploadResponse.data.key,
       boardName,
     );
 
-    if (response.isSuccessful) {
-      this.redirect(`/post/${response.data.postId}`);
+    if (!writePostResponse.isSuccessful) {
+      PostWritePage.handleWritePostError(writePostResponse.errorCode);
       return;
     }
 
-    PostWritePage.handleWritePostError(response.errorCode);
+    this.redirect(`/post/${writePostResponse.data.postId}`);
   }
 
   public render(): ReactNode {

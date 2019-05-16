@@ -16,6 +16,10 @@ export interface ContentElementData {
   children?: ContentElementData[];
 }
 
+export interface MediaElementData extends ContentElementData {
+  encodingUrlPromise: Promise<string>;
+}
+
 export interface BlockElementData extends ContentElementData {
   type: ContentElementDataType.Block;
 }
@@ -45,7 +49,7 @@ export interface TextElementData extends ContentElementData {
   content: string;
 }
 
-export interface ImageElementData extends ContentElementData {
+export interface ImageElementData extends MediaElementData {
   type: ContentElementDataType.Image;
   source: string;
   fileName: string;

@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import '../../../node_modules/react-quill/dist/quill.snow.css';
 import ReactQuill, { Quill } from 'react-quill';
 import styled from 'styled-components';
-import { formatString } from '../../contentConverter/Blot';
+import { FormatString } from '../../contentConverter/Blot';
 import ImageBlot from '../../blots/ImageBlot';
 import ContentEditorToolbarComponent from './ContentEditorToolbarComponent';
 import limitEmbed from '../../utils/limitEmbed';
 import convertBlotsToContentData from '../../contentConverter/convertBlotsToContentData';
+import { ContentElementData } from '../../contentConverter/ContentData';
+import EmbedBlot from '../../blots/EmbedBlot';
 
 const Delta = Quill.import('delta');
 
@@ -16,7 +18,7 @@ type ContentLimit = {
 }
 
 type ContentEditorComponentProps = {
-  allowedFormats?: formatString[];
+  allowedFormats?: FormatString[];
   contentLimit?: Partial<ContentLimit>;
 }
 
@@ -95,7 +97,7 @@ export default class ContentEditorComponent extends Component<ContentEditorCompo
     quill.off('text-change', this.handleTextChange);
   }
 
-  public getContent(): ReturnType<typeof convertBlotsToContentData> {
+  public async getContent(): Promise<ContentElementData[]> {
     if (!this.quill || !this.quill.current) {
       return [];
     }
@@ -104,7 +106,16 @@ export default class ContentEditorComponent extends Component<ContentEditorCompo
     return convertBlotsToContentData(contentBlots);
   }
 
-  private allowedFormats: formatString[]
+  public getBlots(): EmbedBlot[] {
+    if (!this.quill || !this.quill.current) {
+      return [];
+    }
+    const quill = this.quill.current.getEditor();
+    const blots = quill.getLines();
+    return blots;
+  }
+
+  private allowedFormats: FormatString[]
 
   private contentLimit: ContentLimit
 
@@ -156,10 +167,12 @@ export default class ContentEditorComponent extends Component<ContentEditorCompo
           ? selection.index
           : quill.getLength();
 
-        quill.insertEmbed(index, 'image', {
+        const delta = quill.insertEmbed(index, 'image', {
           alt: file.name,
           url,
         }, 'user');
+
+        console.log(delta);
 
         quill.setSelection(index + 1, 0);
         return resolve();

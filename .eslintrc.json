@@ -32,6 +32,7 @@
     "@typescript-eslint/no-namespace": 0,
     "@typescript-eslint/interface-over-type-literal": 0,
     "@typescript-eslint/prefer-interface": 0,
+    "@typescript-eslint/interface-name-prefix": 0,
     "curly": [2, "all"],
     "implicit-arrow-linebreak": 0
   }

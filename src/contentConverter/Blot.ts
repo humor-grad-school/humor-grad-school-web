@@ -14,14 +14,14 @@ export enum BlotType {
   Image = 'image',
 }
 
-export type unconfirmedBlot =(
+export type UnconfirmedBlot =(
   | ContainerBlot
   | BlockBlot
   | TextBlot
   | ImageBlot
 );
 
-export type formatString = (
+export type FormatString = (
   | 'block'
   | 'inline'
   | 'bold'
